@@ -51,6 +51,21 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 ## ToDo
     - Show Chip/PIN usage
 
+## Tested Browser Support
+  - Windows
+    + Chrome
+    + Firefox
+    + Edge
+    + IE11 (no audio)
+    - Safari 5.1.7
+  - Mac
+    - Safari 12.0.1
+    - Safari 10.1.2
+  - Mobile
+    - Android Chrome
+    - iPhone6+ Safari (no audio)
+    - iPad1 Safari 5.1.1 (no audio)
+
 ## Change Log
 
 ### 12/06/19 (0.2.6) (DrSnuggles)
