@@ -1,0 +1,15 @@
+<!--
+JSVecX : JavaScript port of the VecX emulator by raz0red.
+         Copyright (C) 2010-2019 raz0red http://www.twitchasylum.com/jsvecx/
+         Seamless Version by DrSnuggles https://drsnuggles.github.io/jsvecx/
+         C version by Valavan Manohararajah http://valavan.net/vectrex.html
+
+Emulation of the AY-3-8910 / YM2149 sound chip based on various code snippets by
+  Ville Hallik
+  Michael Cuddy
+  Tatsuyuki Satoh
+  Fabrice Frances
+  Nicola Salmoria
+
+1080 Overlays by THK-Hyperspin and Gigapig-Hyperspin
+-->

@@ -1,0 +1,46 @@
+  </script>
+</head>
+<body>
+
+  <div id="wrapper">
+    <canvas id="vecscr" width="660" height="820"></canvas>
+
+    <img id="overlay" class="fadeAble"/>
+
+    <div id="menu" class="fadeAble">
+      <div id="stat">Loading ...</div>
+      <select id="roms"></select><br/>
+      <button onclick="vecx.reset();">Reset</button>
+      <button onclick="togglePause();">Pause</button>
+      <button onclick="toggleSound();">Sound</button><br/>
+      <button onclick="toggleAA();">Antialias</button>
+      <button onclick="toggleQuality();">Quality</button>
+      <button onclick="toggleFullscreen();">Fullscreen</button><br/>
+      <button onclick="toggleGP();">GP polling</button>
+      <button onclick="toggleSwitchKeys();">Switch Keys</button>
+      <button onclick="toggleSwitchGP();">Switch GPs</button><br/>
+      <button class="xxl" onclick="toggleOverlay();">Overlay</button>
+
+      <div id="instructions">
+        Buttons = A S D F<br/>
+        Stick = Arrow keys or P L ; '<br/>
+        or use a X360 gamepad<br/>
+        RMB = Menu<br/>
+        <br/>
+      </div>
+
+      <div id="credits">
+        This fork by <a href="https://github.com/DrSnuggles/jsvecx" target="_blank">DrSnuggles</a><br/>
+        Javascript port by <a href="http://www.twitchasylum.com/jsvecx/" target="_blank">raz0red</a><br/>
+        Original C version by <a href="http://valavan.net/vectrex.html" target="_blank">Valavan Manohararajah</a><br/>
+        Sound emulation based on various code snippets by<br/>
+        Ville Hallik, Michael Cuddy, Tatsuyuki Satoh,<br/>
+        Fabrice Frances, Nicola Salmoria.<br/>
+        1080 Overlays by THK-Hyperspin and Gigapig-Hyperspin<br/>
+        <br/>
+      </div>
+
+    </div>
+  </div>
+
+  <script>

@@ -1,0 +1,127 @@
+body {
+  background-color: #000;
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+  cursor: crosshair;
+  -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Opera and Firefox */
+}
+#wrapper {
+  position: relative;
+}
+#vecscr {
+  position: absolute;
+}
+#overlay {
+  position: absolute;
+  pointer-events: none;
+}
+#menu {
+  position: absolute;
+  display: none;
+  background-color: #000;
+  opacity: 0.7;
+  text-align: center;
+}
+  #menu * {
+    color: #FFF;
+    margin: 5px;
+    font-size: 2.5vh;
+  }
+  @media (max-aspect-ratio: 330/410) {
+    #menu * {
+      font-size: 3vw;
+    }
+  }
+#stat {
+  padding-top: 8px;
+  text-align: center;
+}
+#roms {
+  background-color: #000;
+  padding: 2px 2px 2px 5px;
+  width: 80%;
+  text-align-last: center;
+}
+button {
+  width: 25%;
+  background-color: transparent;
+}
+  button.xxl {
+    width: 80%;
+  }
+#credits {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+/* TouchCTRL */
+.touchctrl button {
+  color: #000;
+  border-radius: 50%;
+  background-color: #FFF;
+  opacity: 0.5;
+  border: 1px solid #FFF;
+  font-size: 3vw;
+  width: 6vw;
+  height: 6vw;
+  margin: 1vw 0 0 1vw;
+}
+  @media (max-aspect-ratio: 330/410) {
+    .touchctrl button {
+      font-size: 3vh;
+      width: 6vh;
+      height: 6vh;
+      margin: 1vh 0 0 1vh;
+    }
+  }
+.tl {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.bl {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+.br {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+
+/* No Antialias */
+.noAA {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* CSS fade */
+.fadeAble {
+  -webkit-transition: opacity 0.2s ease-in-out;
+  -moz-transition: opacity 0.2s ease-in-out;
+  -ms-transition: opacity 0.2s ease-in-out;
+  -o-transition: opacity 0.2s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
+}
+#overlay {
+  opacity: 1;
+}
+  #overlay.fadeOut {
+    opacity: 0;
+  }
+#touchctrl {
+  opacity: 0;
+}
+  #touchctrl.fadeIn {
+    opacity: 1;
+  }
