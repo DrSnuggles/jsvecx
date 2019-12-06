@@ -335,7 +335,7 @@ function osint()
         this.ctx.putImageData(this.imageData, 0, 0);
     }
 
-    this.init = function( canv )
+    this.init = function( vecx, canv )
     {
         this.vecx = vecx;
 

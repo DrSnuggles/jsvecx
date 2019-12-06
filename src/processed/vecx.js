@@ -1711,7 +1711,7 @@ function VecX()
 
     this.main = function( canv )
     {
-        this.osint.init( canv );  // need to pass reference to canvas
+        this.osint.init( this, canv );  // need to pass reference to canvas
         this.e6809.init( this );
 
         this.status = "Loaded.";
