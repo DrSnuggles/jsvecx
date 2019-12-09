@@ -231,19 +231,24 @@ function resizer() {
 (function(){
   doinit();
 
-  function urlParam(name) {
-    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-    if (results == null){
-     return null;
-    }
-    else {
-     return decodeURI(results[1]) || 0;
+  function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  };
+
+  // set sound on/off
+  var sound = getUrlParameter('sound');
+  if (sound) {
+    if (sound !== 'true' && sound !== 'on') {
+      toggleSound();
     }
   }
 
   // load rom
   // no IE11 var urlParams = new URLSearchParams(window.location.search);
-  var rom = urlParam('rom');//urlParams.get('rom');
+  var rom = getUrlParameter('rom');//urlParams.get('rom');
   if (rom) {
     // search for rom in romlist
     for (var i in romList) {
@@ -259,11 +264,4 @@ function resizer() {
     setOverlay("MineStorm"); // no rom set
   }
 
-  // set sound on/off
-  var sound = urlParam('sound');
-  if (sound) {
-    if (sound !== 'true') {
-      toggleSound();
-    }
-  }
 })();
