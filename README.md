@@ -68,6 +68,9 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 
 ## Change Log
 
+### 12/09/19 (0.2.7) (DrSnuggles)
+    - Added ?sound= parameter
+
 ### 12/06/19 (0.2.6) (DrSnuggles)
     - Added Touchscreen input (digital, don't get used to it)
 

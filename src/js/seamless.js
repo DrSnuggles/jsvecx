@@ -258,4 +258,12 @@ function resizer() {
   } else {
     setOverlay("MineStorm"); // no rom set
   }
+
+  // set sound on/off
+  var sound = urlParam('sound');
+  if (sound) {
+    if (sound !== 'true') {
+      toggleSound();
+    }
+  }
 })();
