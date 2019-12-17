@@ -38,7 +38,9 @@ gulp.task('download', () => {
 gulp.task('css', () => {
   return gulp.src([
     'src/css/seamless.css',
-    'src/css/vectrex.css'
+    'src/css/vectrex.css',
+    'src/css/rtm.css',
+    'src/css/touch.css'
       ])
       //.pipe(concat('styles.min.css'))
       .pipe(cleanCSS())
@@ -80,6 +82,10 @@ gulp.task('js', () => {
     .pipe(uglify())
     .pipe(gulp.dest('deploy/js'))
 
+  gulp.src('src/js/rtm.js')
+    .pipe(uglify())
+    .pipe(gulp.dest('deploy/js'))
+
   return gulp.src([
     'src/js/utils.js',
     'src/js/globals.js',
@@ -91,6 +97,7 @@ gulp.task('js', () => {
     'src/js/input.js',
     'src/js/dnd.js',
     'src/js/romList.js'
+    //'src/js/rtm.js'
     //'src/js/vectrex.js'
       ])
       .pipe(concat('jsvecx.js'))
@@ -159,7 +166,10 @@ gulp.task('vendor', () => {
 gulp.task('html', () => {
   return gulp.src([
     'src/seamless.html',
-    'src/vectrex.html'
+    'src/vectrex.html',
+    'src/rtm.html',
+    'src/_rtm.html',
+    'src/_touch.html'
       ])
       .pipe(htmlmin({ collapseWhitespace: true, removeComments: true }))
       .pipe(gulp.dest('deploy'));

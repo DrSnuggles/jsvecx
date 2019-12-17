@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>JSVecX: JavaScript port of VecX by raz0red with touch of DrSnuggles</title>
+  <link href="css/seamless.css" type="text/css" rel="stylesheet"/>
+  <!--
+  <script src="js/jsvecx.js"></script>
+  <!-- DEBUG -->
+  <script src="js/utils.js"></script>
+  <script src="js/globals.js"></script>
+  <script src="processed/e6809.js"></script>
+  <script src="processed/e8910.js"></script>
+  <script src="js/osint.js"></script>
+  <script src="js/vector_t.js"></script>
+  <script src="processed/vecx.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/dnd.js"></script>
+  <script src="js/romList.js"></script>
+  <script src="js/rtm.js"></script>
+
+</head>
+<body>
+
+  <div id="wrapper">
+    <canvas id="vecscr" width="660" height="820"></canvas>
+
+    <img id="overlay" class="fadeAble"/>
+
+    <div id="menu" class="fadeAble">
+      <div id="stat">Loading ...</div>
+      <select id="roms"></select><br/>
+      <button onclick="vecx.reset();">Reset</button>
+      <button onclick="togglePause();">Pause</button>
+      <button onclick="toggleSound();">Sound</button><br/>
+      <button onclick="toggleAA();">Antialias</button>
+      <button onclick="toggleQuality();">Quality</button>
+      <button onclick="toggleFullscreen();">Fullscreen</button><br/>
+      <button onclick="toggleGP();">GP&nbsp;polling</button>
+      <button onclick="toggleSwitchKeys();">Switch&nbsp;Keys</button>
+      <button onclick="toggleSwitchGP();">Switch&nbsp;GP</button><br/>
+      <button class="xxl" onclick="toggleOverlay();">Overlay</button>
+
+      <div id="instructions">
+        Buttons = A S D F<br/>
+        Stick = Arrow keys or P L ; '<br/>
+        or use a X360 gamepad<br/>
+        RMB = Menu<br/>
+        <br/>
+      </div>
+
+      <div id="credits">
+        This fork by <a href="https://github.com/DrSnuggles/jsvecx" target="_blank">DrSnuggles</a><br/>
+        Javascript port by <a href="http://www.twitchasylum.com/jsvecx/" target="_blank">raz0red</a><br/>
+        Original C version by <a href="http://valavan.net/vectrex.html" target="_blank">Valavan Manohararajah</a><br/>
+        Sound emulation based on various code snippets by<br/>
+        Ville Hallik, Michael Cuddy, Tatsuyuki Satoh,<br/>
+        Fabrice Frances, Nicola Salmoria.<br/>
+        1080 Overlays by THK-Hyperspin and Gigapig-Hyperspin<br/>
+        <br/>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="touchctrl" class="fadeAble">
+    <div class="tl touchctrl">
+      <button id="o_m">☰</button>
+    </div>
+    <div class="bl touchctrl">
+      <table>
+        <tr>
+          <td></td>
+          <td><button id="o_u">▲</button></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><button id="o_l">◄</button></td>
+          <td><button id="o_d">▼</button></td>
+          <td><button id="o_r">►</button></td>
+        </tr>
+      </table>
+    </div>
+    <div class="br touchctrl">
+      <button id="o_1">1</button><button id="o_2">2</button><button id="o_3">3</button><button id="o_4">4</button>
+    </div>
+  </div>
+
+  <script src="js/seamless.js"></script>
+
+</body>
+</html>

@@ -169,6 +169,16 @@ function VecX()
     //static long fcycles;
     this.fcycles = 0;
 
+    // DrSnuggles: added for monitoring
+    this.rtm = {
+      lastAdr: 0,
+      lastAbsAdr: 0,
+      lastVal: 0,
+      lastTyp: "rom",
+      lastRW: 1,
+      clk: 0,
+    };
+
     /* update the snd chips internal registers when via_ora/via_orb changes */
 
     //static einline void snd_update (void)
@@ -178,12 +188,18 @@ function VecX()
         {
             case 0x00:
                 /* the sound chip is disabled */
+                this.e8910.psg.BDir = 0; // DrSnuggles
+                this.e8910.psg.BC1 = 0; // DrSnuggles
                 break;
             case 0x08:
                 /* the sound chip is sending data */
+                this.e8910.psg.BDir = 0; // DrSnuggles
+                this.e8910.psg.BC1 = 1; // DrSnuggles
                 break;
             case 0x10:
                 /* the sound chip is recieving data */
+                this.e8910.psg.BDir = 1; // DrSnuggles
+                this.e8910.psg.BC1 = 0; // DrSnuggles
 
                 if( this.snd_select != 14 )
                 {
@@ -193,6 +209,9 @@ function VecX()
                 break;
             case 0x18:
                 /* the sound chip is latching an address */
+                this.e8910.psg.BDir = 1; // DrSnuggles
+                this.e8910.psg.BC1 = 1; // DrSnuggles
+
                 if( (this.via_ora & 0xf0) == 0x00 )
                 {
                     this.snd_select = this.via_ora & 0x0f;
@@ -290,10 +309,16 @@ function VecX()
     this.read8 = function( address )
     {
         address &= 0xffff;
+        this.rtm.lastRW = 1; // DrSnuggles
+        this.rtm.lastAbsAdr = address; // DrSnuggles
 
         if( (address & 0xe000) == 0xe000 )
         {
             /* rom */
+            this.rtm.lastAdr = address & 0x1fff; // DrSnuggles
+            this.rtm.lastVal = this.rom[address & 0x1fff] & 0xff; // DrSnuggles
+            this.rtm.lastTyp = "rom"; // DrSnuggles
+
             return this.rom[address & 0x1fff] & 0xff;
             //if( utils.logCount-- > 0 ) console.log( "read8, rom: %d, %d\n", ( address & 0x1fff ), data );
         }
@@ -303,6 +328,9 @@ function VecX()
             if( address & 0x800 )
             {
                 /* ram */
+                this.rtm.lastAdr = address & 0x3ff; // DrSnuggles
+                this.rtm.lastVal = this.ram[address & 0x3ff] & 0xff; // DrSnuggles
+                this.rtm.lastTyp = "ram"; // DrSnuggles
 
                 return this.ram[address & 0x3ff] & 0xff;
             }
@@ -310,6 +338,10 @@ function VecX()
             var data = 0;
 
             /* io */
+            this.rtm.lastAdr = address & 0xf; // DrSnuggles
+            this.rtm.lastVal = 0; // DrSnuggles
+            this.rtm.lastTyp = "via"; // DrSnuggles
+
             switch( address & 0xf )
             {
                 case 0x0:
@@ -448,6 +480,9 @@ function VecX()
 
         if( address < 0x8000 )
         {
+            this.rtm.lastAdr = address; // DrSnuggles
+            this.rtm.lastVal = this.cart[address] & 0xff; // DrSnuggles
+            this.rtm.lastTyp = "cart"; // DrSnuggles
             return this.cart[address] & 0xff;
         }
 
@@ -459,6 +494,9 @@ function VecX()
     {
         address &= 0xffff;
         data &= 0xff;
+        this.rtm.lastRW = 0; //DrSnuggles
+        this.rtm.lastAbsAdr = address; //DrSnuggles
+        this.rtm.lastVal = data; //DrSnuggles
 
         if( (address & 0xe000) == 0xe000 )
         {
@@ -470,11 +508,15 @@ function VecX()
 
             if( address & 0x800 )
             {
+                this.rtm.lastAdr = address & 0x3ff; //DrSnuggles
+                this.rtm.lastTyp = "ram"; //DrSnuggles
                 this.ram[address & 0x3ff] = data;
             }
 
             if( address & 0x1000 )
             {
+                this.rtm.lastAdr = address & 0xf; // DrSnuggles
+                this.rtm.lastTyp = "via"; // DrSnuggles
                 switch( address & 0xf )
                 {
                     case 0x0:
@@ -1668,7 +1710,7 @@ function VecX()
                         0x80 ) );
             */
             vecx.snd_regs[14] = vecx.shadow_snd_regs14;
-
+            vecx.rtm.clk = !vecx.rtm.clk; // DrSnuggles
             vecx.vecx_emu.call( vecx, cycles, 0 );
             vecx.count++;
 

@@ -17,10 +17,10 @@
 
 
 function e8910()
-{      
+{
     this.psg = {
         index: 0,
-        ready: 0,    
+        ready: 0,
         lastEnable: 0,
         PeriodA: 0,
         PeriodB: 0,
@@ -50,13 +50,20 @@ function e8910()
         Holding: 0,
         RNG: 0,
         VolTable: new Array(32),
-        Regs: null
-    };            
-    
+        Regs: null,
+        AnaA: 0,  // for virtual chip PIN monitoring
+        AnaB: 0,
+        AnaC: 0,
+        lastReg: 0,
+        lastVal: 0,
+        BDir: 0,
+        BC1: 0,
+    };
+
     this.ctx = null;
     this.node = null;
     this.enabled = true;
-    
+
     this.e8910_build_mixer_table = function()  {
         var i;
         var out;
@@ -71,11 +78,14 @@ function e8910()
             this.psg.VolTable[i] = (out + 0.5)>>>0;	/* round to nearest */
             out /= 1.188502227;	/* = 10 ^ (1.5/20) = 1.5dB */
         }
-        this.psg.VolTable[0] = 0;        
+        this.psg.VolTable[0] = 0;
     }
-        
+
     this.e8910_write = function(r, v) {
         var old;
+
+        this.psg.lastReg = r; // DrSnuggles
+        this.psg.lastVal = v; // DrSnuggles
 
         this.psg.Regs[r] = v;
 
@@ -88,7 +98,7 @@ function e8910()
         /* our internal counter.                                                   */
         /* Also, note that period = 0 is the same as period = 1. This is mentioned */
         /* in the YM2203 data sheets. However, this does NOT apply to the Envelope */
-        /* period. In that case, period = 0 is half as period = 1. */        
+        /* period. In that case, period = 0 is half as period = 1. */
         switch( r )
         {
             case (0):
@@ -200,7 +210,7 @@ function e8910()
                 if (this.psg.EnvelopeA) this.psg.VolA = this.psg.VolE;
                 if (this.psg.EnvelopeB) this.psg.VolB = this.psg.VolE;
                 if (this.psg.EnvelopeC) this.psg.VolC = this.psg.VolE;
-                                
+
                 break;
             case (14):
                 break;
@@ -208,8 +218,8 @@ function e8910()
                 break;
         }
     }
-    
-    this.toggleEnabled = function() {        
+
+    this.toggleEnabled = function() {
         this.enabled = !this.enabled;
         return this.enabled;
     }
@@ -222,14 +232,14 @@ function e8910()
 
         /* hack to prevent us from hanging when starting filtered outputs */
         if (!this.psg.ready || !this.enabled)
-        {   
+        {
             //memset(stream, 0, length * sizeof(*stream));
             for(var i = 0; i < length; i++) {
                 stream[i] = 0;
             }
             return;
         }
-        
+
         length = length << 1;
 
         /* The 8910 has three outputs, each output is the mix of one of the three */
@@ -290,7 +300,7 @@ function e8910()
             var left  = 2;
             /* vola, volb and volc keep track of how long each square wave stays */
             /* in the 1 position during the sample period. */
-            
+
             var vola, volb, volc;
             vola = volb = volc = 0;
 
@@ -478,47 +488,51 @@ function e8910()
                 }
             }
 
+            this.psg.AnaA = vola * this.psg.VolA;
+            this.psg.AnaB = volb * this.psg.VolB;
+            this.psg.AnaC = volc * this.psg.VolC;
+
             vol = (vola * this.psg.VolA + volb * this.psg.VolB + volc * this.psg.VolC) / (3 * 2);
-            if (--length & 1) {      
-                var val = vol / 0x0fff;                
-                stream[idx++] = val; 
-            } 
-        }        
+            if (--length & 1) {
+                var val = vol / 0x0fff;
+                stream[idx++] = val;
+            }
+        }
     }
-    
+
     this.init = function(regs) {
         this.psg.Regs = regs;
         this.psg.RNG  = 1;
         this.psg.OutputA = 0;
         this.psg.OutputB = 0;
         this.psg.OutputC = 0;
-        this.psg.OutputN = 0xff;        
-        this.psg.ready = 0;        
+        this.psg.OutputN = 0xff;
+        this.psg.ready = 0;
     }
-    
-    this.start = function() {        
+
+    this.start = function() {
         var self = this;
-        if (this.ctx == null && (window.AudioContext || window.webkitAudioContext)) { 
-            self.e8910_build_mixer_table();        
+        if (this.ctx == null && (window.AudioContext || window.webkitAudioContext)) {
+            self.e8910_build_mixer_table();
             var ctx = window.AudioContext ?
                 new window.AudioContext({sampleRate: 22050}) :
-                new window.webkitAudioContext();      
+                new window.webkitAudioContext();
             this.ctx = ctx;
-            this.node = this.ctx.createScriptProcessor(512, 0, 1);            
-            this.node.onaudioprocess = function(e) {            
+            this.node = this.ctx.createScriptProcessor(512, 0, 1);
+            this.node.onaudioprocess = function(e) {
                 self.e8910_callback(e.outputBuffer.getChannelData(0), 512);
             }
-            this.node.connect(this.ctx.destination);            
+            this.node.connect(this.ctx.destination);
             var resumeFunc =
                 function(){if (ctx.state !== 'running') ctx.resume();}
             document.documentElement.addEventListener("keydown", resumeFunc);
             document.documentElement.addEventListener("click", resumeFunc);
-        }        
+        }
         if (this.ctx) this.psg.ready = 1;
     }
-    
+
     this.stop = function() {
         this.psg.ready = 0;
-    }    
+    }
 }
 

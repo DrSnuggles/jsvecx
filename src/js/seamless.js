@@ -16,10 +16,15 @@ function switchRom(rom) {
     vecx.reset();
   } else {
     // rom was chosen
-    setOverlay( rom.substr(rom.lastIndexOf("/")+1).split("_")[0].replace(/ /g,"") );
+    var ext = (rom.indexOf("Academy") > -1 ) ? ".bin" : ".vec";
+    if (ext === ".bin") {
+      setOverlay( rom.substr(rom.lastIndexOf("roms/")+1).split("_")[0].replace(/ /g,"") );
+    } else {
+      setOverlay( rom.substr(rom.lastIndexOf("/")+1).split("_")[0].replace(/ /g,"") );
+    }
     // Load the the new rom
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "roms/"+rom+".vec", true);
+    xhr.open("GET", "roms/"+rom+ext, true);
     xhr.overrideMimeType('text/plain; charset=x-user-defined');
     xhr.onload = function(e) {
       Globals.cartdata = e.target.response;
@@ -182,12 +187,57 @@ function toggleQuality() {
   vecx.main( vecscr );
 }
 function toggleOverlayDir() {
-  overlayDir = (overlayDir === "img/overlays/") ? "img/overlays_1080/" : "img/overlays/";
-  overlay.src = overlayDir + overlayName + ".png";
+  if (overlayDir.indexOf("img/overlays") > -1) {
+    overlayDir = (overlayDir === "img/overlays/") ? "img/overlays_1080/" : "img/overlays/";
+    overlay.src = overlayDir + overlayName + ".png";
+  }
 }
-function setOverlay( name ) {
+function setOverlay(name) {
   overlayName = name;
-  overlay.src = overlayDir + overlayName + ".png";
+  if (name.indexOf("/") > -1) {
+    // workaround for overlay subdirs
+    overlayDir = name.substr(name.indexOf("/"));
+    overlay.src = "img/"+ name +".png";
+  } else {
+    // look in overlays or overlays_1080
+    overlayDir = "img/overlays_1080/";
+    overlay.src = overlayDir + overlayName + ".png";
+  }
+}
+function toggleRTM() {
+  // check if already loaded
+  if (document.getElementById("rtm6809")) {
+    document.getElementById("rtm6809").classList.toggle("fadeIn");
+    document.getElementById("rtm8912").classList.toggle("fadeIn");
+    document.getElementById("rtm6522").classList.toggle("fadeIn");
+    document.getElementById("rtmROMRAM").classList.toggle("fadeIn");
+  } else {
+    loadHead("script", "js/rtm.js", function(){});
+  }
+}
+function loadHead(tag, url, cb) {
+  xhr(url, function(txt) {
+    addHead(tag, txt, cb);
+  });
+}
+function addHead(tag, txt, cb) {
+  var tmp = document.createElement(tag);
+  tmp.type = (tag==='script')? 'text/javascript':'text/css';
+  //tmp.text = txt; // works for script only
+  tmp.appendChild(document.createTextNode(txt)); // works for script and style
+  document.head.appendChild(tmp);
+  if (cb) cb();
+}
+function xhr(src, cb) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", src, true);
+  xhr.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      //log(this.responseText);
+      cb(this.responseText);
+    }
+  };
+  xhr.send();
 }
 function resizer() {
   var viewportWidth = window.innerWidth;
@@ -231,6 +281,10 @@ function resizer() {
 (function(){
   doinit();
 
+  //
+  // onload
+  //
+
   function getUrlParameter(name) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
     var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -243,6 +297,38 @@ function resizer() {
   if (sound) {
     if (sound !== 'true' && sound !== 'on') {
       toggleSound();
+    }
+  }
+
+  // paused
+  var pause = getUrlParameter('pause');
+  if (pause) {
+    if (pause == 'true' || pause == 'on') {
+      togglePause();
+    }
+  }
+
+  // open menu
+  var menu = getUrlParameter('menu');
+  if (menu) {
+    if (menu == 'true' || menu === 'on') {
+      toggleMenu();
+    }
+  }
+
+  // show real time monitoring
+  var rtm = getUrlParameter('rtm');
+  if (rtm) {
+    if (rtm == 'true' || rtm == 'on') {
+      toggleRTM();
+    }
+  }
+
+  // antialias
+  var aa = getUrlParameter('aa');
+  if (aa) {
+    if (aa !== 'true' && aa !== 'on') {
+      toggleAA();
     }
   }
 

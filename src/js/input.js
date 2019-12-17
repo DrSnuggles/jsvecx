@@ -171,16 +171,23 @@ var input = (function() {
     ];
     // detect touch
     addEventListener('touchstart', function onFirstTouch() {
-      // fade in ctrl overlay
-      touchctrl.classList.toggle('fadeIn');
-      removeEventListener('touchstart', onFirstTouch, false);
+      loadHead("style", "css/touch.css", function(){
+        xhr("_touch.html", function(txt) {
+          document.body.insertAdjacentHTML("beforeend", txt);
+          setTimeout(function(){
+            // fade in ctrl overlay
+            touchctrl.classList.toggle('fadeIn');
+            removeEventListener('touchstart', onFirstTouch, false);
+          },50);
+        });
+      });
     }, false);
 
     // https://jsfiddle.net/aa0et7tr/5/
 
     var touchHandler = function(e) {
       // exit if not faded in
-      if (!(document.getElementById("touchctrl").classList.contains("fadeIn")) ) return;
+      if (!document.getElementById("touchctrl") || !(document.getElementById("touchctrl").classList.contains("fadeIn")) ) return;
       var handled = true;
       var held = (e.type == "touchstart") || (e.type == "mousedown"); // which event keyup or -down
       var controller = my.switchTouch ? 1 : 0;
@@ -235,10 +242,11 @@ var input = (function() {
 
     };
 
-    addEventListener('mousedown', touchHandler, false);
-    addEventListener('mouseup', touchHandler, false);
     addEventListener('touchstart', touchHandler, false);
     addEventListener('touchend', touchHandler, false);
+    // DEBUG or forever ??
+    addEventListener('mousedown', touchHandler, false);
+    addEventListener('mouseup', touchHandler, false);
 
     return my;
   })();
