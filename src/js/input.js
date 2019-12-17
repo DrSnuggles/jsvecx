@@ -172,7 +172,7 @@ var input = (function() {
     // detect touch
     addEventListener('touchstart', function onFirstTouch() {
       loadHead("style", "css/touch.css", function(){
-        xhr("_touch.html", function(txt) {
+        xhr("overlay_touch.html", function(txt) {
           document.body.insertAdjacentHTML("beforeend", txt);
           setTimeout(function(){
             // fade in ctrl overlay

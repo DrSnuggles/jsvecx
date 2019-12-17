@@ -17,7 +17,7 @@ var myChipMon = (function() {
   // init
   //
   loadHead("style", "css/rtm.css", function() {
-    xhr("_rtm.html", function(txt) {
+    xhr("overlay_rtm.html", function(txt) {
       document.body.insertAdjacentHTML("beforeend", txt);
       setTimeout(function(){
         document.getElementById("rtm6809").classList.add("fadeIn");

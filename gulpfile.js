@@ -168,8 +168,8 @@ gulp.task('html', () => {
     'src/seamless.html',
     'src/vectrex.html',
     'src/rtm.html',
-    'src/_rtm.html',
-    'src/_touch.html'
+    'src/overlay_rtm.html',
+    'src/overlay_touch.html'
       ])
       .pipe(htmlmin({ collapseWhitespace: true, removeComments: true }))
       .pipe(gulp.dest('deploy'));
