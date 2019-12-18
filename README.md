@@ -65,6 +65,12 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 
 ## Change Log
 
+### 12/18/19 (0.3.1) (Malban Patches)
+    – corrected the SHIFT Bug
+    – implemented 48kB ROM support
+    – implemented IRQ/PB6 bankswitching
+    – implemented R/C law zero reference
+
 ### 12/17/19 (0.3.0) (DrSnuggles)
     - Added Chip/PIN usage
     - Added parameters: aa, pause, menu, rtm

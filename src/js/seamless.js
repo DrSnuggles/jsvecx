@@ -29,6 +29,9 @@ function switchRom(rom) {
     xhr.onload = function(e) {
       Globals.cartdata = e.target.response;
       stat.innerText = "Loaded.";
+      // for Malban
+      vecx.doBankSwitching = (rom.toLowerCase().indexOf("vector blade") > -1) ? true : false;
+      vecx.currentBank = 0;
       vecx.reset();
     }
     xhr.send();

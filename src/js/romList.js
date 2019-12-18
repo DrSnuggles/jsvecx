@@ -182,6 +182,7 @@ var romList=
 		"ZZAP - Scrolling Space Game Demo (1989)"
 	],
 	"Chris Salomon":[
+		"Vector Blade_(2019)",
 		"'NO' Sound (1998)",
 		"Arkanoid - Revenge of DOH Sound (1998)",
 		"Axel F - Beverly Hills Cop (1998) ",

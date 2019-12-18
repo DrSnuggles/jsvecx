@@ -13,6 +13,14 @@ The original C version was written by Valavan Manohararajah
   Tatsuyuki Satoh, Fabrice Frances, Nicola Salmoria.
 */
 
+/*
+// Malban
+// regardless of interrup, the t1pb7 is set when timer expired
+// changed for VectorPatrol 13.01.2018, string print routine
+// via_t1on and via_t1on are not allowed to go "off" - timers are ALWAYS running!
+Vectorblade loop scheint im spiel bei & 0x40 stecken zu bleiben - also wait recal
+*/
+
 function VecX()
 {
     // Create the system components
@@ -27,7 +35,7 @@ function VecX()
     this.rom = new Array(0x2000);
     utils.initArray(this.rom, 0);
     //unsigned char cart[32768];
-    this.cart = new Array(0x8000);
+    this.cart = new Array(0x10000*4); // Malban
     utils.initArray(this.cart, 0);
     //static unsigned char ram[1024];
     this.ram = new Array(0x400);
@@ -124,9 +132,9 @@ function VecX()
     //static long alg_dy;     /* delta y */
     this.alg_dy = 0;
     //static long alg_curr_x; /* current x position */
-    this.alg_curr_x = 0;
+    this.alg_curr_x = 0.00; // Malban
     //static long alg_curr_y; /* current y position */
-    this.alg_curr_y = 0;
+    this.alg_curr_y = 0.00; // Malban
 
     this.alg_max_x = Globals.ALG_MAX_X >> 1;
     this.alg_max_y = Globals.ALG_MAX_Y >> 1;
@@ -178,6 +186,109 @@ function VecX()
       lastRW: 1,
       clk: 0,
     };
+    this.doBankSwitching = false; // for Malban's Patch
+
+    // Malban
+    this.alternate = 0;
+    this.currentBank = 0;
+    this.currentIRQ = 1;
+    this.currentPB6 = 1;
+    this.BANK_MAX = 1;
+    this.zero0CountDown = 0;
+    this.zero1CountDown = 0;
+    this.ZERO_DELAY = 5;
+
+    this.rampOnCountDown = 0;
+    this.rampOffCountDown = 0;
+    this.oldSigRamp = 1;
+
+    this.RAMP_ON_DELAY = 3;
+    this.RAMP_OFF_DELAY = 3;
+    this.realSigRamp = 1;
+
+    this.resistorOhm = 175;
+    this.capacitorFarad = 0.00000001;
+
+    this.currentVoltage=0;
+    this.supplyVoltage=0;
+    this.timeConstant = this.resistorOhm*this.capacitorFarad;
+
+    this.VECTREX_CYCLE_TIME = 1.0/1500000.0;
+    this.percentageDifChangePerCycle = Math.exp(-this.VECTREX_CYCLE_TIME/this.timeConstant);
+
+  	this.getIntVoltageValue = function()
+    {
+        return this.currentVoltage;
+    }
+    this.getVoltageValue = function()
+    {
+        return this.currentVoltage;
+    }
+    this.getDigitalValue = function()
+    {
+        return this.currentVoltage/5.0*128.0;
+    }
+    this.getDigitalIntValue = function()
+    {
+        return this.currentVoltage/5.0*128.0;
+    }
+
+    this.doStep = function()
+    {
+        var charging = (Math.abs(this.currentVoltage) < Math.abs(this.supplyVoltage));
+        var dif = this.supplyVoltage - this.currentVoltage;
+        if (charging)
+        {
+            this.currentVoltage += this.percentageDifChangePerCycle*dif;
+        }
+        else
+        {
+            this.currentVoltage += this.percentageDifChangePerCycle*dif;
+        }
+    }
+    // -128 - +127
+    this.setDigitalVoltage = function(v)
+    {
+        if (v<=127)
+        {
+            this.supplyVoltage = (v/127.0)*5.0;
+        }
+        else
+        {
+            this.supplyVoltage = ((v-256)/128.0)*5.0;
+        }
+    }
+    this.setBank = function()
+  	{
+  		this.currentBank = 0;
+  		if (this.BANK_MAX == 1) return;
+  		if (this.BANK_MAX >= 2)
+  		{
+  			if (this.currentPB6) this.currentBank++;
+  		}
+  		if (this.BANK_MAX >= 4)
+  		{
+  			if (this.currentIRQ) this.currentBank+=2;
+  		}
+  	}
+  	this.setPB6FromVectrex = function(tobe_via_orb, tobe_via_ddrb, orbInitiated)
+    {
+  		if (this.BANK_MAX <= 1) return;
+      var b=0;
+
+      var npb6 = tobe_via_orb & tobe_via_ddrb & 0x40; // all output (0x40)
+      if ((tobe_via_ddrb & 0x40) == 0x00)  npb6 = npb6 | 0x40; // all input (0x40)
+      b = npb6 != 0;
+
+  		this.currentPB6 = npb6 != 0;
+  		this.setBank();
+    }
+    this.setIRQFromVectrex = function(irq)
+    {
+  		if (this.BANK_MAX <= 2) return;
+      this.currentIRQ = !irq;
+  		this.setBank();
+    }
 
     /* update the snd chips internal registers when via_ora/via_orb changes */
 
@@ -233,7 +344,7 @@ function VecX()
                 if( (this.via_orb & 0x01) == 0x00 )
                 {
                     /* demultiplexor is on */
-                    this.alg_ysh = this.alg_xsh;
+                    this.alg_ysh = this.alg_xsh ^ 0x80; // Malban
                 }
 
                 break;
@@ -243,7 +354,14 @@ function VecX()
                 if( (this.via_orb & 0x01) == 0x00 )
                 {
                     /* demultiplexor is on */
-                    this.alg_rsh = this.alg_xsh;
+                    //this.alg_rsh = this.alg_xsh;
+                    //this.alg_rsh = this.alg_xsh ^ 0x80;
+                   // Malban
+                   var digit = this.alg_xsh ^ 0x80;
+                   if (digit > 127) digit = 0-(256-digit);
+
+                   this.alg_rsh = digit;
+                   this.setDigitalVoltage(digit);
                 }
 
                 break;
@@ -283,8 +401,22 @@ function VecX()
         }
 
         /* compute the new "deltas" */
-        this.alg_dx = this.alg_xsh - this.alg_rsh;
-        this.alg_dy = this.alg_rsh - this.alg_ysh;
+        //this.alg_dx = this.alg_xsh - this.alg_rsh;
+        //this.alg_dy = this.alg_rsh - this.alg_ysh;
+
+        // Malban
+       var digitx = this.alg_xsh ^ 0x80;
+       if (digitx > 127) digitx = 0-(256-digitx);
+
+       var digity = this.alg_ysh;
+       if (digity > 127) digity = 0-(256-digity);
+
+       this.alg_dx = digitx - this.getDigitalValue();
+       this.alg_dy = this.getDigitalValue() - digity;
+
+      //        this.alg_dx = digitx - this.alg_rsh;
+      //        this.alg_dy = this.alg_rsh - digity;
+
     }
 
     /*
@@ -371,9 +503,10 @@ function VecX()
                         * goes low whenever ira is read.
                         */
 
-                        this.via_ca2 = 0;
+                        //this.via_ca2 = 0;
+                        this.zero0CountDown = this.ZERO_DELAY; // Malban
                     }
-
+                    this.via_ifr = this.via_ifr & (0xff-0x02); // Malban: clear ca1 interrupt
                     /* fall through */
                 case 0xf:
                     if( (this.via_orb & 0x18) == 0x08 )
@@ -397,8 +530,8 @@ function VecX()
                     data = this.via_t1c;
                     this.via_ifr &= 0xbf; /* remove timer 1 interrupt flag */
 
-                    this.via_t1on = 0; /* timer 1 is stopped */
-                    this.via_t1int = 0;
+                    //this.via_t1on = 0; /* timer 1 is stopped */
+                    this.via_t1int = 1; // Malban 0 --> 1
                     this.via_t1pb7 = 0x80;
 
                     //this.int_update();
@@ -412,6 +545,8 @@ function VecX()
                         this.via_ifr &= 0x7f;
                     }
                     // int_update inline end
+
+                    this.setIRQFromVectrex(((this.via_ifr&0x80) !=0 )); // Malban
 
                     return data & 0xff;
                 case 0x5:
@@ -427,8 +562,8 @@ function VecX()
                 /* T2 low order counter */
                     data = this.via_t2c;
                     this.via_ifr &= 0xdf; /* remove timer 2 interrupt flag */
-                    this.via_t2on = 0; /* timer 2 is stopped */
-                    this.via_t2int = 0;
+                    // Malban this.via_t2on = 0; /* timer 2 is stopped */
+                    this.via_t2int = 1; // Malban
 
                     //this.int_update();
                     // int_update inline begin
@@ -442,11 +577,14 @@ function VecX()
                     }
                     // int_update inline end
 
+                    this.setIRQFromVectrex(((this.via_ifr&0x80) !=0 )); // Malban
+
                     return data & 0xff;
                 case 0x9:
                 /* T2 high order counter */
-                    return (this.via_t2c >> 8);
+                    return (this.via_t2c >> 8) & 0xff; // Malban
                 case 0xa:
+                    this.alternate = 1; // Malban
                     data = this.via_sr;
                     this.via_ifr &= 0xfb; /* remove shift register interrupt flag */
                     this.via_srb = 0;
@@ -464,6 +602,8 @@ function VecX()
                     }
                     // int_update inline end
 
+                    this.setIRQFromVectrex(((this.via_ifr&0x80) !=0 )); // Malban
+
                     return data & 0xff;
                 case 0xb:
                     return this.via_acr & 0xff;
@@ -478,12 +618,13 @@ function VecX()
             }
         }
 
-        if( address < 0x8000 )
+        // Malban
+        if( address < 0xc000 )
         {
             this.rtm.lastAdr = address; // DrSnuggles
-            this.rtm.lastVal = this.cart[address] & 0xff; // DrSnuggles
+            this.rtm.lastVal = this.cart[address+(this.currentBank *65536)] & 0xff; // DrSnuggles
             this.rtm.lastTyp = "cart"; // DrSnuggles
-            return this.cart[address] & 0xff;
+            return this.cart[address+(this.currentBank *65536)] & 0xff; // Malban
         }
 
         return 0xff;
@@ -520,6 +661,7 @@ function VecX()
                 switch( address & 0xf )
                 {
                     case 0x0:
+                        this.setPB6FromVectrex(data, this.via_ddrb, 1); // Malban
                         this.via_orb = data;
                         this.snd_update();
                         this.alg_update();
@@ -543,7 +685,8 @@ function VecX()
                             * goes low whenever ora is written.
                             */
 
-                            this.via_ca2 = 0;
+                            //this.via_ca2 = 0;
+                            this.zero0CountDown = this.ZERO_DELAY; // Malban
                         }
 
                         /* fall through */
@@ -562,6 +705,7 @@ function VecX()
 
                         break;
                     case 0x2:
+                        this.setPB6FromVectrex(this.via_orb, data, 0); // Malban
                         this.via_ddrb = data;
                         break;
                     case 0x3:
@@ -596,6 +740,7 @@ function VecX()
                         }
                         // int_update inline end
 
+                        this.setIRQFromVectrex(((this.via_ifr&0x80) !=0 )); // Malban
                         break;
                     case 0x6:
                     /* T1 low order latch */
@@ -633,8 +778,10 @@ function VecX()
                         }
                         // int_update inline end
 
+                        this.setIRQFromVectrex(((this.via_ifr&0x80) !=0 )); // Malban
                         break;
                     case 0xa:
+                        this.alternate = 1; // Malban
                         this.via_sr = data;
                         this.via_ifr &= 0xfb; /* remove shift register interrupt flag */
                         this.via_srb = 0;
@@ -652,6 +799,7 @@ function VecX()
                         }
                         // int_update inline end
 
+                        this.setIRQFromVectrex(((this.via_ifr&0x80) !=0 )); // Malban
                         break;
                     case 0xb:
                         this.via_acr = data;
@@ -664,7 +812,8 @@ function VecX()
                         {
                             /* ca2 is outputting low */
 
-                            this.via_ca2 = 0;
+                            //this.via_ca2 = 0;
+                            this.zero0CountDown = this.ZERO_DELAY; // Malban
                         }
                         else
                         {
@@ -672,7 +821,8 @@ function VecX()
                             * outputting high.
                             */
 
-                            this.via_ca2 = 1;
+                            //this.via_ca2 = 1;
+                            this.zero1CountDown = this.ZERO_DELAY; // Malban
                         }
 
                         if( (this.via_pcr & 0xe0) == 0xc0 )
@@ -708,6 +858,7 @@ function VecX()
                         }
                         // int_update inline end
 
+                        this.setIRQFromVectrex(((this.via_ifr&0x80) !=0 )); // Malban
                         break;
                     case 0xe:
                     /* interrupt enable register */
@@ -733,6 +884,7 @@ function VecX()
                         }
                         // int_update inline end
 
+                        this.setIRQFromVectrex(((this.via_ifr&0x80) !=0 )); // Malban
                         break;
                 }
             }
@@ -813,6 +965,8 @@ function VecX()
 
         this.vector_draw_cnt = 0;
         this.vector_erse_cnt = 0;
+        this.alternate = 0; // Malban
+       	this.setDigitalVoltage(128); // Malban
 
         for( var i = 0; i < this.vectors_draw.length; i++ )
         {
@@ -850,6 +1004,24 @@ function VecX()
         for( var b = 0; b < len; b++ )
         {
             this.cart[b] = 0x01; // parabellum
+        }
+
+        /* Malban */
+        this.currentPB6 = 1;
+        this.currentIRQ = 1;
+        this.BANK_MAX = 1;
+        if (this.doBankSwitching) {
+          this.currentBank = 0; // vblade
+          if (len > 50000)
+          {
+            this.BANK_MAX = 2;
+            this.currentBank = 1; // vblade
+          }
+          if (len > 100000)
+          {
+            this.BANK_MAX = 4;
+            this.currentBank = 3; // vblade
+          }
         }
 
         if( Globals.cartdata != null )
@@ -1310,6 +1482,8 @@ function VecX()
                             this.via_t1pb7 = 0x80 - this.via_t1pb7;
                             /* reload counter */
                             this.via_t1c = (this.via_t1lh << 8) | this.via_t1ll;
+
+                            this.setIRQFromVectrex(((this.via_ifr&0x80) !=0 )); // Malban
                         }
                         else
                         {
@@ -1333,6 +1507,8 @@ function VecX()
 
                                 this.via_t1pb7 = 0x80;
                                 this.via_t1int = 0;
+
+                                this.setIRQFromVectrex(((this.via_ifr&0x80) !=0 )); // Malban
                             }
                         }
                     }
@@ -1359,6 +1535,8 @@ function VecX()
                                 this.via_ifr &= 0x7f;
                             }
                             // int_update inline end
+
+                            this.setIRQFromVectrex(((this.via_ifr&0x80) !=0 )); // Malban
 
                             this.via_t2int = 0;
                         }
@@ -1435,12 +1613,15 @@ function VecX()
                             break;
                         case 0x18:
                         /* shift out under system clock control */
-
-                            this.via_cb2s = (this.via_sr >> 7) & 1;
-
-                            this.via_sr <<= 1;
-                            this.via_sr |= this.via_cb2s;
-                            this.via_srb++;
+                            this.alternate = (this.alternate + 1)%2;
+                            // alternate by Malban
+              							if (this.alternate)
+              							{
+              								this.via_cb2s = (this.via_sr >> 7) & 1;
+              								this.via_sr <<= 1;
+              								this.via_sr |= this.via_cb2s;
+              								this.via_srb++;
+              							}
                             break;
                         case 0x1c:
                         /* shift out under cb1 control */
@@ -1462,6 +1643,8 @@ function VecX()
                             this.via_ifr &= 0x7f;
                         }
                         // int_update inline end
+
+                        this.setIRQFromVectrex(((this.via_ifr&0x80) !=0 )); // Malban
                     }
                 }
 //
@@ -1469,6 +1652,19 @@ function VecX()
 //
 
                 //this.alg_sstep();
+
+                // Malban
+        				if (this.zero1CountDown >0)
+        				{
+        					this.zero1CountDown--;
+        					if (this.zero1CountDown == 0) this.via_ca2 = 1;
+        				}
+        				if (this.zero0CountDown >0)
+        				{
+        					this.zero0CountDown--;
+        					if (this.zero0CountDown == 0) this.via_ca2 = 0;
+        				}
+
 //
 // alg_sstep inline begin
 //
@@ -1497,8 +1693,8 @@ function VecX()
                     sig_dx = this.alg_max_x - this.alg_curr_x;
                     sig_dy = this.alg_max_y - this.alg_curr_y;
                 }
-                else
-                {
+                // Malban else
+                // Malban{
                     if( this.via_acr & 0x80 )
                     {
                         sig_ramp = this.via_t1pb7;
@@ -1508,6 +1704,41 @@ function VecX()
                         sig_ramp = this.via_orb & 0x80;
                     }
 
+                    // Malban
+       if (this.oldSigRamp != sig_ramp)
+       {
+         if (sig_ramp == 0)
+         {
+           this.rampOnCountDown = this.RAMP_ON_DELAY;
+         }
+         else
+         {
+           this.rampOffCountDown = this.RAMP_OFF_DELAY;
+         }
+       }
+       if (this.rampOnCountDown>0)
+       {
+         this.rampOnCountDown--;
+         if (this.rampOnCountDown == 0)
+             this.realSigRamp = 0;
+       }
+       if (this.rampOffCountDown>0)
+       {
+         this.rampOffCountDown--;
+         if (this.rampOffCountDown == 0)
+             this.realSigRamp = 1;
+       }
+
+
+            				if( this.realSigRamp == 0 )
+            				{
+            					sig_dx += this.alg_dx;
+            					sig_dy += this.alg_dy;
+            				}
+                    this.oldSigRamp = sig_ramp;
+
+
+                    /* Malban
                     if( sig_ramp == 0 )
                     {
                         sig_dx = this.alg_dx;
@@ -1518,7 +1749,8 @@ function VecX()
                         sig_dx = 0;
                         sig_dy = 0;
                     }
-                }
+                    */
+                // Malban}
 
                 if( this.alg_vectoring == 0 )
                 {
@@ -1587,6 +1819,10 @@ function VecX()
                     }
                 }
 
+                // Malban
+                if (((this.via_orb & 0x01) == 0) && ((this.via_orb & 0x06) == 0x02))
+          					this.doStep();
+
                 this.alg_curr_x += sig_dx;
                 this.alg_curr_y += sig_dy;
 
@@ -1614,7 +1850,8 @@ function VecX()
                      * it gets restored to '1' after the pulse.
                      */
 
-                    this.via_ca2 = 1;
+                    //this.via_ca2 = 1;
+                    this.zero1CountDown = this.ZERO_DELAY; // Malban
                 }
 
                 if( (this.via_pcr & 0xe0) == 0xa0 )
