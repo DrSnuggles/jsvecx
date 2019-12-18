@@ -335,6 +335,14 @@ function resizer() {
     }
   }
 
+  // overlay
+  var overlay = getUrlParameter('overlay');
+  if (overlay && overlay == overlay*1) {
+    for (var i = 0; i < overlay; i++) {
+      toggleOverlay();
+    }
+  }
+
   // load rom
   // no IE11 var urlParams = new URLSearchParams(window.location.search);
   var rom = getUrlParameter('rom');//urlParams.get('rom');
