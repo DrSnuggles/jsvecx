@@ -7,10 +7,14 @@ var overlayName = "";
 function switchRom(rom) {
   vecx.stop();  // Stop the emulator
   vecx.osint.osint_clearscreen(); // Clear the screen
+  vecx.doBankSwitching = false;
+  vecx.currentBank = 0;
 
   // Start the emulator
   if (typeof rom === "object") {
     // rom was dropped
+    console.info("dropped rom has CRC32", CRC32(Globals.cartdata).toString(16));
+    // sorry no bank switching for dropped roms. could check dropped rom size
     overlay.src = transparentPixel;
     romName = "";
     vecx.reset();
@@ -28,10 +32,10 @@ function switchRom(rom) {
     xhr.overrideMimeType('text/plain; charset=x-user-defined');
     xhr.onload = function(e) {
       Globals.cartdata = e.target.response;
+      console.info("loaded rom", rom, "has CRC32", CRC32(e.target.response).toString(16));
       stat.innerText = "Loaded.";
       // for Malban
       vecx.doBankSwitching = (rom.toLowerCase().indexOf("vectorblade") > -1) ? true : false;
-      vecx.currentBank = 0;
       vecx.reset();
     }
     xhr.send();
@@ -103,7 +107,11 @@ function toggleMenu(e) {
   //menu.classList.toggle("fadeIn");
   if (menu.style.display == "block") {
     menu.style.display = "none";
+    setTimeout( function (){
+      vecx.start(); // unpause
+    }, 300);
   } else {
+    vecx.stop(); // pause
     menu.style.display = "block";
   }
 }
@@ -218,30 +226,6 @@ function toggleRTM() {
     loadHead("script", "js/rtm.js", function(){});
   }
 }
-function loadHead(tag, url, cb) {
-  xhr(url, function(txt) {
-    addHead(tag, txt, cb);
-  });
-}
-function addHead(tag, txt, cb) {
-  var tmp = document.createElement(tag);
-  tmp.type = (tag==='script')? 'text/javascript':'text/css';
-  //tmp.text = txt; // works for script only
-  tmp.appendChild(document.createTextNode(txt)); // works for script and style
-  document.head.appendChild(tmp);
-  if (cb) cb();
-}
-function xhr(src, cb) {
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", src, true);
-  xhr.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      //log(this.responseText);
-      cb(this.responseText);
-    }
-  };
-  xhr.send();
-}
 function resizer() {
   var viewportWidth = window.innerWidth;
   var viewportHeight = window.innerHeight;
@@ -279,6 +263,193 @@ function resizer() {
   menu.style.height = overlay.clientHeight * 0.8 +'px';
   menu.style.left = overlay.clientWidth * 0.1 +'px';
   menu.style.top = overlay.clientHeight * 0.1 +'px';
+}
+function loadHead(tag, url, cb) {
+  xhr(url, function(txt) {
+    addHead(tag, txt, cb);
+  });
+}
+function addHead(tag, txt, cb) {
+  var tmp = document.createElement(tag);
+  tmp.type = (tag==='script')? 'text/javascript':'text/css';
+  //tmp.text = txt; // works for script only
+  tmp.appendChild(document.createTextNode(txt)); // works for script and style
+  document.head.appendChild(tmp);
+  if (cb) cb();
+}
+function xhr(src, cb) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", src, true);
+  xhr.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      //log(this.responseText);
+      cb(this.responseText);
+    }
+  };
+  xhr.send();
+}
+function CRC32(r){for(var a,o=[],c=0;c<256;c++){a=c;for(var f=0;f<8;f++)a=1&a?3988292384^a>>>1:a>>>1;o[c]=a}for(var n=-1,t=0;t<r.length;t++)n=n>>>8^o[255&(n^r.charCodeAt(t))];return(-1^n)>>>0}
+function visChg() {
+  if (document.hidden || document.webkitHidden || document.msHidden) {
+    // hidden
+    // pause the emu
+    if (vecx.running) {
+      vecx.stop();
+      stat.innerText = "Paused.";
+    }
+    // open menu
+    menu.style.display = "block";
+  } else {
+    // visible
+    // do not auto turn on. keep in menu
+  }
+}
+
+//function printScreen() {
+  //download(vecscr.toDataURL("image/png"), "JSVecX_screenshot_"+".png", "image/png");
+//  download(vecscr.toDataURL("image/png"), "JSVecX_screenshot_"+".png", "image/png");
+//}
+function printScreen() {
+  var a = document.createElement('a');
+  var d = new Date();
+  d = d.toISOString();
+  a.setAttribute('download', 'JSVecX_'+d+'.png');
+  //var dataURL = vecscr.toDataURL('image/png');
+  //var url = dataURL.replace(/^data:image\/png/,'data:application/octet-stream');
+  vecx.osint.canvas.toBlob(function(blob) {
+    var url = URL.createObjectURL(blob);
+    a.setAttribute('href', url);
+    a.click();
+    console.log("Screenshot saved as: "+ 'JSVecX_'+d+'.png');
+  });
+}
+/*
+function download(content, fileName, mimeType) {
+  var a = document.createElement('a');
+  mimeType = mimeType || 'application/octet-stream';
+  if (navigator.msSaveBlob) { // IE10
+    navigator.msSaveBlob(new Blob([content], {
+      type: mimeType
+    }), fileName);
+  } else if (URL && 'download' in a) { //html5 A[download]
+    a.href = URL.createObjectURL(new Blob([content], {
+      type: mimeType
+    }));
+    a.setAttribute('download', fileName);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } else {
+    location.href = 'data:application/octet-stream,' + encodeURIComponent(content); // only this mime type is supported
+  }
+}
+*/
+var lastState;
+function saveState() {
+  vecx.stop();
+  lastState = {};
+  lastState.rom = JSON.stringify(vecx.rom);
+  lastState.cart = JSON.stringify(vecx.cart);
+  lastState.ram = JSON.stringify(vecx.ram);
+  lastState.snd_regs = JSON.stringify(vecx.snd_regs);
+
+  for (var i in vecx) {
+    //console.log(i, typeof vecx[i]);
+    if (typeof vecx[i] !== "object" && typeof vecx[i] !== "function") {
+      //console.log(i, typeof vecx[i]);
+      lastState[i] = JSON.stringify(vecx[i]);
+    }
+  }
+
+  lastState.e6809 = {};
+  for (var i in vecx.e6809) {
+    //console.log(i, typeof vecx[i]);
+    if (typeof vecx.e6809[i] !== "object" && typeof vecx.e6809[i] !== "function") {
+      //console.log(i, typeof vecx[i]);
+      lastState.e6809[i] = JSON.stringify(vecx.e6809[i]);
+    }
+  }
+
+  lastState.osint = {};
+  for (var i in vecx.osint) {
+    //console.log(i, typeof vecx[i]);
+    if (typeof vecx.osint[i] !== "object" && typeof vecx.osint[i] !== "function") {
+      //console.log(i, typeof vecx[i]);
+      lastState.osint[i] = JSON.stringify(vecx.osint[i]);
+    }
+  }
+  lastState.osint.data = [];
+  for (var i = 0; i < vecx.osint.data.length; i++) {
+    lastState.osint.data.push( vecx.osint.data[i] );
+  }
+  lastState.osint.color_set = [];
+  for (var i = 0; i < vecx.osint.color_set.length; i++) {
+    var tmp = [];
+    tmp.push( vecx.osint.color_set[i][0] );
+    tmp.push( vecx.osint.color_set[i][1] );
+    tmp.push( vecx.osint.color_set[i][2] );
+    lastState.osint.color_set.push( tmp );
+  }
+
+  console.log("state saved");
+  vecx.start();
+}
+function resumeLastSaveState() {
+  if (lastState.ram) {
+    vecx.stop();
+    //vecx = {};
+    //vecx = JSON.parse(lastState.vecx);
+    vecx.rom = JSON.parse(lastState.rom);
+    vecx.cart = JSON.parse(lastState.cart);
+    vecx.ram = JSON.parse(lastState.ram);
+
+    //var state = JSON.parse(lastState);
+    /*
+    for (var i in lastState) {
+      if ()
+      console.log(i);
+    }
+    */
+    // use the source again
+    for (var i in vecx) {
+      //console.log(i, typeof vecx[i]);
+      if (typeof vecx[i] !== "object" && typeof vecx[i] !== "function") {
+        //console.log(i, typeof vecx[i]);
+        vecx[i] = lastState[i]*1;
+      }
+    }
+    for (var i in vecx.e6809) {
+      //console.log(i, typeof vecx[i]);
+      if (typeof vecx.e6809[i] !== "object" && typeof vecx.e6809[i] !== "function") {
+        //console.log(i, typeof vecx[i]);
+        vecx.e6809[i] = lastState.e6809[i]*1;
+      }
+    }
+    for (var i in vecx.osint) {
+      //console.log(i, typeof vecx[i]);
+      if (typeof vecx.osint[i] !== "object" && typeof vecx.osint[i] !== "function") {
+        //console.log(i, typeof vecx[i]);
+        vecx.osint[i] = lastState.osint[i]*1;
+      }
+    }
+    vecx.osint.data = [];
+    for (var i = 0; i < lastState.osint.data.length; i++) {
+      vecx.osint.data.push( lastState.osint.data[i] );
+    }
+    vecx.osint.color_set = [];
+    for (var i = 0; i < lastState.osint.color_set.length; i++) {
+      var tmp = [];
+      tmp.push( lastState.osint.color_set[i][0] );
+      tmp.push( lastState.osint.color_set[i][1] );
+      tmp.push( lastState.osint.color_set[i][2] );
+      vecx.osint.color_set.push( tmp );
+    }
+
+    console.log("state loaded");
+    setTimeout(function() {
+      vecx.start();
+    }, 100);
+  }
 }
 
 (function(){
@@ -340,6 +511,40 @@ function resizer() {
   if (overlay && overlay == overlay*1) {
     for (var i = 0; i < overlay; i++) {
       toggleOverlay();
+    }
+  }
+
+  // autopause on visibility change
+  document.addEventListener("visibilitychange", visChg, false);
+  document.addEventListener("webkitvisibilitychange", visChg, false);
+  document.addEventListener("msvisibilitychange", visChg, false);
+
+  window.addEventListener("blur", function() {
+    vecx.stop();
+    document.getElementById("menu").style.display = "block";
+  }, false);
+
+  // another keyhandler this time not for vecx input but for emulator
+  document.addEventListener("keyup", keyHand, false);
+  function keyHand(e) {
+    //console.log(e);
+    switch (e.key) {
+      case 'PrintScreen':
+        printScreen();
+        break;
+      case 'Pause':
+        togglePause();
+        break;
+      case 'Escape':
+        toggleMenu();
+        break;
+      case 'Enter':
+        saveState();
+        break;
+      case 'Backspace':
+        resumeLastSaveState();
+        break;
+      default:
     }
   }
 

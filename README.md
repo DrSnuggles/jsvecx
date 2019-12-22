@@ -41,14 +41,9 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
   * Buggy Sound ~ While the emulator now has sound support, it is a bit
     quirky. Several games will experience periodic audio issues (Berzerk,
     Star Trek, Armor Attack). Sound can be toggled on and off by clicking
-    the "speaker" button.
-  * Overlays are misaligned ~ (core bug) The vector rendering code of VecX
-    doesn't appear to be 100% accurate. As a result, some of the overlays
-    are a bit misaligned. In addition, text is also sometimes unreadable.
-    I will be looking at the vector rendering code to see if this can be
-    resolved.
+    the "Sound" in the menu.
 
-## Tested Browser Support
+## Tested Browser Support +=tested -=untested
   - Windows
     + Chrome
     + Firefox
@@ -63,7 +58,31 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
     - iPhone6+ Safari (no audio)
     - iPad1 Safari 5.1.1 (no audio)
 
+## ToDo
+  Input:
+    - analog touch
+  Usability:
+    - save/load state
+    - speed adjustment (no, not timing)
+  Emu:
+    - emulate colors
+    - emulate flash rom for Vectorblade
+    - choose rom (US,US_fast,EU,EU_fast) MineStormVersion EU = 1c :)
+  Audio:
+    - choose 11kHz,22kHz,33kHz,44kHz,48kHz
+  Communication
+    - save highscores
+    - multiplayer player (player1 = server) (WebRTC, WebSocket, STUN, TURN) (will rty serverless first with a google STUN)
+      - vectrex audio, video, input
+      - voice chat
+
 ## Change Log
+
+### 12/20/19 (0.3.2) (DrSnuggles)
+  - pause on visibility change
+  - pause on menu
+  - show CRC (in console)
+  - save screenshots
 
 ### 12/18/19 (0.3.1) (Malban Patches)
     – corrected the SHIFT Bug
