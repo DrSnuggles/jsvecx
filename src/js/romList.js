@@ -175,26 +175,6 @@ var romList=
 		"We Wish You a Merry Christmas (1985) [a1]",
 		"We Wish You a Merry Christmas (1986)"
 	],
-	"Christopher Tumber":[
-		"3-D Demo (Mar 06) (2000)",
-		"3-D Demo (Mar 08) (2000)",
-		"3-D Scrolling Demo (2001)",
-		"8Ball (2001)",
-		"Battlezone Demo (2001)",
-		"Calibration Demo (19xx)",
-		"Missile Lords (2001)",
-		"POP Demo (19xx)",
-		"SAW Gallery 1 (1999)",
-		"SAW Gallery 2 (1999)",
-		"SAW Gallery 3 (1999)",
-		"Song Demo (1998)",
-		"Tsunami (2001)",
-		"Tsunami (2001) [a1]",
-		"Tsunami (2001) [a2]",
-		"Version Nine (1999)",
-		"Version Nine (1999) [a1]",
-		"Version Nine (2000)"
-	],
 	"John Dondzila":[
 		"All Good Things (1996)",
 		"Birds of Prey (1999)",
