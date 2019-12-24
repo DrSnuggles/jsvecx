@@ -20,15 +20,14 @@ function switchRom(rom) {
     vecx.reset();
   } else {
     // rom was chosen
-    var ext = (rom.indexOf("Academy") > -1 ) ? ".bin" : ".vec";
-    if (ext === ".bin") {
+    if (rom.indexOf("Academy") > -1) {
       setOverlay( rom.substr(rom.lastIndexOf("roms/")+1).split("_")[0].replace(/ /g,"") );
     } else {
       setOverlay( rom.substr(rom.lastIndexOf("/")+1).split("_")[0].replace(/ /g,"") );
     }
     // Load the the new rom
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "roms/"+rom+ext, true);
+    xhr.open("GET", "roms/"+rom+".bin", true);
     xhr.overrideMimeType('text/plain; charset=x-user-defined');
     xhr.onload = function(e) {
       Globals.cartdata = e.target.response;
