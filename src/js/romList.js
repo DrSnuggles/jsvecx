@@ -292,7 +292,7 @@ var romList=
 		"Polar Rescue_[a1]",
 		"Pole Position_(Spinner Hack)",
 		"Pole Position_[f1]",
-		"Rip-Off_[b1]",
+		//"Rip-Off_[b1]",
 		"Solar Quest_(Spinner Hack)",
 		"Star Castle_(Spinner Hack)",
 		"Star Trek_- The Motion Picture (controller hack) [h1]",

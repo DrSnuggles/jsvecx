@@ -21,66 +21,98 @@ var input = (function() {
       {"left":false, "right":false, "up":false, "down":false}
     ];
     var keyHandler = function(e) {
-      var handled = true;
-      var held = (e.type == "keydown"); // which event keyup or -down
-      var controller = my.switchKeys ? 1 : 0;
-      switch( e.keyCode ) {
-        case 37:
-        case 76: // left
+      //console.log( e.keyCode );
+      if (typeof vecx !== "undefined") {
+        var handled = true;
+        var held = (e.type == "keydown"); // which event keyup or -down
+        var controller = my.switchKeys ? 1 : 0;
+        var other = my.switchKeys ? 0 : 1;
+        switch( e.keyCode ) {
+          case 37: // left
           pressed[controller].left = held;
           break;
-        case 38:
-        case 80: // up
+          case 38: // up
           pressed[controller].up = held;
           break;
-        case 39:
-        case 222: // right
+          case 39: // right
           pressed[controller].right = held;
           break;
-        case 40:
-        case 59:
-        case 186: // down
+          case 40: // down
           pressed[controller].down = held;
           break;
-        case 65: // a
+          case 65: // a
           vecx.button(controller, 0, held);
           break;
-        case 83: // s
+          case 83: // s
           vecx.button(controller, 1, held);
           break;
-        case 68: // d
+          case 68: // d
           vecx.button(controller, 2, held);
           break;
-        case 70: // f
+          case 70: // f
           vecx.button(controller, 3, held);
           break;
-        default:
-        handled = false;
-      }
-
-      // send axis to vecx
-      for (var i = 0; i < pressed.length; i++) {
-        if (pressed[i].left) {
-          vecx.axis(i, 0, 0x00);
-        } else if (pressed[i].right) {
-          vecx.axis(i, 0, 0xFF);
-        } else {
-          vecx.axis(i, 0, 0x80);
+          case 81: // q
+          case 97: // Numpad1
+          vecx.button(other, 0, held);
+          break;
+          case 87: // w
+          case 98: // Numpad2
+          vecx.button(other, 1, held);
+          break;
+          case 69: // e
+          case 99: // Numpad3
+          vecx.button(other, 2, held);
+          break;
+          case 82: // r
+          case 96: // Numpad0
+          vecx.button(other, 3, held);
+          break;
+          case 56: // 8
+          case 104: // Numpad8
+          pressed[other].up = held;
+          break;
+          case 85: // u
+          case 101: // Numpad5
+          pressed[other].down = held;
+          break;
+          case 73: // i
+          case 100: // Numpad4
+          pressed[other].left = held;
+          break;
+          case 79: // o
+          case 102: // Numpad6
+          pressed[other].right = held;
+          break;
+          default:
+          handled = false;
         }
-        if (pressed[i].down) {
-          vecx.axis(i, 1, 0x00);
-        } else if (pressed[i].up) {
-          vecx.axis(i, 1, 0xFF);
-        } else {
-          vecx.axis(i, 1, 0x80);
+
+        // send axis to vecx
+        for (var i = 0; i < pressed.length; i++) {
+          if (pressed[i].left) {
+            vecx.axis(i, 0, 0x00);
+          } else if (pressed[i].right) {
+            vecx.axis(i, 0, 0xFF);
+          } else {
+            vecx.axis(i, 0, 0x80);
+          }
+          if (pressed[i].down) {
+            vecx.axis(i, 1, 0x00);
+          } else if (pressed[i].up) {
+            vecx.axis(i, 1, 0xFF);
+          } else {
+            vecx.axis(i, 1, 0x80);
+          }
         }
-      }
 
-      if( handled && e.preventDefault ) {
-        e.preventDefault();
-      }
+        if( handled && e.preventDefault ) {
+          e.preventDefault();
+        }
 
-    };
+      } // vecx?
+
+    }; // handler
 
     addEventListener("keydown", keyHandler, false);
     addEventListener("keyup", keyHandler, false);

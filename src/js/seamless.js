@@ -343,6 +343,7 @@ function download(content, fileName, mimeType) {
   }
 }
 */
+/*
 var lastState;
 function saveState() {
   vecx.stop();
@@ -403,12 +404,6 @@ function resumeLastSaveState() {
     vecx.ram = JSON.parse(lastState.ram);
 
     //var state = JSON.parse(lastState);
-    /*
-    for (var i in lastState) {
-      if ()
-      console.log(i);
-    }
-    */
     // use the source again
     for (var i in vecx) {
       //console.log(i, typeof vecx[i]);
@@ -450,7 +445,7 @@ function resumeLastSaveState() {
     }, 100);
   }
 }
-
+*/
 (function(){
   doinit();
 
@@ -538,10 +533,10 @@ function resumeLastSaveState() {
         toggleMenu();
         break;
       case 'Enter':
-        saveState();
+        //saveState();
         break;
       case 'Backspace':
-        resumeLastSaveState();
+        //resumeLastSaveState();
         break;
       default:
     }

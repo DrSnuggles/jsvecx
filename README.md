@@ -56,11 +56,13 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
   - Mobile
     - Android Chrome
     - iPhone6+ Safari (no audio)
-    - iPad1 Safari 5.1.1 (no audio)
+    - iPhone4
+    - iPad1 Safari 5.1.1 (no audio) (no reqAnimFrame)
 
 ## ToDo
   Input:
-    - analog touch
+    - analog touch (touch did not work on new mac/pads but on old ones) (no reqAnimFrame on ipad1)
+    - map keys individually
   Usability:
     - save/load state
     - speed adjustment (no, not timing)
@@ -68,6 +70,7 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
     - emulate colors
     - emulate flash rom for Vectorblade
     - choose rom (US,US_fast,EU,EU_fast) MineStormVersion EU = 1c :)
+    - LightPen (Info: http://vectrex.playntradeonline.com/technical.html)
   Audio:
     - choose 11kHz,22kHz,33kHz,44kHz,48kHz
   Communication
@@ -78,11 +81,17 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 
 ## Change Log
 
+### 12/29/19 (0.3.4) (DrSnuggles)
+  - added 2nd player keyboard input. It's still possible to switch keys for Player1 <-> Player2 QWER8UIO and also on Numpad 85461230
+
+### 12/24/19 (0.3.3) (DrSnuggles)
+  - added Binary Star Software roms. Thanks !!
+
 ### 12/20/19 (0.3.2) (DrSnuggles)
   - pause on visibility change
   - pause on menu
   - show CRC (in console)
-  - save screenshots
+  - save screenshots (PrintScr)
 
 ### 12/18/19 (0.3.1) (Malban Patches)
     – corrected the SHIFT Bug
