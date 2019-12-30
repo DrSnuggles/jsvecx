@@ -82,7 +82,10 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 
 ## Change Log
 
-### 12/29/19 (0.3.5) (DrSnuggles)
+### 12/30/19 (0.3.6) (DrSnuggles)
+  - Idea by playvectrex: copy link to actual rom
+
+### 12/30/19 (0.3.5) (DrSnuggles)
   - Idea by Graham Toal: load roms from URL (looks for // in rom parameter, take care of mixed content and CORS)
   - Also tries to load overlay from same URL but with extension .png
 
