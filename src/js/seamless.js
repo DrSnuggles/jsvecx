@@ -25,20 +25,22 @@ function switchRom(rom) {
     } else {
       setOverlay( rom.substr(rom.lastIndexOf("/")+1).split("_")[0].replace(/ /g,"") );
     }
-    // Load the the new rom
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "roms/"+rom+".bin", true);
-    xhr.overrideMimeType('text/plain; charset=x-user-defined');
-    xhr.onload = function(e) {
-      Globals.cartdata = e.target.response;
-      console.info("loaded rom", rom, "has CRC32", CRC32(e.target.response).toString(16));
-      stat.innerText = "Loaded.";
-      // for Malban
-      vecx.doBankSwitching = (rom.toLowerCase().indexOf("vectorblade") > -1) ? true : false;
-      vecx.reset();
-    }
-    xhr.send();
+    loadRom("roms/"+rom+".bin");
   }
+}
+function loadRom(url) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", url, true);
+  xhr.overrideMimeType('text/plain; charset=x-user-defined');
+  xhr.onload = function(e) {
+    Globals.cartdata = e.target.response;
+    console.info("loaded rom", url, "has CRC32", CRC32(e.target.response).toString(16));
+    stat.innerText = "Loaded.";
+    // for Malban
+    vecx.doBankSwitching = (url.toLowerCase().indexOf("vectorblade") > -1) ? true : false;
+    vecx.reset();
+  }
+  xhr.send();
 }
 
 function doinit() {
@@ -204,15 +206,20 @@ function toggleOverlayDir() {
 }
 function setOverlay(name) {
   overlayName = name;
+  var url;
   if (name.indexOf("/") > -1) {
     // workaround for overlay subdirs
     overlayDir = name.substr(name.indexOf("/"));
-    overlay.src = "img/"+ name +".png";
+    url = "img/"+ name +".png";
   } else {
     // look in overlays or overlays_1080
     overlayDir = "img/overlays_1080/";
-    overlay.src = overlayDir + overlayName + ".png";
+    url = overlayDir + overlayName + ".png";
   }
+  loadOverlay(url);
+}
+function loadOverlay(url) {
+  overlay.src = url;
 }
 function toggleRTM() {
   // check if already loaded
@@ -546,16 +553,23 @@ function resumeLastSaveState() {
   // no IE11 var urlParams = new URLSearchParams(window.location.search);
   var rom = getUrlParameter('rom');//urlParams.get('rom');
   if (rom) {
-    // search for rom in romlist
-    for (var i in romList) {
-      for (var j in romList[i]) {
-        if (romList[i][j].toLowerCase().indexOf(rom.toLowerCase()) !== -1 ) {
-          switchRom( i+"/"+romList[i][j] );
-          return;
+    if (rom.indexOf("//") > -1) {
+      // load rom from URL
+      loadRom(rom);
+      // also try to load overlay with same name but .png extension
+      loadOverlay(rom.substr(0, rom.length-3) +"png");
+    } else {
+      // search for rom in romlist
+      for (var i in romList) {
+        for (var j in romList[i]) {
+          if (romList[i][j].toLowerCase().indexOf(rom.toLowerCase()) !== -1 ) {
+            switchRom( i+"/"+romList[i][j] );
+            return;
+          }
         }
       }
+      setOverlay("MineStorm"); // rom not found
     }
-    setOverlay("MineStorm"); // rom not found
   } else {
     setOverlay("MineStorm"); // no rom set
   }

@@ -63,6 +63,7 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
   Input:
     - analog touch (touch did not work on new mac/pads but on old ones) (no reqAnimFrame on ipad1)
     - map keys individually
+    - show link to actual rom (playvectrex)
   Usability:
     - save/load state
     - speed adjustment (no, not timing)
@@ -81,8 +82,12 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 
 ## Change Log
 
+### 12/29/19 (0.3.5) (DrSnuggles)
+  - Idea by Graham Toal: load roms from URL (looks for // in rom parameter, take care of mixed content and CORS)
+  - Also tries to load overlay from same URL but with extension .png
+
 ### 12/29/19 (0.3.4) (DrSnuggles)
-  - added 2nd player keyboard input. It's still possible to switch keys for Player1 <-> Player2 QWER8UIO and also on Numpad 85461230
+  - Idea by playvectrex: added 2nd player keyboard input. It's still possible to switch keys for Player1 <-> Player2 QWER8UIO and also on Numpad 85461230
 
 ### 12/24/19 (0.3.3) (DrSnuggles)
   - added Binary Star Software roms. Thanks !!
