@@ -72,11 +72,11 @@ var input = (function() {
           case 104: // Numpad8
           pressed[other].up = held;
           break;
-          case 85: // u
+          case 73: // i
           case 101: // Numpad5
           pressed[other].down = held;
           break;
-          case 73: // i
+          case 85: // u
           case 100: // Numpad4
           pressed[other].left = held;
           break;
