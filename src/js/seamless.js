@@ -541,6 +541,30 @@ function resumeLastSaveState() {
     }
   }
 
+  // parameters for individual key settings
+  var keys1 = getUrlParameter('keys1');
+  if (keys1) {
+    var tmp = keys1.split(",");
+    if (tmp.length === 8) {
+      input.keys.keys1 = [];
+      for (var i = 0; i<tmp.length; i++) {
+        input.keys.keys1.push(tmp[i]);
+      }
+      console.info('Keys for Player1 set to:', input.keys.keys1);
+    }
+  }
+  var keys2 = getUrlParameter('keys2');
+  if (keys2) {
+    var tmp = keys2.split(",");
+    if (tmp.length === 8) {
+      input.keys.keys2 = [];
+      for (var i = 0; i<tmp.length; i++) {
+        input.keys.keys2.push(tmp[i]);
+      }
+      console.info('Keys for Player2 set to:', input.keys.keys2);
+    }
+  }
+
   // autopause on visibility change
   document.addEventListener("visibilitychange", visChg, false);
   document.addEventListener("webkitvisibilitychange", visChg, false);

@@ -15,77 +15,80 @@ var input = (function() {
   my.keys = (function() {
     var my = {
       'switchKeys' : false, // false := keyboard is used for player one
+      'keys1' : ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','KeyA','KeyS','KeyD','KeyF'],
+      'keys2' : ['Numpad8','Numpad5','Numpad4','Numpad6','Numpad1','Numpad2','Numpad3','Numpad0'],
     };
     var pressed = [
       {"left":false, "right":false, "up":false, "down":false},
       {"left":false, "right":false, "up":false, "down":false}
     ];
     var keyHandler = function(e) {
-      //console.log( e.keyCode );
+      //console.log( e );
       if (typeof vecx !== "undefined") {
         var handled = true;
         var held = (e.type == "keydown"); // which event keyup or -down
         var controller = my.switchKeys ? 1 : 0;
         var other = my.switchKeys ? 0 : 1;
-        switch( e.keyCode ) {
-          case 37: // left
-          pressed[controller].left = held;
-          break;
-          case 38: // up
-          pressed[controller].up = held;
-          break;
-          case 39: // right
-          pressed[controller].right = held;
-          break;
-          case 40: // down
-          pressed[controller].down = held;
-          break;
-          case 65: // a
-          vecx.button(controller, 0, held);
-          break;
-          case 83: // s
-          vecx.button(controller, 1, held);
-          break;
-          case 68: // d
-          vecx.button(controller, 2, held);
-          break;
-          case 70: // f
-          vecx.button(controller, 3, held);
-          break;
-          case 81: // q
-          case 97: // Numpad1
-          vecx.button(other, 0, held);
-          break;
-          case 87: // w
-          case 98: // Numpad2
-          vecx.button(other, 1, held);
-          break;
-          case 69: // e
-          case 99: // Numpad3
-          vecx.button(other, 2, held);
-          break;
-          case 82: // r
-          case 96: // Numpad0
-          vecx.button(other, 3, held);
-          break;
-          case 56: // 8
-          case 104: // Numpad8
-          pressed[other].up = held;
-          break;
-          case 73: // i
-          case 101: // Numpad5
-          pressed[other].down = held;
-          break;
-          case 85: // u
-          case 100: // Numpad4
-          pressed[other].left = held;
-          break;
-          case 79: // o
-          case 102: // Numpad6
-          pressed[other].right = held;
-          break;
+        switch( e.code ) {
+          case my.keys1[0]: // up
+            pressed[controller].up = held;
+            break;
+          case my.keys1[1]: // down
+            pressed[controller].down = held;
+            break;
+          case my.keys1[2]: // left
+            pressed[controller].left = held;
+            break;
+          case my.keys1[3]: // right
+            pressed[controller].right = held;
+            break;
+          case my.keys1[4]: // a
+            vecx.button(controller, 0, held);
+            break;
+          case my.keys1[5]: // s
+            vecx.button(controller, 1, held);
+            break;
+          case my.keys1[6]: // d
+            vecx.button(controller, 2, held);
+            break;
+          case my.keys1[7]: // f
+            vecx.button(controller, 3, held);
+            break;
+
+          //case 56: // 8
+          case my.keys2[0]: // Numpad8
+            pressed[other].up = held;
+            break;
+          //case 73: // i
+          case my.keys2[1]: // Numpad5
+            pressed[other].down = held;
+            break;
+          //case 85: // u
+          case my.keys2[2]: // Numpad4
+            pressed[other].left = held;
+            break;
+          //case 79: // o
+          case my.keys2[3]: // Numpad6
+            pressed[other].right = held;
+            break;          //case 81: // q
+          case my.keys2[4]: // Numpad1
+            vecx.button(other, 0, held);
+            break;
+          //case 87: // w
+          case my.keys2[5]: // Numpad2
+            vecx.button(other, 1, held);
+            break;
+          //case 69: // e
+          case my.keys2[6]: // Numpad3
+            vecx.button(other, 2, held);
+            break;
+          //case 82: // r
+          case my.keys2[7]: // Numpad0
+            vecx.button(other, 3, held);
+            break;
+
           default:
-          handled = false;
+            handled = false;
         }
 
         // send axis to vecx

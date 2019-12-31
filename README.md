@@ -62,7 +62,6 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 ## ToDo
   Input:
     - analog touch (touch did not work on new mac/pads but on old ones) (no reqAnimFrame on ipad1)
-    - map keys individually
     - show link to actual rom (playvectrex)
   Usability:
     - save/load state
@@ -81,6 +80,14 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
       - voice chat
 
 ## Change Log
+
+### 12/31/19 (0.3.7) (DrSnuggles)
+  - Fixed Keyboard mappings to be not case sensitive
+  - Added parameter to map keys individually
+    default: &keys1=ArrowUp,ArrowDown,ArrowLeft,ArrowRight,KeyA,KeyS,KeyD,KeyF
+    &keys2=Numpad8,Numpad5,Numpad4,Numpad6,Numpad1,Numpad2,Numpad3,Numpad0
+    (playvectrex settings: &keys=Digit8,KeyI,KeyU,KeyO,KeyQ,KeyW,KeyE,KeyR)
+  - removed double Player2 key settings
 
 ### 12/30/19 (0.3.6) (DrSnuggles)
   - Idea by playvectrex: copy link to actual rom
