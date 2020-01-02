@@ -82,15 +82,15 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 ## Change Log
 
 ### 12/31/19 (0.3.7) (DrSnuggles)
-  - Fixed Keyboard mappings to be not case sensitive
+  - Fixed Keyboard mappings (no longer case sensitive)
   - Added parameter to map keys individually
     default: &keys1=ArrowUp,ArrowDown,ArrowLeft,ArrowRight,KeyA,KeyS,KeyD,KeyF
     &keys2=Numpad8,Numpad5,Numpad4,Numpad6,Numpad1,Numpad2,Numpad3,Numpad0
-    (playvectrex settings: &keys=Digit8,KeyI,KeyU,KeyO,KeyQ,KeyW,KeyE,KeyR)
+    (playvectrex settings: &keys2=Digit8,KeyI,KeyU,KeyO,KeyQ,KeyW,KeyE,KeyR)
   - removed double Player2 key settings
 
 ### 12/30/19 (0.3.6) (DrSnuggles)
-  - Idea by playvectrex: copy link to actual rom
+  - Idea by playvectrex: copy link of actual rom
 
 ### 12/30/19 (0.3.5) (DrSnuggles)
   - Idea by Graham Toal: load roms from URL (looks for // in rom parameter, take care of mixed content and CORS)
