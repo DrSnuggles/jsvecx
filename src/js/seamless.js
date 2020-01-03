@@ -564,6 +564,30 @@ function resumeLastSaveState() {
       console.info('Keys for Player2 set to:', input.keys.keys2);
     }
   }
+  // parameters for individual gamepad mappings
+  var gp1 = getUrlParameter('gp1');
+  if (gp1) {
+    var tmp = gp1.split(",");
+    if (tmp.length === 8) {
+      input.gp.gp1 = [];
+      for (var i = 0; i<tmp.length; i++) {
+        input.gp.gp1.push(tmp[i]);
+      }
+      console.info('Gamepad for Player1 set to:', input.gp.gp1);
+    }
+  }
+  var gp2 = getUrlParameter('gp2');
+  if (gp2) {
+    var tmp = gp2.split(",");
+    if (tmp.length === 8) {
+      input.gp.gp2 = [];
+      for (var i = 0; i<tmp.length; i++) {
+        input.gp.gp2.push(tmp[i]);
+      }
+      console.info('Gamepad for Player2 set to:', input.gp.gp2);
+    }
+  }
+
 
   // autopause on visibility change
   document.addEventListener("visibilitychange", visChg, false);

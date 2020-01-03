@@ -81,6 +81,12 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 
 ## Change Log
 
+### 01/03/20 (0.3.8) (DrSnuggles)
+  - Controller fixes after MineStorm day with Dani
+    - individual gamepad mappings (&gp1=12,13,14,15,2,3,0,1)
+    - default gamepad settings had up/down reversed
+    - 1st gamepad found is now player1 (you can use Toggle GP to use for player2)
+
 ### 12/31/19 (0.3.7) (DrSnuggles)
   - Fixed Keyboard mappings (no longer case sensitive)
   - Added parameter to map keys individually

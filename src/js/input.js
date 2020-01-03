@@ -128,7 +128,9 @@ var input = (function() {
   //
   my.gamepads = (function(){
     var my = {
-      switchGP : true, // false := 1st found gamepad is used for player one
+      switchGP : false, // false := 1st found gamepad is used for player one
+      gp1 : [12,13,14,15,2,3,0,1],
+      gp2 : [12,13,14,15,2,3,0,1],
     };
     var raf = null;
 
@@ -154,30 +156,30 @@ var input = (function() {
           //console.log("Gamepad connected at index " + gp.index + ": " + gp.id + ". It has " + gp.buttons.length + " buttons and " + gp.axes.length + " axes.");
 
           if (i < 2) {
-            vecx.button(controller[i], 0, gp.buttons[2].pressed);
-            vecx.button(controller[i], 1, gp.buttons[3].pressed);
-            vecx.button(controller[i], 2, gp.buttons[0].pressed);
-            vecx.button(controller[i], 3, gp.buttons[1].pressed);
+            vecx.button(controller[i], 0, gp.buttons[my['gp'+(i+1)][4]].pressed);
+            vecx.button(controller[i], 1, gp.buttons[my['gp'+(i+1)][5]].pressed);
+            vecx.button(controller[i], 2, gp.buttons[my['gp'+(i+1)][6]].pressed);
+            vecx.button(controller[i], 3, gp.buttons[my['gp'+(i+1)][7]].pressed);
 
             if (gp.axes.length > 1) {
               // analog stick
-              vecx.axis(controller[i], 0, Math.min(255,Math.floor(gp.axes[0]*128)+128) );
-              vecx.axis(controller[i], 1, Math.min(255,Math.floor(gp.axes[1]*128)+128) );
+              vecx.axis(controller[i], 0, Math.min(255,Math.floor(gp.axes[0]*128)+128) ); //left/right
+              vecx.axis(controller[i], 1, Math.min(255,Math.floor(gp.axes[1]*-128)+128) ); //up/down
             } else {
               // digital gamepad stick, only if analog is not available
-              if (gp.buttons[14].pressed) {
+              if (gp.buttons[my['gp'+(i+1)][2]].pressed) {
                 vecx.axis(controller[i], 0, 0);
-              } else if(gp.buttons[15].pressed) {
+              } else if(gp.buttons[my['gp'+(i+1)][3]].pressed) {
                 vecx.axis(controller[i], 0, 255);
               } else {
                 vecx.axis(controller[i], 0, 128);
               }
-              if (gp.buttons[12].pressed) {
-                vecx.axis(controller, 1, 255);
-              } else if(gp.buttons[13].pressed) {
-                vecx.axis(controller, 1, 0);
+              if (gp.buttons[my['gp'+(i+1)][0]].pressed) {
+                vecx.axis(controller[i], 1, 255);
+              } else if(gp.buttons[my['gp'+(i+1)][1]].pressed) {
+                vecx.axis(controller[i], 1, 0);
               } else {
-                vecx.axis(controller, 1, 128);
+                vecx.axis(controller[i], 1, 128);
               }
             }
 
