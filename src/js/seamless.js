@@ -569,22 +569,22 @@ function resumeLastSaveState() {
   if (gp1) {
     var tmp = gp1.split(",");
     if (tmp.length === 8) {
-      input.gp.gp1 = [];
+      input.gamepads.gp1 = [];
       for (var i = 0; i<tmp.length; i++) {
-        input.gp.gp1.push(tmp[i]);
+        input.gamepads.gp1.push(tmp[i]);
       }
-      console.info('Gamepad for Player1 set to:', input.gp.gp1);
+      console.info('Gamepad for Player1 set to:', input.gamepads.gp1);
     }
   }
   var gp2 = getUrlParameter('gp2');
   if (gp2) {
     var tmp = gp2.split(",");
     if (tmp.length === 8) {
-      input.gp.gp2 = [];
+      input.gamepads.gp2 = [];
       for (var i = 0; i<tmp.length; i++) {
-        input.gp.gp2.push(tmp[i]);
+        input.gamepads.gp2.push(tmp[i]);
       }
-      console.info('Gamepad for Player2 set to:', input.gp.gp2);
+      console.info('Gamepad for Player2 set to:', input.gamepads.gp2);
     }
   }
 
