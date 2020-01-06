@@ -6,19 +6,12 @@ The original C version was written by Valavan Manohararajah
 (http://valavan.net/vectrex.html).
 */
 
-/*
-  Emulation of the AY-3-8910 / YM2149 sound chip.
-
-  Based on various code snippets by Ville Hallik, Michael Cuddy,
-  Tatsuyuki Satoh, Fabrice Frances, Nicola Salmoria.
-*/
-
 function osint()
 {
     this.vecx = null;
 
     /* the emulators heart beats at 20 milliseconds */
-    this.EMU_TIMER = 20;
+    this.EMU_TIMER = 20; // used in vecx.js
 
     //static long screen_x;
     this.screen_x = 0;
@@ -317,6 +310,7 @@ function osint()
         var draw = null;
         var vectrexColors = Globals.VECTREX_COLORS;
 
+        /*
         for( v = 0; v < vector_erse_cnt; v++ )
         {
             erse = vectors_erse[v];
@@ -325,14 +319,32 @@ function osint()
                 this.osint_line(erse.x0, erse.y0, erse.x1, erse.y1, 0);
             }
         }
+        */
+        // DrSnuggles: clear all
+        this.ctx.beginPath();
+        this.ctx.clearRect(0, 0, this.screen_x, this.screen_y);
 
+        // DrSnuggles: draw lines
         for( v = 0; v < vector_draw_cnt; v++ )
         {
             draw = vectors_draw[v];
-            this.osint_line(draw.x0, draw.y0, draw.x1, draw.y1, draw.color);
+            //this.osint_line(draw.x0, draw.y0, draw.x1, draw.y1, draw.color);
+            //console.log(draw.color);
+            this.ctx.strokeStyle = this.ctx.fillStyle = "rgba("+this.color_set[ draw.color ]+",1)";
+            if (draw.x0 === draw.x1 && draw.y0 === draw.y1) {
+              // dot
+              this.ctx.fillRect(draw.x0/this.scl_factor,draw.y0/this.scl_factor,1,1);
+            } else {
+              // line
+              this.ctx.moveTo(draw.x0/this.scl_factor, draw.y0/this.scl_factor);
+              this.ctx.lineTo(draw.x1/this.scl_factor, draw.y1/this.scl_factor);
+            }
+            //console.log("line",draw.x0/this.scl_factor, draw.y0/this.scl_factor, draw.x1/this.scl_factor, draw.y1/this.scl_factor, draw.color);
         }
+        this.ctx.stroke();
 
-        this.ctx.putImageData(this.imageData, 0, 0);
+        //this.ctx.putImageData(this.imageData, 0, 0);
+
     }
 
     this.init = function( vecx, canv )

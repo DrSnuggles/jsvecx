@@ -62,7 +62,6 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 ## ToDo
   Input:
     - analog touch (touch did not work on new mac/pads but on old ones) (no reqAnimFrame on ipad1)
-    - show link to actual rom (playvectrex)
   Usability:
     - save/load state
     - speed adjustment (no, not timing)

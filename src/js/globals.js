@@ -6,13 +6,6 @@ The original C version was written by Valavan Manohararajah
 (http://valavan.net/vectrex.html).
 */
 
-/*
-  Emulation of the AY-3-8910 / YM2149 sound chip.
-
-  Based on various code snippets by Ville Hallik, Michael Cuddy,
-  Tatsuyuki Satoh, Fabrice Frances, Nicola Salmoria.
-*/
-
 var Globals =
 {
     romdata: null, /* The vectrex rom */
