@@ -1895,7 +1895,7 @@ function VecX()
     this.startTime = null;
     this.nextFrameTime = null;
     this.extraTime = 0;
-    this.fpsTimer = null;
+    //this.fpsTimer = null;
 
     this.running = false;
 
@@ -1913,6 +1913,8 @@ function VecX()
         this.count = 0;
         this.extraTime = 0;
 
+
+        /*
         this.fpsTimer = setInterval(
             function()
             {
@@ -1931,48 +1933,82 @@ function VecX()
                 }
             }, 2000
         );
+        */
+        var fps = 50.0;
+        var now;
+        var then = performance.now();
+        var interval = 1000/fps;
+        var delta;
 
         var f = function()
         {
+            requestAnimationFrame(f);
             if( !vecx.running ) return;
-            /* moved to input.js
-            vecx.alg_jch0 =
-                 ( vecx.leftHeld ? 0x00 :
-                     ( vecx.rightHeld ? 0xff :
-                        0x80 ) );
 
-            vecx.alg_jch1 =
-                 ( vecx.downHeld ? 0x00 :
-                    ( vecx.upHeld ? 0xff :
-                        0x80 ) );
-            */
-            vecx.snd_regs[14] = vecx.shadow_snd_regs14;
-            vecx.rtm.clk = !vecx.rtm.clk; // DrSnuggles
-            vecx.vecx_emu.call( vecx, cycles, 0 );
-            vecx.count++;
+            now = performance.now(); // better performance.now()
+            delta = now - then;
+            if (delta > interval) {
+              then = now - (delta % interval);
 
-            var now = new Date().getTime();
-            var waitTime = vecx.nextFrameTime - now;
-            vecx.extraTime += waitTime;
-            if( waitTime < -EMU_TIMER ) waitTime = -EMU_TIMER;
+              /* moved to input.js
+              vecx.alg_jch0 =
+                   ( vecx.leftHeld ? 0x00 :
+                       ( vecx.rightHeld ? 0xff :
+                          0x80 ) );
 
-            vecx.nextFrameTime = now + EMU_TIMER + waitTime;
+              vecx.alg_jch1 =
+                   ( vecx.downHeld ? 0x00 :
+                      ( vecx.upHeld ? 0xff :
+                          0x80 ) );
+              */
+              vecx.snd_regs[14] = vecx.shadow_snd_regs14;
+              vecx.rtm.clk = !vecx.rtm.clk; // DrSnuggles
+              vecx.vecx_emu.call( vecx, cycles, 0 );
+              vecx.count++;
 
-            setTimeout( function() { f(); }, waitTime );
+              //var now = new Date().getTime();
+              var waitTime = vecx.nextFrameTime - now;
+              vecx.extraTime += waitTime;
+              if( waitTime < -EMU_TIMER ) waitTime = -EMU_TIMER;
+
+              vecx.nextFrameTime = now + EMU_TIMER + waitTime;
+
+
+              vecx.status =  "FPS: " +
+                    ( vecx.count / ( new Date().getTime() - vecx.startTime )
+                        * 1000.0 ).toFixed(2) + " (50)" +
+                    ( vecx.extraTime > 0 ?
+                       ( ", extra: " +
+                            ( vecx.extraTime / ( vecx.count / 50 ) ).toFixed(2)
+                                + " (ms)" ) : "" );
+
+              if( vecx.count > 500 )
+              {
+                  vecx.startTime = new Date().getTime();
+                  vecx.count = 0;
+                  vecx.extraTime = 0;
+              }
+
+              //setTimeout( function() { f(); }, waitTime );
+            }
+
         };
 
-        setTimeout( f, 15 );
+        //setTimeout( f, 15 );
+        requestAnimationFrame(f);
     }
 
     this.stop = function()
     {
         if( this.running )
         {
+            /*
             if( this.fpsTimer != null )
             {
                 clearInterval( this.fpsTimer );
                 this.fpsTimer = null;
             }
+            */
 
             this.running = false;
             this.e8910.stop();

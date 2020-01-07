@@ -135,7 +135,8 @@ function toggleMenu(e) {
   if (menu.style.display == "block") {
     menu.style.display = "none";
     setTimeout( function (){
-      vecx.start(); // unpause
+      //vecx.start(); // unpause
+      vecx.running = true;
     }, 300);
   } else {
     vecx.stop(); // pause
@@ -187,7 +188,8 @@ function togglePause() {
     vecx.stop();
     stat.innerText = "Paused.";
   } else {
-    vecx.start();
+    //vecx.start();
+    vecx.running = true;
     stat.innerText = "Resumed.";
   }
 }

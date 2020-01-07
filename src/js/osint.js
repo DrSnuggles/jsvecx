@@ -64,13 +64,16 @@ function osint()
     }
 
     //static einline unsigned char *osint_pixelptr (long x, long y)
+    /*
     this.osint_pixelindex = function( x, y )
     {
         return ( y * this.lPitch ) + ( x * this.bytes_per_pixel );
     }
+    */
 
     this.osint_clearscreen = function()
     {
+      /*
         for( var x = 0; x < ( this.screen_y * this.lPitch ); x++ )
         {
             if( ( x + 1 ) % 4 )
@@ -80,12 +83,15 @@ function osint()
         }
 
         this.ctx.putImageData(this.imageData, 0, 0);
+      */
+      this.ctx.clearRect(0, 0, this.screen_x, this.screen_y);
     }
 
     /* draw a line with a slope between 0 and 1.
      * x is the "driving" axis. x0 < x1 and y0 < y1.
      */
     //static void osint_linep01 (long x0, long y0, long x1, long y1, unsigned char color)
+    /*
     this.osint_linep01 = function( x0, y0, x1, y1, color )
     {
         var data = this.data;
@@ -121,11 +127,12 @@ function osint()
             idx += bytes_per_pixel;
         }
     }
-
+    */
     /* draw a line with a slope between 1 and +infinity.
      * y is the "driving" axis. y0 < y1 and x0 < x1.
      */
     //static void osint_linep1n (long x0, long y0, long x1, long y1, unsigned char color)
+    /*
     this.osint_linep1n = function( x0, y0, x1, y1, color )
     {
         var data = this.data;
@@ -161,12 +168,13 @@ function osint()
             idx += lPitch;
         }
     }
-
+    */
     /* draw a line with a slope between 0 and -1.
      * x is the "driving" axis. x0 < x1 and y1 < y0.
      */
 
     //static void osint_linen01 (long x0, long y0, long x1, long y1, unsigned char color)
+    /*
     this.osint_linen01 = function( x0, y0, x1, y1, color )
     {
         var data = this.data;
@@ -202,12 +210,13 @@ function osint()
             idx += bytes_per_pixel;
         }
     }
-
+    */
     /* draw a line with a slope between -1 and -infinity.
      * y is the "driving" axis. y0 < y1 and x1 < x0.
      */
 
     //static void osint_linen1n (long x0, long y0, long x1, long y1, unsigned char color)
+    /*
     this.osint_linen1n = function( x0, y0, x1, y1, color )
     {
         var data = this.data;
@@ -243,8 +252,9 @@ function osint()
             idx += lPitch;
         }
     }
-
+    */
     //static void osint_line (long x0, long y0, long x1, long y1, unsigned char color)
+    /*
     this.osint_line = function( x0, y0, x1, y1, color )
     {
         if( x1 > x0 )
@@ -298,7 +308,7 @@ function osint()
             }
         }
     }
-
+    */
     this.osint_render = function()
     {
         var vector_erse_cnt = this.vecx.vector_erse_cnt;
@@ -309,39 +319,55 @@ function osint()
         var erse = null;
         var draw = null;
         var vectrexColors = Globals.VECTREX_COLORS;
+        var ctx = this.ctx;
 
+        ctx.beginPath();
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = ctx.fillStyle = "rgba(0,0,0,0.5)"; //0.5 was quite OK
         /*
         for( v = 0; v < vector_erse_cnt; v++ )
         {
             erse = vectors_erse[v];
             if( erse.color != vectrexColors )
             {
-                this.osint_line(erse.x0, erse.y0, erse.x1, erse.y1, 0);
+                //this.osint_line(erse.x0, erse.y0, erse.x1, erse.y1, 0);
+                if (erse.x0 === erse.x1 && erse.y0 === erse.y1) {
+                  // dot
+                  ctx.fillRect(erse.x0/this.scl_factor,erse.y0/this.scl_factor,1,1);
+                } else {
+                  // line
+                  ctx.moveTo(erse.x0/this.scl_factor, erse.y0/this.scl_factor);
+                  ctx.lineTo(erse.x1/this.scl_factor, erse.y1/this.scl_factor);
+                }
+
             }
         }
         */
+
         // DrSnuggles: clear all
-        this.ctx.beginPath();
-        this.ctx.clearRect(0, 0, this.screen_x, this.screen_y);
+        //ctx.clearRect(0, 0, this.screen_x, this.screen_y);
+        ctx.fillRect(0, 0, this.screen_x, this.screen_y); // decay style clear
 
         // DrSnuggles: draw lines
+        //ctx.beginPath();
+        //ctx.lineWidth = 1;
         for( v = 0; v < vector_draw_cnt; v++ )
         {
             draw = vectors_draw[v];
             //this.osint_line(draw.x0, draw.y0, draw.x1, draw.y1, draw.color);
             //console.log(draw.color);
-            this.ctx.strokeStyle = this.ctx.fillStyle = "rgba("+this.color_set[ draw.color ]+",1)";
+            ctx.strokeStyle = ctx.fillStyle = "rgba("+this.color_set[ draw.color ]+",1)";
             if (draw.x0 === draw.x1 && draw.y0 === draw.y1) {
               // dot
-              this.ctx.fillRect(draw.x0/this.scl_factor,draw.y0/this.scl_factor,1,1);
+              ctx.fillRect(draw.x0/this.scl_factor,draw.y0/this.scl_factor,1,1);
             } else {
               // line
-              this.ctx.moveTo(draw.x0/this.scl_factor, draw.y0/this.scl_factor);
-              this.ctx.lineTo(draw.x1/this.scl_factor, draw.y1/this.scl_factor);
+              ctx.moveTo(draw.x0/this.scl_factor, draw.y0/this.scl_factor);
+              ctx.lineTo(draw.x1/this.scl_factor, draw.y1/this.scl_factor);
             }
             //console.log("line",draw.x0/this.scl_factor, draw.y0/this.scl_factor, draw.x1/this.scl_factor, draw.y1/this.scl_factor, draw.color);
         }
-        this.ctx.stroke();
+        ctx.stroke();
 
         //this.ctx.putImageData(this.imageData, 0, 0);
 
@@ -361,15 +387,16 @@ function osint()
         // Graphics
         this.canvas = canv; // DrSnuggles: no more fixed DOM names
         this.ctx = this.canvas.getContext('2d');
-        this.imageData = this.ctx.getImageData(0, 0, this.screen_x, this.screen_y);
-        this.data = this.imageData.data;
+        //this.imageData = this.ctx.getImageData(0, 0, this.screen_x, this.screen_y);
+        //this.data = this.imageData.data;
 
         /* set alpha to opaque */
+        /*
         for( var i = 3; i < this.imageData.data.length - 3; i += 4 )
         {
             this.imageData.data[i] = 0xFF;
         }
-
+        */
         /* determine a set of colors to use based */
         this.osint_gencolors();
         this.osint_clearscreen();
