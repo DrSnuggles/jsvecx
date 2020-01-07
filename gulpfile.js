@@ -158,6 +158,10 @@ gulp.task('roms', () => {
   return gulp.src('src/roms/**/*')
     .pipe(gulp.dest('deploy/roms'));
 });
+gulp.task('bios', () => {
+  return gulp.src('src/bios/**/*')
+    .pipe(gulp.dest('deploy/bios'));
+});
 gulp.task('vendor', () => {
   return gulp.src('src/js/jquery-min.js')
   .pipe(gulp.dest('deploy/js'));
@@ -205,5 +209,5 @@ gulp.task('watch', () => {
   gulp.watch('src/*.{txt,html}', { events: 'all', delay: 500 }, gulp.series('html','mono','copyright'));
 });
 
-gulp.task('assets', gulp.parallel('roms', 'img', 'vendor'));
+gulp.task('assets', gulp.parallel('roms', 'bios', 'img', 'vendor'));
 gulp.task('default', gulp.series('prec', 'assets', 'css', 'js', 'html', 'mono', 'copyright'));

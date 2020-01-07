@@ -69,10 +69,10 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
   Emu:
     - emulate colors
     - emulate flash rom for Vectorblade
-    - choose rom (US,US_fast,EU,EU_fast) MineStormVersion EU = 1c :)
     - LightPen (Info: http://vectrex.playntradeonline.com/technical.html)
   Audio:
     - choose 11kHz,22kHz,33kHz,44kHz,48kHz
+    - maybe switch to different AY-3-89xx emulation
   Communication
     - save highscores
     - multiplayer player (player1 = server) (WebRTC, WebSocket, STUN, TURN) (will rty serverless first with a google STUN)
@@ -80,6 +80,13 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
       - voice chat
 
 ## Change Log
+
+### 01/07/20 (0.3.9) (DrSnuggles)
+  - Added BIOS versions via parameter &bios=B796 &bopt=skip
+    B796: v1 GCE
+    7931: v2 MB
+    7ADB: v3 MB EU (default)
+    options: ori, fast (default), skip (hack by Frank Chevassu)
 
 ### 01/03/20 (0.3.8) (DrSnuggles)
   - Controller fixes after MineStorm day with Dani
