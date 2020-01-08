@@ -500,8 +500,11 @@ function resumeLastSaveState() {
   // BIOS
   var bios = getUrlParameter('bios');
   if (bios) {
+    if (bios.indexOf("//") === -1) {
+      bios = 'bios/'+ bios.toLowerCase() +'.bin'; 
+    }
     // load bios
-    loadBinary('bios/'+ bios.toLowerCase() +'.bin', function(e) {
+    loadBinary(bios, function(e) {
       Globals.romdata = e.target.response;
       patchBIOS();
     });

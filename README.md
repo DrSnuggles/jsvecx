@@ -81,6 +81,11 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 
 ## Change Log
 
+### 01/08/20 (0.3.10) (DrSnuggles)
+  - Idea by Vectrexer: load BIOS from URL (looks for // in rom parameter, take care of mixed content and CORS)
+  - also take care of default BIOS patch = skip
+  - https://drsnuggles.github.io/jsvecx/?bios=https://drsnuggles.github.io/jsvecx/bios/b796.bin&bopt=ori
+
 ### 01/07/20 (0.3.9) (DrSnuggles)
   - Added BIOS versions via parameter &bios=B796 &bopt=skip
     B796: v1 GCE
