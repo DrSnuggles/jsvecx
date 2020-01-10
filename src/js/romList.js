@@ -138,7 +138,7 @@ var romList=
 		"Xmas Cart 2014",
 		"Vector Pong",
 		"Nagoya Attack Beta",
-		"YMusic #1",
+		"YMusic1",
 		"AY38912 Sound Tool",
 		"Zodiac",
 		"Dots",

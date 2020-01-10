@@ -64,6 +64,7 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
     - analog touch (touch did not work on new mac/pads but on old ones) (no reqAnimFrame on ipad1)
     - show link to actual rom (playvectrex)
   Usability:
+    - get rid of select instead use filterable table with additional info
     - save/load state
     - speed adjustment (no, not timing)
   Emu:
@@ -73,6 +74,7 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
   Audio:
     - choose 11kHz,22kHz,33kHz,44kHz,48kHz
     - maybe switch to different AY-3-89xx emulation
+    - volume control
   Communication
     - save highscores
     - multiplayer player (player1 = server) (WebRTC, WebSocket, STUN, TURN) (will rty serverless first with a google STUN)
@@ -82,8 +84,8 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 ## Change Log
 
 ### 01/08/20 (0.3.10) (DrSnuggles)
-  - Idea by Vectrexer: load BIOS from URL (looks for // in rom parameter, take care of mixed content and CORS)
-  - also take care of default BIOS patch = skip
+  - Idea by Vectrexer: load BIOS from URL (looks for // in bios parameter, take care of mixed content and CORS)
+  - also take care of default BIOS patch = fast
   - https://drsnuggles.github.io/jsvecx/?bios=https://drsnuggles.github.io/jsvecx/bios/b796.bin&bopt=ori
 
 ### 01/07/20 (0.3.9) (DrSnuggles)
