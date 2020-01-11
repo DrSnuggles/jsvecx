@@ -17,13 +17,17 @@ for sound (no flash is required).
 
 This fork will only give you the display view without the machine and the box art next to it.
 
-Key Features:
-  - Choose which Overlay style you prefer
-  - Internal Quality 1x (330x410), 2x (660x820), 3x (990x1230)
-  - New build process for smaller deploy footprint
-  - Viewport scales on resize
-  - Gamepads, yes 2 players, needs two gampads with 2x analog + 4x digital
-  - Most roms
+### Key Features
+  - View chips
+  - Set Quality 1x, 2x (default), 3x (nice for UHD and/or pivot)
+  - Additional overlay set for higher resolutions (you can switch back or turn it off)
+  - Viewport scales on resize (and fits)
+  - Menu with RMB
+  - Touchscreen
+  - Gamepads, 2 players, two gamepads with 2x analog + 4x digital (swappable)
+  - Seamless integration into website/forum
+  - Small footprint, less files + size, loads faster
+  - No ads, no cookies, no counters
 
 ## raz0red's Version
 
@@ -43,26 +47,46 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
     Star Trek, Armor Attack). Sound can be toggled on and off by clicking
     the "Sound" in the menu.
 
-## Tested Browser Support +=tested -=untested
-  - Windows
+## Paramter list
+Parameter list:
+  - ?rom=Accepts URL, filename or simple rom name
+  - &sound=on | off : Nice for office playing and if you want to link to a rom with known audio problems (Berzerk)
+  - &pause=on | off : Opens in paused mode
+  - &menu=on | off : Opens menu with instructions
+  - &rtm= on | off : Opens chips view
+  - &aa=on |off : Toggles antialias
+  - &overlay=1 | 2 : Numeric, how often ToggleOverlay is pressed when opened
+  - &keys1=Up,Down,Left,Right,Button1,Button2,Button3,Button4
+  - &keys2=Up,Down,Left,Right,Button1,Button2,Button3,Button4
+  - &gp1=Up,Down,Left,Right,Button1,Button2,Button3,Button4
+  - &gp2=Up,Down,Left,Right,Button1,Button2,Button3,Button4
+  - &bios=B796 | 7931 | 7ADB (default)
+  - &bopt=ori | fast (default) | skip
+
+## Tested Browser Support +=working o=untested -=not working
+  + Windows
     + Chrome
     + Firefox
-    + Edge
-    + IE11 (no audio)
-    - Safari 5.1.7
-  - Mac
-    - Safari 12.0.1
-    - Safari 10.1.2
-  - Mobile
-    - Android Chrome
-    - iPhone6+ Safari (no audio)
-    - iPhone4
-    - iPad1 Safari 5.1.1 (no audio) (no reqAnimFrame)
+    - Edge (no KeyboardEvent.code)
+    - IE11 (no KeyboardEvent.code, no audio)
+    - Safari 5.1.7 (no KeyboardEvent.code, no audio, no requestAnimationFrame)
+  o Mac
+    o Safari 12.x.x
+    o Safari 10.1.2
+  + Mobiles
+    + Android
+      + Chrome
+    + iPhone6+ iOS 12.x.x
+      + Safari
+      + Chrome
+    o iPhone4 iOS7.1.2
+      o Safari
+      o Chrome
+    - iPad1 Safari 5.1.1 (no KeyboardEvent.code, no audio, no requestAnimationFrame)
 
 ## ToDo
   Input:
     - analog touch (touch did not work on new mac/pads but on old ones) (no reqAnimFrame on ipad1)
-    - show link to actual rom (playvectrex)
   Usability:
     - get rid of select instead use filterable table with additional info
     - save/load state
@@ -82,6 +106,10 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
       - voice chat
 
 ## Change Log
+
+### 01/11/20 (0.3.11) (DrSnuggles)
+  - a lot of tests... and roll-backs
+  - added manifest for better mobile experience
 
 ### 01/08/20 (0.3.10) (DrSnuggles)
   - Idea by Vectrexer: load BIOS from URL (looks for // in bios parameter, take care of mixed content and CORS)

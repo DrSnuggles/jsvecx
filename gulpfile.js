@@ -173,7 +173,8 @@ gulp.task('html', () => {
     'src/vectrex.html',
     'src/rtm.html',
     'src/overlay_rtm.html',
-    'src/overlay_touch.html'
+    'src/overlay_touch.html',
+    'src/manifest.json'
       ])
       .pipe(htmlmin({ collapseWhitespace: true, removeComments: true }))
       .pipe(gulp.dest('deploy'));

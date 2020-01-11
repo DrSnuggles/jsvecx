@@ -501,7 +501,7 @@ function resumeLastSaveState() {
   var bios = getUrlParameter('bios');
   if (bios) {
     if (bios.indexOf("//") === -1) {
-      bios = 'bios/'+ bios.toLowerCase() +'.bin'; 
+      bios = 'bios/'+ bios.toLowerCase() +'.bin';
     }
     // load bios
     loadBinary(bios, function(e) {
@@ -690,5 +690,10 @@ function resumeLastSaveState() {
   } else {
     setOverlay("MineStorm"); // no rom set
   }
+
+  // mobile vertical scroll
+  addEventListener("touchmove", function(e){
+    e.preventDefault();
+  }, {passive:false});
 
 })();

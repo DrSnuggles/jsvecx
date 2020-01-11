@@ -279,11 +279,11 @@ var input = (function() {
 
     };
 
-    addEventListener('touchstart', touchHandler, false);
-    addEventListener('touchend', touchHandler, false);
+    addEventListener('touchstart', touchHandler, {passive:false});
+    addEventListener('touchend', touchHandler, {passive:false});
     // DEBUG or forever ??
-    addEventListener('mousedown', touchHandler, false);
-    addEventListener('mouseup', touchHandler, false);
+    addEventListener('mousedown', touchHandler, {passive:false});
+    addEventListener('mouseup', touchHandler, {passive:false});
 
     return my;
   })();

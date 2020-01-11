@@ -572,6 +572,7 @@ function e8910()
                 function(){if (ctx.state !== 'running') ctx.resume();}
             document.documentElement.addEventListener("keydown", resumeFunc);
             document.documentElement.addEventListener("click", resumeFunc);
+            document.documentElement.addEventListener("touchstart", resumeFunc);
         }
         if (this.ctx) PSG.ready = 1;
     }
