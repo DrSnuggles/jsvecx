@@ -27,7 +27,7 @@ function VecX()
 
     this.osint = new osint();
     this.e6809 = new e6809();
-    this.e8910 = new e8910();
+    this.e8910 = new Ayumi();
 
     /* Memory */
 
@@ -2134,4 +2134,3 @@ function VecX()
 }
 
 //Globals.vecx = new VecX();
-

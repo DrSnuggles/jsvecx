@@ -34,7 +34,7 @@ var myChipMon = (function() {
   //
   my.doLoop = function() {
     requestAnimationFrame(my.doLoop);
-    if (vecx.e8910.psg.VolA == vecx.e8910.psg.VolA*1) {
+    if (vecx.e8910.regs[0] == vecx.e8910.regs[0]*1) {
       rtm6809(); // CPU
       rtm8912(); // PSG
       rtm6522(); // VIA
@@ -120,6 +120,7 @@ var myChipMon = (function() {
     //
     // Sound / IO : AY-3-8912 variant used in vectrex
     //
+    /*
     var psg = vecx.e8910.psg;
     rtm_8912_tpA.innerText = prtHex(psg.PeriodA);
     rtm_8912_tpB.innerText = prtHex(psg.PeriodB);
@@ -130,6 +131,7 @@ var myChipMon = (function() {
     rtm_8912_vA.innerText = prtHex(psg.VolA);
     rtm_8912_vB.innerText = prtHex(psg.VolB);
     rtm_8912_vC.innerText = prtHex(psg.VolC);
+
     rtm_8912_tbA.innerText = prtBin(psg.OutputA);
     rtm_8912_tbB.innerText = prtBin(psg.OutputB);
     rtm_8912_tbC.innerText = prtBin(psg.OutputC);
@@ -145,6 +147,22 @@ var myChipMon = (function() {
     rtm_8912_eA.innerText = prtHex(psg.EnvelopeA);
     rtm_8912_eB.innerText = prtHex(psg.EnvelopeB);
     rtm_8912_eC.innerText = prtHex(psg.EnvelopeC);
+    */
+    var c = vecx.e8910.channels;
+    rtm_8912_tpA.innerText = prtHex(c[0].tonePeriod);
+    rtm_8912_tpB.innerText = prtHex(c[1].tonePeriod);
+    rtm_8912_tpC.innerText = prtHex(c[2].tonePeriod);
+    rtm_8912_tcA.innerText = prtHex(c[0].toneCounter);
+    rtm_8912_tcB.innerText = prtHex(c[1].toneCounter);
+    rtm_8912_tcC.innerText = prtHex(c[2].toneCounter);
+    rtm_8912_vA.innerText = prtHex(c[0].volume);
+    rtm_8912_vB.innerText = prtHex(c[1].volume);
+    rtm_8912_vC.innerText = prtHex(c[2].volume);
+    var c = vecx.e8910;
+    rtm_8912_np.innerText = prtHex(c.noisePeriod);
+    rtm_8912_nc.innerText = prtHex(c.noiseCounter);
+    rtm_8912_nr.innerText = prtHex(c.noise);
+    var psg = vecx.e8910.psg;
 
     //
     // 8912 PIN layout
@@ -186,7 +204,7 @@ var myChipMon = (function() {
   function rtm6522() {
     // VIA : MOS 6522A
     var rtm = vecx.rtm;
-    (vecx.e8910.psg.ready) ? rtm_6522_pin_Res.classList.add("set") : rtm_6522_pin_Res.classList.remove("set");
+    (vecx.e8910.ena) ? rtm_6522_pin_Res.classList.add("set") : rtm_6522_pin_Res.classList.remove("set");
     (rtm.lastRW) ? rtm_6522_pin_RW.classList.add("set") : rtm_6522_pin_RW.classList.remove("set");
     (rtm.clk) ? rtm_6522_pin_Clk.classList.add("set") : rtm_6522_pin_Clk.classList.remove("set");
     if (rtm.lastTyp === "via") {

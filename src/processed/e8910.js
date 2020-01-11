@@ -83,7 +83,6 @@ function e8910()
 
     this.e8910_write = function(r, v) {
         var old;
-
         this.psg.lastReg = r; // DrSnuggles
         this.psg.lastVal = v; // DrSnuggles
 
@@ -535,4 +534,3 @@ function e8910()
         this.psg.ready = 0;
     }
 }
-
