@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg">
+    <g style="clip-rule:nonzero;fill:#0a50a1;fill-rule:nonzero;stroke:#0a50a1;stroke-width:10;stroke-linejoin:round;stroke-miterlimit:4"
+       transform="matrix(0.35277778,0,0,0.35277778,9.3552896,10.261038)">
+		<g>
+		  <g>
+			<path d="M 31.421,5.494 24.001,17.222 16.16,5.428 5,5.327 24,34.306 42,5.589 31.421,5.494 Z"/>
+		  </g>
+		  <g style="fill:none;stroke:#ffffff;stroke-width:1;stroke-linejoin:miter">
+			<path d="M 31.421,5.494 24.001,17.222 16.16,5.428 5,5.327 24,34.306 42,5.589 31.421,5.494 Z"/>
+		  </g>
+		</g>
+    </g>
+</svg>

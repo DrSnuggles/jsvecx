@@ -48,7 +48,6 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
     the "Sound" in the menu.
 
 ## Paramter list
-Parameter list:
   - ?rom=Accepts URL, filename or simple rom name
   - &sound=on | off : Nice for office playing and if you want to link to a rom with known audio problems (Berzerk)
   - &pause=on | off : Opens in paused mode
@@ -91,6 +90,7 @@ Parameter list:
     - get rid of select instead use filterable table with additional info
     - save/load state
     - speed adjustment (no, not timing)
+    - inform user about home screen installation
   Emu:
     - emulate colors
     - emulate flash rom for Vectorblade
@@ -107,9 +107,12 @@ Parameter list:
 
 ## Change Log
 
+### 01/12/20 (0.3.12) (DrSnuggles)
+  - favIcon which is larger than the rest :(
+
 ### 01/11/20 (0.3.11) (DrSnuggles)
   - a lot of tests... and roll-backs
-  - added manifest for better mobile experience
+  - improved mobile experience
 
 ### 01/08/20 (0.3.10) (DrSnuggles)
   - Idea by Vectrexer: load BIOS from URL (looks for // in bios parameter, take care of mixed content and CORS)
