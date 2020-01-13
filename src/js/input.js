@@ -1,9 +1,9 @@
 /*
   input.js
   maps inputs from various sources to vecx.js
-  - keyboard
-  - gamepad
-  - touch
+  - keyboard (digital)
+  - gamepad (analog)
+  - touch (analog)
 */
 
 var input = (function() {
@@ -14,9 +14,9 @@ var input = (function() {
   //
   my.keys = (function() {
     var my = {
-      'switchKeys' : false, // false := keyboard is used for player one
-      'keys1' : ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','KeyA','KeyS','KeyD','KeyF'],
-      'keys2' : ['Numpad8','Numpad5','Numpad4','Numpad6','Numpad1','Numpad2','Numpad3','Numpad0'],
+      "switchKeys" : false, // false := keyboard is used for player one
+      "keys1" : ["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","KeyA","KeyS","KeyD","KeyF"],
+      "keys2" : ["Numpad8","Numpad5","Numpad4","Numpad6","Numpad1","Numpad2","Numpad3","Numpad0"],
     };
     var pressed = [
       {"left":false, "right":false, "up":false, "down":false},
@@ -156,10 +156,10 @@ var input = (function() {
           //console.log("Gamepad connected at index " + gp.index + ": " + gp.id + ". It has " + gp.buttons.length + " buttons and " + gp.axes.length + " axes.");
 
           if (i < 2) {
-            vecx.button(controller[i], 0, gp.buttons[my['gp'+(i+1)][4]].pressed);
-            vecx.button(controller[i], 1, gp.buttons[my['gp'+(i+1)][5]].pressed);
-            vecx.button(controller[i], 2, gp.buttons[my['gp'+(i+1)][6]].pressed);
-            vecx.button(controller[i], 3, gp.buttons[my['gp'+(i+1)][7]].pressed);
+            vecx.button(controller[i], 0, gp.buttons[my["gp"+(i+1)][4]].pressed);
+            vecx.button(controller[i], 1, gp.buttons[my["gp"+(i+1)][5]].pressed);
+            vecx.button(controller[i], 2, gp.buttons[my["gp"+(i+1)][6]].pressed);
+            vecx.button(controller[i], 3, gp.buttons[my["gp"+(i+1)][7]].pressed);
 
             if (gp.axes.length > 1) {
               // analog stick
@@ -167,16 +167,16 @@ var input = (function() {
               vecx.axis(controller[i], 1, Math.min(255,Math.floor(gp.axes[1]*-128)+128) ); //up/down
             } else {
               // digital gamepad stick, only if analog is not available
-              if (gp.buttons[my['gp'+(i+1)][2]].pressed) {
+              if (gp.buttons[my["gp"+(i+1)][2]].pressed) {
                 vecx.axis(controller[i], 0, 0);
-              } else if(gp.buttons[my['gp'+(i+1)][3]].pressed) {
+              } else if(gp.buttons[my["gp"+(i+1)][3]].pressed) {
                 vecx.axis(controller[i], 0, 255);
               } else {
                 vecx.axis(controller[i], 0, 128);
               }
-              if (gp.buttons[my['gp'+(i+1)][0]].pressed) {
+              if (gp.buttons[my["gp"+(i+1)][0]].pressed) {
                 vecx.axis(controller[i], 1, 255);
-              } else if(gp.buttons[my['gp'+(i+1)][1]].pressed) {
+              } else if(gp.buttons[my["gp"+(i+1)][1]].pressed) {
                 vecx.axis(controller[i], 1, 0);
               } else {
                 vecx.axis(controller[i], 1, 128);
@@ -207,18 +207,20 @@ var input = (function() {
       {"left":false, "right":false, "up":false, "down":false}
     ];
     // detect touch
-    addEventListener('touchstart', function onFirstTouch() {
+    my.onFirstTouch = function() {
       loadHead("style", "css/touch.css", function(){
         xhr("overlay_touch.html", function(txt) {
           document.body.insertAdjacentHTML("beforeend", txt);
           setTimeout(function(){
+            createJoystick( document.getElementById("joy") );
             // fade in ctrl overlay
-            touchctrl.classList.toggle('fadeIn');
-            removeEventListener('touchstart', onFirstTouch, false);
+            touchctrl.classList.toggle("fadeIn");
+            removeEventListener("touchstart", input.touch.onFirstTouch, false);
           },50);
         });
       });
-    }, false);
+    };
+    addEventListener("touchstart", my.onFirstTouch, {passive:false});
 
     // https://jsfiddle.net/aa0et7tr/5/
 
@@ -230,25 +232,27 @@ var input = (function() {
       var controller = my.switchTouch ? 1 : 0;
       var id = (e.originalTarget) ? e.originalTarget.id : e.srcElement.id;
       switch (id) {
-        case 'o_l':
+        /*
+        case "o_l":
           pressed[controller].left = held;
           break;
-        case 'o_r':
+        case "o_r":
           pressed[controller].right = held;
           break;
-        case 'o_u':
+        case "o_u":
           pressed[controller].up = held;
           break;
-        case 'o_d':
+        case "o_d":
           pressed[controller].down = held;
           break;
-        case 'o_1':
-        case 'o_2':
-        case 'o_3':
-        case 'o_4':
+        */
+        case "o_1":
+        case "o_2":
+        case "o_3":
+        case "o_4":
           vecx.button(controller, id.substr(2)*1-1, held);
           break;
-        case 'o_m':
+        case "o_m":
           if (held) toggleMenu();
           break;
         default:
@@ -256,6 +260,7 @@ var input = (function() {
       }
 
       // send axis to vecx
+      /*
       for (var i = 0; i < pressed.length; i++) {
         if (pressed[i].left) {
           vecx.axis(i, 0, 0x00);
@@ -272,6 +277,7 @@ var input = (function() {
           vecx.axis(i, 1, 0x80);
         }
       }
+      */
 
       if( handled && e.preventDefault ) {
         e.preventDefault();
@@ -279,11 +285,85 @@ var input = (function() {
 
     };
 
-    addEventListener('touchstart', touchHandler, {passive:false});
-    addEventListener('touchend', touchHandler, {passive:false});
+    addEventListener("touchstart", touchHandler, {passive:false});
+    addEventListener("touchend", touchHandler, {passive:false});
     // DEBUG or forever ??
-    addEventListener('mousedown', touchHandler, {passive:false});
-    addEventListener('mouseup', touchHandler, {passive:false});
+    addEventListener("mousedown", touchHandler, {passive:false});
+    addEventListener("mouseup", touchHandler, {passive:false});
+
+    // https://jsfiddle.net/aa0et7tr/5/
+    function createJoystick(parent) {
+      //var maxDiff = 100;
+      var stick = document.createElement("div");
+      stick.classList.add("joystick");
+
+      stick.addEventListener("mousedown", handleMouseDown);
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+      stick.addEventListener("touchstart", handleMouseDown);
+      document.addEventListener("touchmove", handleMouseMove);
+      document.addEventListener("touchend", handleMouseUp);
+
+      var dragStart = null;
+      var currentPos = { x: 0, y: 0 };
+
+      function handleMouseDown(event) {
+        stick.style.transition = "0s";
+        if (event.changedTouches) {
+          dragStart = {
+            x: event.changedTouches[0].clientX,
+            y: event.changedTouches[0].clientY,
+          };
+          return;
+        }
+        dragStart = {
+          x: event.clientX,
+          y: event.clientY,
+        };
+
+      }
+
+      function handleMouseMove(event) {
+        if (dragStart === null) return;
+        event.preventDefault();
+        if (event.changedTouches) {
+          event.clientX = event.changedTouches[0].clientX;
+          event.clientY = event.changedTouches[0].clientY;
+        }
+        var xDiff = event.clientX - dragStart.x;
+        var yDiff = event.clientY - dragStart.y;
+        var angle = Math.atan2(yDiff, xDiff);
+        // not sure if i really want maxdiff, because in corners i do not get extreme vals
+        var maxDiff = joy.clientWidth/4;
+    		var distance = Math.min(maxDiff, Math.hypot(xDiff, yDiff));
+    		var xNew = distance * Math.cos(angle);
+    		var yNew = distance * Math.sin(angle);
+        // stick.style.transform = `translate3d(${xNew}px, ${yNew}px, 0px)`; // not sure if that makes problems while minimizing
+        stick.style.transform = "translate3d("+ xNew +"px, "+ yNew +"px, 0px)";
+        currentPos = { x: xNew/maxDiff*128+128, y: yNew/maxDiff*-128+128 };
+        setAxis();
+      }
+
+      function handleMouseUp(event) {
+        if (dragStart === null) return;
+        stick.style.transition = ".2s";
+        stick.style.transform = "translate3d(0px, 0px, 0px)";
+        dragStart = null;
+        currentPos = { x: 0x80, y: 0x80 };
+        setAxis();
+      }
+
+      function setAxis() {
+        //console.log( currentPos );
+        vecx.axis(0, 0, currentPos.x);
+        vecx.axis(0, 1, currentPos.y);
+      }
+
+      parent.appendChild(stick);
+      return {
+        getPosition: currentPos,
+      };
+    }
 
     return my;
   })();

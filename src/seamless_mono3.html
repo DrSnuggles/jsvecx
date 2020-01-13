@@ -1,11 +1,11 @@
   </script>
 </head>
 <body>
-
+<main>
   <div id="wrapper">
     <canvas id="vecscr" width="660" height="820"></canvas>
 
-    <img id="overlay" class="fadeAble"/>
+    <img id="overlay" class="fadeAble" alt="Overlay"/>
 
     <div id="menu" class="fadeAble">
       <div id="stat">Loading ...</div>
@@ -14,26 +14,24 @@
       <button onclick="togglePause();">Pause</button>
       <button onclick="toggleSound();">Sound</button><br/>
       <button onclick="toggleAA();">Antialias</button>
-      <button onclick="toggleQuality();">Quality</button>
+      <button onclick="toggleOverlay();">Overlay</button>
       <button onclick="toggleFullscreen();">Fullscreen</button><br/>
       <button onclick="toggleGP();">GP polling</button>
       <button onclick="toggleSwitchKeys();">Switch Keys</button>
       <button onclick="toggleSwitchGP();">Switch GPs</button><br/>
-      <button onclick="toggleOverlay();">Overlay</button>
       <button onclick="toggleRTM();">Show&nbsp;Chips</button>
       <button id="quicklink" onclick="copyQuicklink();" title="https://DrSnuggles.github.io/jsvecx">Copy&nbsp;Link</button><br/>
       <div id="instructions">
-        Player1 = Arrows + A S D F<br/>
-        Player2 = Numpad<br/>
-        or use a X360 gamepad<br/>
+        Player1 = Arrows + A S D F or gampad/touch<br/>
+        Player2 = Numpad or gamepad<br/>
         Menu = ESC/RMB<br/>
         <br/>
       </div>
 
       <div id="credits">
-        This fork by <a href="https://github.com/DrSnuggles/jsvecx" target="_blank">DrSnuggles</a><br/>
-        Javascript port by <a href="http://www.twitchasylum.com/jsvecx/" target="_blank">raz0red</a><br/>
-        Original C version by <a href="http://valavan.net/vectrex.html" target="_blank">Valavan Manohararajah</a><br/>
+        This fork by <a href="https://github.com/DrSnuggles/jsvecx" target="_blank" rel="noreferrer">DrSnuggles</a><br/>
+        Javascript port by <a href="http://www.twitchasylum.com/jsvecx/" target="_blank" rel="noreferrer">raz0red</a><br/>
+        Original C version by <a href="http://valavan.net/vectrex.html" target="_blank" rel="noreferrer">Valavan Manohararajah</a><br/>
         Sound emulation based on various code snippets by<br/>
         Ville Hallik, Michael Cuddy, Tatsuyuki Satoh,<br/>
         Fabrice Frances, Nicola Salmoria.<br/>

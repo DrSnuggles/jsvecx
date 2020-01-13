@@ -85,12 +85,13 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 
 ## ToDo
   Input:
-    - analog touch (touch did not work on new mac/pads but on old ones) (no reqAnimFrame on ipad1)
+    - analog touch stick has still problem while using buttons
   Usability:
     - get rid of select instead use filterable table with additional info
     - save/load state
     - speed adjustment (no, not timing)
     - inform user about home screen installation
+    - generate QR as link
   Emu:
     - emulate colors
     - emulate flash rom for Vectorblade
@@ -101,18 +102,27 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
     - volume control
   Communication
     - save highscores
-    - multiplayer player (player1 = server) (WebRTC, WebSocket, STUN, TURN) (will rty serverless first with a google STUN)
+    - multiplayer player (player1 = server) (WebRTC, WebSocket, STUN, TURN) (will try serverless first with a google STUN)
       - vectrex audio, video, input
       - voice chat
 
 ## Change Log
 
+### 01/13/20 (0.3.13) (DrSnuggles)
+  - automatic quality (no more button for this, attached to resize)
+  - analog touch input (known issue while using buttons)
+  - ~reduce amount of requests (manifest + favicon)~
+
 ### 01/12/20 (0.3.12) (DrSnuggles)
-  - favIcon which is larger than the rest :(
+  - favIcon
 
 ### 01/11/20 (0.3.11) (DrSnuggles)
+- improved mobile experience (manifest)
   - a lot of tests... and roll-backs
-  - improved mobile experience
+    - GFX (branch rAF-test):
+      - use reqAnimFrame everywhere: 50.0fps are hard to get
+      - try to use more canvas draw like routines instead of pixel stream: worked but had some flickering
+    - SFX (branch Adutio-test): use Ayumi as audio renderer: sounded "colorful"
 
 ### 01/08/20 (0.3.10) (DrSnuggles)
   - Idea by Vectrexer: load BIOS from URL (looks for // in bios parameter, take care of mixed content and CORS)

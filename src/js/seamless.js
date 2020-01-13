@@ -214,8 +214,12 @@ function toggleSwitchGP() {
     stat.innerText = "Joy 1=Player 1, Joy 2=Player 2";
   }
 }
-function toggleQuality() {
-  var y, x = Globals.SCREEN_X_DEFAULT;
+function toggleQuality(x, y) {
+  if (!vecx.osint.ctx) return;
+  //y = 410/330 * x;
+  //x = Math.floor(x/8)*8;
+  //y = Math.floor(y/8)*8;
+  /*
   if (x == 330) {
     x = 660;
     y = 820;
@@ -226,10 +230,14 @@ function toggleQuality() {
     x = 330;
     y = 410;
   }
-  Globals.SCREEN_X_DEFAULT = vecscr.width = x;
-  Globals.SCREEN_Y_DEFAULT = vecscr.height = y;
+  */
+  Globals.SCREEN_X_DEFAULT = vecx.osint.screen_x = vecscr.width = x;
+  Globals.SCREEN_Y_DEFAULT = vecx.osint.screen_y = vecscr.height = y;
+  vecx.osint.init(vecx, vecscr);
+  //vecx.osint.osint_updatescale();
+  //vecx.osint.osint_clearscreen();
   stat.innerText = x + " x " + y;
-  vecx.main( vecscr );
+  //vecx.main( vecscr );
 }
 function toggleOverlayDir() {
   if (overlayDir.indexOf("img/overlays") > -1) {
@@ -302,6 +310,9 @@ function resizer() {
   menu.style.height = overlay.clientHeight * 0.8 +'px';
   menu.style.left = overlay.clientWidth * 0.1 +'px';
   menu.style.top = overlay.clientHeight * 0.1 +'px';
+
+  // auto toggle quality
+  toggleQuality(vecscr.clientWidth,vecscr.clientHeight);
 }
 function loadHead(tag, url, cb) {
   xhr(url, function(txt) {
@@ -489,6 +500,61 @@ function resumeLastSaveState() {
 (function(){
   //
   // onload
+  //
+
+  //
+  // head work
+  //
+  /*
+  var favIcon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADABAMAAACg8nE0AAAAJFBMVEVHcExxmsk0brEcXagKUKFShL2Jq9LX4vC/0eelv93+/v/v9PmzZ5L/AAAAAXRSTlMAQObYZgAABPRJREFUeAHtmoFnXFkYR1+S6QJoGEEWVncKCazOEBTamdvNBthdUwhYthYB6JLVBQiqAAoNkJIkuQVSoPvP7dNR3zPv3L4cEwv7Dgh5L3PfuXe+3/vuTfW/o6enp6enp2ft+5Rm4/H40YPPPHy+YHOruhtGqcizirk3Scij+3AxXBvM6I5qnopMyxczs6rN0NywkRYISxvqhtTJd1XlbvmhajBIAFhVt/AMl/nZPvOTxnJLt+CpmrSamTJUUzUZiWcOQ2KaUzKOUrKOBikJR+spWUdzcUMMRzhyNwySdbSRkpmEebKOhu4DRsk6SgzWo1ils+Pj49c17xb8UbO1tbW5OWw5ilUxq5NpXJOQ6dJ4jjJyEXe0DO3k4J+a48/89WXISx+wn5lROFo29ObrQwpFC2WZ+XPJURh62nHD8iQf5Zvx+MGC5wt+2fy25SiW9eN89e51zfGCv2tJuWaemooay3QvX8PqbzmK0nXaeLrWH4lJHqRwBN+JN0uO7iW8PjR8XF6mgxhR/DJ4vOSoYQieeNr40CexrPkOdjSBwQY/5at2vU7G0RoNNtjONzGaVuCwo92mo4ah/XzVzoBPediuXS+Mo9FXDR3kSwjldeFoGj/FYIPD/D594UfKj9P8suAIpvOybehVfkuvXkNak+wo2I7BxqDzhwlF7IZw1JjOmLuoruf8dop/ix3BdAav8gm/nM69o8N8Dtd9GDUMoSP2Hc+F0xmjO2vGmXfE0wn3Rp2wjmA6g2fNq+5X3hFPJ9TdMOQdwXRCJQtD4Gj3No528xlHAfcr3hE95n6+hkInHPF0BttgCB3t5DN2hNMJ1TUMSUdYdLm6VgAsQXTEJZGjwDuK6eTqGmmMjqIMsKOOsJywIe9omjEsz7mn9o7i3acJhOUyAyiV4MiFpXdUDMszDssmo25HseBbj3dCX2PvKBY8TxAYCr5pBiI7CkMiCtjRecnRAT3dKYdl2dFB2VEhLOcQli3WeFk3HcVvRBSQo8OSI5z/o2IUeEc7GJYYBewoiiM7igUPfRMY0o44LN+XDHlH+UJFgXcEbwQHHJbMpNPR3EdBydElObru7JuEoxfg6KOLAu9ofvu+qcMR1/0k+ibmXocjHwXsiLOX4L5pVUc+Crwj7pvu3tEeR8GKjnwUsKMpOhJ90x042ocoUI6uEgBbaMJQOIL3aN5CiyjQjo7QkeibmAEqDrhv4ihA1suOfFgizWV+kwLdN3lHPgq8o3LfJOBS4MNyRUe70Dd5R1FsxBaadtQdBb9Vjljee+HI901I94Z57LloQwFvxem+qcwQQ9H3Td6RD0vviPsm7wgPXjjtKkA7En2Td/TSR4F35PumMnzwYvom78hFgXd0IaLAO4LmkrfQLNAE0BaaN8QHL65v8o5Gq0eBOFQQfZN35KPAO5J9k3e0ahTw4dSZ7Zu8I7eF5h2dmL7JO4ri4Psmhg5eVogCcajg+ibvqDbko6DMoOVIRoF35PsmBg9e5BaadzSBfz24W0duC807Ord9k3fk+6YydDj1NpLHFDpxqGD6pkAcKnRHgWet6UiGpXfkwtI7kn2Td/RJRoF3BP96cLeOZN/kHUlDfqNThqV3JKPAbwZ7Q96RDkvvyH+NvaNK4R2ZsPSOxBoSeEOSgZ9iSUo+ahTrydc5x+9+hiUbfvyWXyezh1VPT09PT09Pz3/Pv5hdgdrWVCVdAAAAAElFTkSuQmCC";
+
+  // manifest
+  var tmp = document.createElement("link");
+  tmp.rel = "manifest";
+  var manifest = {
+    "short_name": "jsVecX",
+    "name": "DrSnuggles: jsVecX",
+    "start_url": "index.html",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#000000",
+    "theme_color": "#33FF33",
+    "icons": [
+     {
+      "src": favIcon,
+      "sizes": "192x192",
+      "type": "image/png"
+     }
+    ]
+  };
+  tmp.href = "data:application/manifest+json," + JSON.stringify(manifest);
+  document.head.appendChild(tmp);
+
+  // favicons
+  //stackoverflow.com/questions/2268204/favicon-dimensions/48646940
+  // all other
+  tmp = document.createElement("link");
+  tmp.href = favIcon;
+  tmp.rel = "shortcut icon";
+  tmp.type = "image/png";
+  document.head.appendChild(tmp);
+
+  // android
+  tmp = document.createElement("link");
+  tmp.href = favIcon;
+  tmp.rel = "shortcut icon";
+  tmp.sizes = "192x192";
+  document.head.appendChild(tmp);
+
+  // apple
+  tmp = document.createElement("link");
+  tmp.href = favIcon;
+  tmp.rel = "apple-touch-icon";
+  document.head.appendChild(tmp);
+  */
+
+  //
+  // parameters
   //
   function getUrlParameter(name) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -691,7 +757,7 @@ function resumeLastSaveState() {
     setOverlay("MineStorm"); // no rom set
   }
 
-  // mobile vertical scroll
+  // mobile vertical/all scroll
   addEventListener("touchmove", function(e){
     e.preventDefault();
   }, {passive:false});

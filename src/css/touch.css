@@ -10,14 +10,6 @@
   height: 6vw;
   margin: 1vw 0 0 1vw;
 }
-  @media (max-aspect-ratio: 330/410) {
-    .touchctrl button {
-      font-size: 3vh;
-      width: 6vh;
-      height: 6vh;
-      margin: 1vh 0 0 1vh;
-    }
-  }
 .tl {
   position: fixed;
   top: 0;
@@ -29,6 +21,8 @@
   bottom: 0;
   left: 0;
   z-index: 1;
+  width: 12vw;
+  height: 12vw;
 }
 .br {
   position: fixed;
@@ -42,3 +36,26 @@
   #touchctrl.fadeIn {
     opacity: 1;
   }
+.joystick {
+  background-color: #FFF;
+  opacity: 0.5;
+  border-radius: 100%;
+  cursor: pointer;
+  height: 50%;
+  user-select: none;
+  width: 50%;
+  margin-top: 25%;
+  margin-left: 25%;
+}
+@media (max-aspect-ratio: 330/410) {
+  .touchctrl button {
+    font-size: 3vh;
+    width: 6vh;
+    height: 6vh;
+    margin: 1vh 0 0 1vh;
+  }
+  .bl {
+    width: 12vh;
+    height: 12vh;
+  }
+}
