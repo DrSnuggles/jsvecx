@@ -347,27 +347,43 @@ function osint()
         // DrSnuggles: clear all
         //ctx.clearRect(0, 0, this.screen_x, this.screen_y);
         ctx.fillRect(0, 0, this.screen_x, this.screen_y); // decay style clear
+        ctx.stroke();
 
         // DrSnuggles: draw lines
         //ctx.beginPath();
         //ctx.lineWidth = 1;
+        // would prever VML for size reason but will take SVG for compat reasons
+        // actually prop. test format
+        // cCOLOR,x,y = draws dot at x,y color= 0-15
+        // mx,y       \
+        // lCOLOR,x,y } should combine that again
+        var mylines = [];
         for( v = 0; v < vector_draw_cnt; v++ )
         {
             draw = vectors_draw[v];
             //this.osint_line(draw.x0, draw.y0, draw.x1, draw.y1, draw.color);
             //console.log(draw.color);
+            ctx.beginPath();
             ctx.strokeStyle = ctx.fillStyle = "rgba("+this.color_set[ draw.color ]+",1)";
+            //ctx.strokeStyle = ctx.fillStyle = "rgba(255,255,255,1)";
             if (draw.x0 === draw.x1 && draw.y0 === draw.y1) {
               // dot
               ctx.fillRect(draw.x0/this.scl_factor,draw.y0/this.scl_factor,1,1);
+              mylines.push("c"+draw.color+","+draw.x0/this.scl_factor+","+draw.y0/this.scl_factor+";");
             } else {
               // line
               ctx.moveTo(draw.x0/this.scl_factor, draw.y0/this.scl_factor);
               ctx.lineTo(draw.x1/this.scl_factor, draw.y1/this.scl_factor);
+              mylines.push("m"+draw.x0/this.scl_factor+","+draw.y0/this.scl_factor+";");
+              mylines.push("l"+draw.color+","+draw.x1/this.scl_factor+","+draw.y1/this.scl_factor+";");
             }
             //console.log("line",draw.x0/this.scl_factor, draw.y0/this.scl_factor, draw.x1/this.scl_factor, draw.y1/this.scl_factor, draw.color);
+            ctx.stroke();
         }
-        ctx.stroke();
+        myline = mylines.join("");
+        window['maxsize'] = Math.max(window['maxsize'], myline.length);
+        //console.log(window['maxsize']);
+
 
         //this.ctx.putImageData(this.imageData, 0, 0);
 

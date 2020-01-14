@@ -187,6 +187,7 @@ function VecX()
       clk: 0,
     };
     this.doBankSwitching = false; // for Malban's Patch
+    this.rAF = false; // requestAnimationFrame reference
 
     // Malban
     this.alternate = 0;
@@ -1902,17 +1903,17 @@ function VecX()
     this.vecx_emuloop = function()
     {
         if( this.running ) return;
-
         this.running = true;
+        if (this.rAF) return;
 
         var EMU_TIMER = this.osint.EMU_TIMER;
         var cycles = ( Globals.VECTREX_MHZ / 1000 >> 0 ) * EMU_TIMER;
         var vecx = this;
 
-        this.startTime = this.nextFrameTime = new Date().getTime() + EMU_TIMER;
+        //this.startTime = this.nextFrameTime = new Date().getTime() + EMU_TIMER;
         this.count = 0;
-        this.extraTime = 0;
-
+        //this.extraTime = 0;
+        this.startTime = performance.now();
 
         /*
         this.fpsTimer = setInterval(
@@ -1942,7 +1943,7 @@ function VecX()
 
         var f = function()
         {
-            requestAnimationFrame(f);
+            this.rAF = requestAnimationFrame(f);
             if( !vecx.running ) return;
 
             now = performance.now(); // better performance.now()
@@ -1966,14 +1967,20 @@ function VecX()
               vecx.vecx_emu.call( vecx, cycles, 0 );
               vecx.count++;
 
+              vecx.status =  "FPS: "+ ( vecx.count / ( now - vecx.startTime ) * 1000.0 ).toFixed(2) + " (50) - diff: " + delta % interval;
+
+              if (vecx.count > 500) {
+                vecx.startTime = now;
+                vecx.count = 0;
+              }
               //var now = new Date().getTime();
-              var waitTime = vecx.nextFrameTime - now;
-              vecx.extraTime += waitTime;
-              if( waitTime < -EMU_TIMER ) waitTime = -EMU_TIMER;
+              //var waitTime = vecx.nextFrameTime - now;
+              //vecx.extraTime += waitTime;
+              //if( waitTime < -EMU_TIMER ) waitTime = -EMU_TIMER;
 
-              vecx.nextFrameTime = now + EMU_TIMER + waitTime;
+              //vecx.nextFrameTime = now + EMU_TIMER + waitTime;
 
-
+/*
               vecx.status =  "FPS: " +
                     ( vecx.count / ( new Date().getTime() - vecx.startTime )
                         * 1000.0 ).toFixed(2) + " (50)" +
@@ -1981,13 +1988,13 @@ function VecX()
                        ( ", extra: " +
                             ( vecx.extraTime / ( vecx.count / 50 ) ).toFixed(2)
                                 + " (ms)" ) : "" );
-
               if( vecx.count > 500 )
               {
                   vecx.startTime = new Date().getTime();
                   vecx.count = 0;
                   vecx.extraTime = 0;
               }
+              */
 
               //setTimeout( function() { f(); }, waitTime );
             }
@@ -1995,7 +2002,7 @@ function VecX()
         };
 
         //setTimeout( f, 15 );
-        requestAnimationFrame(f);
+        this.rAF = requestAnimationFrame(f);
     }
 
     this.stop = function()
