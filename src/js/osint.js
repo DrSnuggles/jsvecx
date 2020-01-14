@@ -22,6 +22,7 @@ function osint()
 
     //this.bytes_per_pixel = 4;
     this.actImg = [];
+    this.lum = 0.5;
 
     this.osint_updatescale = function()
     {
@@ -322,7 +323,7 @@ function osint()
 
         ctx.beginPath();
         ctx.lineWidth = 1;
-        ctx.strokeStyle = ctx.fillStyle = "rgba(0,0,0,0.5)"; //0.5 was quite OK
+        ctx.strokeStyle = ctx.fillStyle = "rgba(0,0,0,"+ this.lum +")"; //0.5 was quite OK
         /*
         for( v = 0; v < vector_erse_cnt; v++ )
         {

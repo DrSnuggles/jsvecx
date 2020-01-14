@@ -84,3 +84,8 @@ button {
   #overlay.fadeOut {
     opacity: 0;
   }
+
+/* Slider */
+input[type="range"] {
+  width: 80%;
+}

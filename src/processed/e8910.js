@@ -522,7 +522,13 @@ function e8910()
             this.node.onaudioprocess = function(e) {
                 self.e8910_callback(e.outputBuffer.getChannelData(0), 512);
             }
-            this.node.connect(this.ctx.destination);
+
+            // rewire with gain node for volume control
+            this.gain = this.ctx.createGain();
+            this.node.connect(this.gain);
+            this.gain.connect(this.ctx.destination);
+            this.gain.gain.value = 0.3;
+
             var resumeFunc =
                 function(){if (ctx.state !== 'running') ctx.resume();}
             document.documentElement.addEventListener("keydown", resumeFunc);

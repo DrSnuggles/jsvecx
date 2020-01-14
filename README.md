@@ -61,6 +61,8 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
   - &gp2=Up,Down,Left,Right,Button1,Button2,Button3,Button4
   - &bios=B796 | 7931 | 7ADB (default)
   - &bopt=ori | fast (default) | skip
+  - &vol=0.00...1.00 (default:0.3)
+  - &lum=0.00...1.00 (default:0.5)
 
 ## Tested Browser Support +=working o=untested -=not working
     + Windows
@@ -99,7 +101,6 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
     Audio:
       - choose 11kHz,22kHz,33kHz,44kHz,48kHz
       - maybe switch to different AY-3-89xx emulation
-      - volume control
     Communication
       - save highscores
       - multiplayer player (player1 = server) (WebRTC, WebSocket, STUN, TURN) (will try serverless first with a google STUN)
@@ -107,6 +108,10 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
         - voice chat
 
 ## Change Log
+
+### 01/14/20 (0.4.0) (DrSnuggles)
+    - volume slider
+    - luminescence slider
 
 ### 01/14/20 (0.4.0) (DrSnuggles)
     - osint rework: dropped >80% code and went back to.... Vectors!

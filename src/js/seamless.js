@@ -733,6 +733,17 @@ function resumeLastSaveState() {
     }
   }
 
+  // parameters for sliders
+  var vol = getUrlParameter('vol');
+  if (vol && vol == vol*1) {
+    vecx.e8910.gain.gain.value = vol*1;
+    vol_slider.value = vol*1;
+  }
+  var lum = getUrlParameter('lum');
+  if (lum && lum == lum*1) {
+    vecx.osint.lum = 1 - lum*1;
+    lum_slider.value = lum*1;
+  }
 
   // autopause on visibility change
   document.addEventListener("visibilitychange", visChg, false);
@@ -804,4 +815,13 @@ function resumeLastSaveState() {
     e.preventDefault();
   }, {passive:false});
 
+  // sliders
+  vol_slider.addEventListener("input", function(e){
+    vecx.e8910.gain.gain.value = e.target.value*1;
+    stat.innerText = "Volume: "+ (e.target.value*1).toFixed(2);
+  });
+  lum_slider.addEventListener("input", function(e){
+    vecx.osint.lum = 1 - e.target.value*1;
+    stat.innerText = "Luminescence: "+ (e.target.value*1).toFixed(2);
+  });
 })();
