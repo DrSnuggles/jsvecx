@@ -73,8 +73,8 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
       o Safari 12.x.x
       o Safari 10.1.2
     + Mobiles
-      + Android
-        + Chrome
+      + Android more modern
+      - Android 5.1 (no touch input)
       + iPhone6+ iOS 12.x.x
         + Safari
         + Chrome
