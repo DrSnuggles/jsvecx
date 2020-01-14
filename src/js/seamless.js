@@ -360,18 +360,60 @@ function visChg() {
 //  download(vecscr.toDataURL("image/png"), "JSVecX_screenshot_"+".png", "image/png");
 //}
 function printScreen() {
-  var a = document.createElement('a');
+  vecx.stop();
+  var a = document.createElement("a");
   var d = new Date();
   d = d.toISOString();
+  // PNG
   a.setAttribute('download', 'JSVecX_'+d+'.png');
-  //var dataURL = vecscr.toDataURL('image/png');
-  //var url = dataURL.replace(/^data:image\/png/,'data:application/octet-stream');
+  var dataURL = vecscr.toDataURL('image/png');
+  var url = dataURL.replace(/^data:image\/png/,'data:application/octet-stream');
   vecx.osint.canvas.toBlob(function(blob) {
     var url = URL.createObjectURL(blob);
     a.setAttribute('href', url);
     a.click();
     console.log("Screenshot saved as: "+ 'JSVecX_'+d+'.png');
+
+    // SVG
+    var b = document.createElement("a");
+    b.setAttribute("download", "JSVecX_"+d+".svg");
+    var preface = '<?xml version="1.0" encoding="utf-8" standalone="no"?>\r\n';
+    var svgBlob = new Blob([preface, makeSVG()], {type:"image/svg+xml;charset=utf-8"});
+    var svgUrl = URL.createObjectURL(svgBlob);
+    b.href = svgUrl;
+    b.click();
+    console.log("Screenshot saved as: JSVecX_"+d+".svg");
+
+    vecx.start();
   });
+
+
+  //vecx.start();
+}
+//
+// maybe better done direct from vecx.vectors_draw
+// but wanted generation in emu loop for later sending that data in compact way
+//
+function makeSVG() {
+  var r = [], // ret object
+  l, // line
+  p, // parameters
+  c; // color
+  r.push('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 410" style="background:black">');
+  for (var i = 0; i < vecx.osint.actImg.length; i++) {
+    l = vecx.osint.actImg[i];
+    p = l.split(",");
+    c = vecx.osint.color_set[ p[0] ];
+    if (p.length === 3) {
+      // dot
+      r.push('<rect x="'+ p[1]/100 +'" y="'+ p[2]/100 +'" width="0.1" height="0.1" stroke="rgb('+ c +')" />');
+    } else {
+      // line
+      r.push('<line x1="'+ p[1]/100 +'" y1="'+ p[2]/100 +'" x2="'+ p[3]/100 +'" y2="'+ p[4]/100 +'" stroke="rgb('+ c +')" />');
+    }
+  }
+  r.push('</svg>');
+  return r.join('\r\n');
 }
 /*
 function download(content, fileName, mimeType) {

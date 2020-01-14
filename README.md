@@ -108,6 +108,10 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 
 ## Change Log
 
+### 01/14/20 (0.4.0) (DrSnuggles)
+    - osint rework: dropped >80% code and went back to.... Vectors!
+    - PrintScreen now saves png and svg files
+
 ### 01/13/20 (0.3.13) (DrSnuggles)
     - automatic quality (one button less YES, attached to resize)
     - analog touch input (known issue while using buttons)
