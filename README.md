@@ -63,111 +63,111 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
   - &bopt=ori | fast (default) | skip
 
 ## Tested Browser Support +=working o=untested -=not working
-  + Windows
-    + Chrome
-    + Firefox
-    - Edge (no KeyboardEvent.code)
-    - IE11 (no KeyboardEvent.code, no audio)
-    - Safari 5.1.7 (no KeyboardEvent.code, no audio, no requestAnimationFrame)
-  o Mac
-    o Safari 12.x.x
-    o Safari 10.1.2
-  + Mobiles
-    + Android
+    + Windows
       + Chrome
-    + iPhone6+ iOS 12.x.x
-      + Safari
-      + Chrome
-    o iPhone4 iOS7.1.2
-      o Safari
-      o Chrome
-    - iPad1 Safari 5.1.1 (no KeyboardEvent.code, no audio, no requestAnimationFrame)
+      + Firefox
+      - Edge (no KeyboardEvent.code)
+      - IE11 (no KeyboardEvent.code, no audio)
+      - Safari 5.1.7 (no KeyboardEvent.code, no audio, no requestAnimationFrame)
+    o Mac
+      o Safari 12.x.x
+      o Safari 10.1.2
+    + Mobiles
+      + Android
+        + Chrome
+      + iPhone6+ iOS 12.x.x
+        + Safari
+        + Chrome
+      o iPhone4 iOS7.1.2
+        o Safari
+        o Chrome
+      - iPad1 Safari 5.1.1 (no KeyboardEvent.code, no audio, no requestAnimationFrame)
 
 ## ToDo
-  Input:
-    - analog touch stick has still problem while using buttons
-  Usability:
-    - get rid of select instead use filterable table with additional info
-    - save/load state
-    - speed adjustment (no, not timing)
-    - inform user about home screen installation
-    - generate QR as link
-  Emu:
-    - emulate colors
-    - emulate flash rom for Vectorblade
-    - LightPen (Info: http://vectrex.playntradeonline.com/technical.html)
-  Audio:
-    - choose 11kHz,22kHz,33kHz,44kHz,48kHz
-    - maybe switch to different AY-3-89xx emulation
-    - volume control
-  Communication
-    - save highscores
-    - multiplayer player (player1 = server) (WebRTC, WebSocket, STUN, TURN) (will try serverless first with a google STUN)
-      - vectrex audio, video, input
-      - voice chat
+    Input:
+      - analog touch stick has still problem while using buttons
+    Usability:
+      - get rid of select instead use filterable table with additional info
+      - save/load state
+      - speed adjustment (no, not timing)
+      - inform user about home screen installation
+      - generate QR as link
+    Emu:
+      - emulate colors
+      - emulate flash rom for Vectorblade
+      - LightPen (Info: http://vectrex.playntradeonline.com/technical.html)
+    Audio:
+      - choose 11kHz,22kHz,33kHz,44kHz,48kHz
+      - maybe switch to different AY-3-89xx emulation
+      - volume control
+    Communication
+      - save highscores
+      - multiplayer player (player1 = server) (WebRTC, WebSocket, STUN, TURN) (will try serverless first with a google STUN)
+        - vectrex audio, video, input
+        - voice chat
 
 ## Change Log
 
 ### 01/13/20 (0.3.13) (DrSnuggles)
-  - automatic quality (no more button for this, attached to resize)
-  - analog touch input (known issue while using buttons)
-  - ~reduce amount of requests (manifest + favicon)~
+    - automatic quality (one button less YES, attached to resize)
+    - analog touch input (known issue while using buttons)
+    - ~reduce amount of requests (manifest + favicon)~
 
 ### 01/12/20 (0.3.12) (DrSnuggles)
-  - favIcon
+    - favIcon
 
 ### 01/11/20 (0.3.11) (DrSnuggles)
-- improved mobile experience (manifest)
-  - a lot of tests... and roll-backs
-    - GFX (branch rAF-test):
-      - use reqAnimFrame everywhere: 50.0fps are hard to get
-      - try to use more canvas draw like routines instead of pixel stream: worked but had some flickering
-    - SFX (branch Adutio-test): use Ayumi as audio renderer: sounded "colorful"
+    - improved mobile experience (manifest)
+    - a lot of tests... and roll-backs
+      - GFX (branch rAF-test):
+        - use reqAnimFrame everywhere: 50.0fps are hard to get
+        - try to use more canvas draw like routines instead of pixel stream: worked but had some flickering, felt different to play
+      - SFX (branch Audio-test): use Ayumi as audio renderer: sounded "colorful"
 
 ### 01/08/20 (0.3.10) (DrSnuggles)
-  - Idea by Vectrexer: load BIOS from URL (looks for // in bios parameter, take care of mixed content and CORS)
-  - also take care of default BIOS patch = fast
-  - https://drsnuggles.github.io/jsvecx/?bios=https://drsnuggles.github.io/jsvecx/bios/b796.bin&bopt=ori
+    - Idea by Vectrexer: load BIOS from URL (looks for // in bios parameter, take care of mixed content and CORS)
+    - also take care of default BIOS patch = fast
+    - https://drsnuggles.github.io/jsvecx/?bios=https://drsnuggles.github.io/jsvecx/bios/b796.bin&bopt=ori
 
 ### 01/07/20 (0.3.9) (DrSnuggles)
-  - Added BIOS versions via parameter &bios=B796 &bopt=skip
-    B796: v1 GCE
-    7931: v2 MB
-    7ADB: v3 MB EU (default)
-    options: ori, fast (default), skip (hack by Frank Chevassu)
+    - Added BIOS versions via parameter &bios=B796 &bopt=skip
+        B796: v1 GCE
+        7931: v2 MB
+        7ADB: v3 MB EU (default)
+        options: ori, fast (default), skip (hack by Frank Chevassu)
 
 ### 01/03/20 (0.3.8) (DrSnuggles)
-  - Controller fixes after MineStorm day with Dani
-    - individual gamepad mappings (&gp1=12,13,14,15,2,3,0,1)
-    - default gamepad settings had up/down reversed
-    - 1st gamepad found is now player1 (you can use Toggle GP to use for player2)
+    - Controller fixes after MineStorm day with Dani
+      - individual gamepad mappings (&gp1=12,13,14,15,2,3,0,1)
+      - default gamepad settings had up/down reversed
+      - 1st gamepad found is now player1 (you can use Toggle GP to use for player2)
 
 ### 12/31/19 (0.3.7) (DrSnuggles)
-  - Fixed Keyboard mappings (no longer case sensitive)
-  - Added parameter to map keys individually
+    - Fixed Keyboard mappings (no longer case sensitive)
+    - Added parameter to map keys individually
     default: &keys1=ArrowUp,ArrowDown,ArrowLeft,ArrowRight,KeyA,KeyS,KeyD,KeyF
     &keys2=Numpad8,Numpad5,Numpad4,Numpad6,Numpad1,Numpad2,Numpad3,Numpad0
     (playvectrex settings: &keys2=Digit8,KeyI,KeyU,KeyO,KeyQ,KeyW,KeyE,KeyR)
-  - removed double Player2 key settings
+    - removed double Player2 key settings
 
 ### 12/30/19 (0.3.6) (DrSnuggles)
-  - Idea by playvectrex: copy link of actual rom
+    - Idea by playvectrex: copy link of actual rom
 
 ### 12/30/19 (0.3.5) (DrSnuggles)
-  - Idea by Graham Toal: load roms from URL (looks for // in rom parameter, take care of mixed content and CORS)
-  - Also tries to load overlay from same URL but with extension .png
+    - Idea by Graham Toal: load roms from URL (looks for // in rom parameter, take care of mixed content and CORS)
+    - Also tries to load overlay from same URL but with extension .png
 
 ### 12/29/19 (0.3.4) (DrSnuggles)
-  - Idea by playvectrex: added 2nd player keyboard input. It's still possible to switch keys for Player1 <-> Player2 QWER8UIO and also on Numpad 85461230
+    - Idea by playvectrex: added 2nd player keyboard input. It's still possible to switch keys for Player1 <-> Player2 QWER8UIO and also on Numpad 85461230
 
 ### 12/24/19 (0.3.3) (DrSnuggles)
-  - added Binary Star Software roms. Thanks !!
+    - added Binary Star Software roms. Thanks !!
 
 ### 12/20/19 (0.3.2) (DrSnuggles)
-  - pause on visibility change
-  - pause on menu
-  - show CRC (in console)
-  - save screenshots (PrintScr)
+    - pause on visibility change
+    - pause on menu
+    - show CRC (in console)
+    - save screenshots (PrintScr)
 
 ### 12/18/19 (0.3.1) (Malban Patches)
     – corrected the SHIFT Bug
