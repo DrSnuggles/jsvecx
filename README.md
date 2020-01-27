@@ -47,7 +47,7 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
     Star Trek, Armor Attack). Sound can be toggled on and off by clicking
     the "Sound" in the menu.
 
-## Paramter list
+## Parameter list
   - ?rom=Accepts URL, filename or simple rom name
   - &sound=on | off : Nice for office playing and if you want to link to a rom with known audio problems (Berzerk)
   - &pause=on | off : Opens in paused mode
@@ -73,7 +73,7 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
       - Safari 5.1.7 (no KeyboardEvent.code, no audio, no requestAnimationFrame)
     o Mac
       o Safari 12.x.x
-      o Safari 10.1.2
+      + Safari 10.1.2
     + Mobiles
       + Android more modern
       - Android 5.1 (no touch input)
@@ -84,6 +84,9 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
         o Safari
         o Chrome
       - iPad1 Safari 5.1.1 (no KeyboardEvent.code, no audio, no requestAnimationFrame)
+
+## Hints
+    - Don't know the button numbers for gamepad config? https://html5gamepad.com/
 
 ## ToDo
     Input:
@@ -97,7 +100,7 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
     Emu:
       - emulate colors
       - emulate flash rom for Vectorblade
-      - LightPen (Info: http://vectrex.playntradeonline.com/technical.html)
+      - Vectrexer: LightPen (Info: http://vectrex.playntradeonline.com/technical.html)
     Audio:
       - choose 11kHz,22kHz,33kHz,44kHz,48kHz
       - maybe switch to different AY-3-89xx emulation
@@ -109,9 +112,20 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 
 ## Change Log
 
-### 01/14/20 (0.4.0) (DrSnuggles)
-    - volume slider
-    - luminescence slider
+### 01/27/20 (0.4.2) (DrSnuggles)
+    - Rom selection: Table instead of DropDown (ToDo: step by step rename roms, gamepad input)
+    - Cocktail: Flipped screen for MineStorm Cocktail rom
+    - CA1 interrupt (LightPen still not really working)
+    - showMem
+    - Peek
+    - Poke
+    - setReg
+
+### 01/14/20 (0.4.1) (DrSnuggles)
+    - volume slider (known issue with iPhone)
+    - luminescence slider (known issue with iPhone)
+    - parameter: &vol=0.25
+    - parameter: &lum=0.33
 
 ### 01/14/20 (0.4.0) (DrSnuggles)
     - osint rework: dropped >80% code and went back to.... Vectors!

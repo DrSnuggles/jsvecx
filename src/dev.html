@@ -46,6 +46,8 @@
   <script src="js/input.js"></script>
   <script src="js/dnd.js"></script>
   <script src="js/romList.js"></script>
+  <script src="js/table.js"></script>
+  <script src="js/hexMon.js"></script>
 
 </head>
 <body>
@@ -57,29 +59,44 @@
 
     <div id="menu" class="fadeAble">
       <div id="stat">Loading ...</div>
-      <select id="roms"></select><br/>
+      <!-- <select id="roms" style="display: none;"></select> -->
+      <div id="tblDiv">
+        <table class="tbl" id="myTbl" cellspacing="0" cellpadding="0" width="100%">
+          <thead>
+            <tr>
+              <th><input placeholder="Name"/></th>
+              <th><input placeholder="Author"/></th>
+              <th><input placeholder="Cat"/></th>
+              <th width="1"><input placeholder="Year"/></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
       <input type="range" id="vol_slider" min="0.0" max="1.0" step="0.01" value="0.3" title="Volume"/>
       <input type="range" id="lum_slider" min="0.0" max="0.8" step="0.01" value="0.5" title="Luminescence"/>
-      <button onclick="vecx.reset();">Reset</button>
-      <button onclick="togglePause();">Pause</button>
-      <button onclick="toggleSound();">Sound</button><br/>
-      <button onclick="toggleAA();">Antialias</button>
-      <button onclick="toggleOverlay();">Overlay</button>
-      <button onclick="toggleFullscreen();">Fullscreen</button><br/>
-      <button onclick="toggleGP();">GP&nbsp;polling</button>
-      <button onclick="toggleSwitchKeys();">Switch&nbsp;Keys</button>
-      <button onclick="toggleSwitchGP();">Switch&nbsp;GP</button><br/>
-      <button onclick="toggleRTM();">Show&nbsp;Chips</button>
-      <button id="quicklink" onclick="copyQuicklink();" title="https://DrSnuggles.github.io/jsvecx">Copy&nbsp;Link</button><br/>
+      <button title="Reset" onclick="vecx.reset();">↺</button>
+      <button title="Pause" onclick="togglePause();">❚❚</button>
+      <button title="Sound" onclick="toggleSound();">🔈</button>
+      <button title="Antialias" onclick="toggleAA();">ᨓ</button>
+      <button title="Overlay" onclick="toggleOverlay();">🖼</button>
+      <button title="Fullscreen" onclick="toggleFullscreen();">⛶</button>
+      <button id="quicklink" onclick="copyQuicklink();" title="https://DrSnuggles.github.io/jsvecx">🔗</button><br/>
+      <button title="Gamepad polling" onclick="toggleGP();">🕹</button>
+      <button class="xl" title="Swap keys player 1 with player 2" onclick="toggleSwitchKeys();">⌨⇔&nbsp;🖮</button>
+      <button class="xl" title="Swap gamepads player with player 2" onclick="toggleSwitchGP();">🕹⇔🎮</button>
+      <button title="Show the chips doing their work" onclick="toggleRTM();"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYAQMAAADaua+7AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAGUExURUdwTP///5+UokMAAAABdFJOUwBA5thmAAAAGHRFWHRTb2Z0d2FyZQBwYWludC5uZXQgNC4xLjb9TgnoAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAALElEQVQI12NgAALGmQ1gDAL8/z/Acf7/b2DM3/gBjPMbv4ExnA+TR9KDZh4ApUojucxOwooAAAAASUVORK5CYII=" alt="Show Chips" class="img"/></button><br/>
       <div id="instructions">
-        Player1 = Arrows + A S D F or gampad/touch<br/>
+        Player1 = Arrows + A S D F or gamepad/touch<br/>
         Player2 = Numpad or gamepad<br/>
         Menu = ESC/RMB<br/>
         <br/>
       </div>
 
       <div id="credits">
-        This fork by <a href="https://github.com/DrSnuggles/jsvecx" target="_blank" rel="noreferrer">DrSnuggles</a><br/>
+        This fork by <a href="https://github.com/DrSnuggles/jsvecx" target="_blank" rel="noreferrer">DrSnuggles</a>
+        <!--
+        <br/>
         Javascript port by <a href="http://www.twitchasylum.com/jsvecx/" target="_blank" rel="noreferrer">raz0red</a><br/>
         Original C version by <a href="http://valavan.net/vectrex.html" target="_blank" rel="noreferrer">Valavan Manohararajah</a><br/>
         Sound emulation based on various code snippets by<br/>
@@ -87,15 +104,22 @@
         Fabrice Frances, Nicola Salmoria.<br/>
         1080 Overlays by THK-Hyperspin and Gigapig-Hyperspin<br/>
         <br/>
+        -->
       </div>
 
     </div>
   </div>
 
+  <div id="memMon" class="fadeAble"></div>
+
   <script src="js/seamless.js"></script>
 
   <script>
-  input.touch.onFirstTouch();
+  //input.touch.onFirstTouch();
+  //<div id="memMon"></div>
+  //setTimeout(function(){
+  //  hexMon.init(memMon, vecx.ram, 0xC880, (0xCC00-0xC880));
+  //},1000);
   </script>
 </main>
 </body>

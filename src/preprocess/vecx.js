@@ -1,20 +1,8 @@
-/*
-JSVecX : JavaScript port of the VecX emulator by raz0red.
-         Copyright (C) 2010-2019 raz0red
+/*  JSVecX: This version by DrSnuggles 2020
+    JavaScript port of the VecX emulator by raz0red. Copyright (C) 2010-2019 raz0red
+    The original C version was written by Valavan Manohararajah (http://valavan.net/vectrex.html)
 
-The original C version was written by Valavan Manohararajah
-(http://valavan.net/vectrex.html).
-*/
-
-/*
-  Emulation of the AY-3-8910 / YM2149 sound chip.
-
-  Based on various code snippets by Ville Hallik, Michael Cuddy,
-  Tatsuyuki Satoh, Fabrice Frances, Nicola Salmoria.
-*/
-
-/*
-// Malban
+Includes a lot of code done by Malban
 // regardless of interrup, the t1pb7 is set when timer expired
 // changed for VectorPatrol 13.01.2018, string print routine
 // via_t1on and via_t1on are not allowed to go "off" - timers are ALWAYS running!
@@ -96,13 +84,14 @@ function VecX()
     this.via_ifr = 0;
     //static unsigned via_ier;
     this.via_ier = 0;
+    this.via_ca1 = 1;
+    this.old_via_ca1 = 1;
     //static unsigned via_ca2;
     this.via_ca2 = 0;
     //static unsigned via_cb2h;  /* basic handshake version of cb2 */
     this.via_cb2h = 0;
     //static unsigned via_cb2s;  /* version of cb2 controlled by the shift register */
     this.via_cb2s = 0;
-
     /* analog devices */
 
     //static unsigned alg_rsh;  /* zero ref sample and hold */
@@ -187,6 +176,7 @@ function VecX()
       clk: 0,
     };
     this.doBankSwitching = false; // for Malban's Patch
+    this.sig_blank = 0; // moved out of emu_loop for lightpen access
 
     // Malban
     this.alternate = 0;
@@ -213,7 +203,7 @@ function VecX()
     this.supplyVoltage=0;
     this.timeConstant = this.resistorOhm*this.capacitorFarad;
 
-    this.VECTREX_CYCLE_TIME = 1.0/1500000.0;
+    this.VECTREX_CYCLE_TIME = 1.0/Globals.VECTREX_MHZ;
     this.percentageDifChangePerCycle = Math.exp(-this.VECTREX_CYCLE_TIME/this.timeConstant);
 
   	this.getIntVoltageValue = function()
@@ -460,7 +450,7 @@ function VecX()
             if( address & 0x800 )
             {
                 /* ram */
-                this.rtm.lastAdr = address & 0x3ff; // DrSnuggles
+                this.rtm.lastAdr = address;// & 0x3ff; // DrSnuggles
                 this.rtm.lastVal = this.ram[address & 0x3ff] & 0xff; // DrSnuggles
                 this.rtm.lastTyp = "ram"; // DrSnuggles
 
@@ -1443,7 +1433,7 @@ function VecX()
         var sig_dx = 0;
         var sig_dy = 0;
         var sig_ramp = 0;
-        var sig_blank = 0;
+        vecx.sig_blank = 0;
 
         while( cycles > 0 )
         {
@@ -1674,15 +1664,15 @@ function VecX()
                 sig_dx = 0;
                 sig_dy = 0;
                 sig_ramp = 0;
-                sig_blank = 0;
+                vecx.sig_blank = 0;
 
                 if( (this.via_acr & 0x10) == 0x10 )
                 {
-                    sig_blank = this.via_cb2s;
+                    vecx.sig_blank = this.via_cb2s;
                 }
                 else
                 {
-                    sig_blank = this.via_cb2h;
+                    vecx.sig_blank = this.via_cb2h;
                 }
 
                 if( this.via_ca2 == 0 )
@@ -1754,7 +1744,7 @@ function VecX()
 
                 if( this.alg_vectoring == 0 )
                 {
-                    if( sig_blank == 1 &&
+                    if( vecx.sig_blank == 1 &&
                         this.alg_curr_x >= 0 && this.alg_curr_x < Globals.ALG_MAX_X &&
                         this.alg_curr_y >= 0 && this.alg_curr_y < Globals.ALG_MAX_Y )
                     {
@@ -1773,7 +1763,7 @@ function VecX()
                 {
                     /* already drawing a vector ... check if we need to turn it off */
 
-                    if( sig_blank == 0 )
+                    if( vecx.sig_blank == 0 )
                     {
                         /* blank just went on, vectoring turns off, and we've got a
                          * new line.
@@ -1823,6 +1813,25 @@ function VecX()
                 if (((this.via_orb & 0x01) == 0) && ((this.via_orb & 0x06) == 0x02))
           					this.doStep();
 
+                // Lightpen / mouse is pressed
+                if (input.mouse.down) {
+                  if ((Math.abs(this.alg_curr_x-input.mouse.x)<0x100) && ((Math.abs(this.alg_curr_y-input.mouse.y)<0x100))) {
+                    //console.log(this.alg_curr_x, input.mouse.x, this.alg_curr_y, input.mouse.y);
+                    // we have the right position,
+                    // is the beam also switched on?
+                    // lightpen only reacts on light switched ON
+                    if (this.sig_blank == 1) {
+                      this.button(1, 3, true);
+                    } else {
+                      this.button(1, 3, false);
+                    }
+                  } else {
+                    this.button(1, 3, false);
+                  }
+                } else {
+                  //this.button(1, 3, false); // TODO DrS not correct for 2player games...
+                }
+
                 this.alg_curr_x += sig_dx;
                 this.alg_curr_y += sig_dy;
 
@@ -1862,6 +1871,31 @@ function VecX()
 
                     this.via_cb2h = 1;
                 }
+
+                        // Malban: set CA1 interrupt
+                        // documentation of VIA
+                        if (this.via_ca1 != this.old_via_ca1)
+                        {
+                            if ((this.via_pcr & 0x01) == 0x01) // interrupt flag is set by transition low to high
+                            {
+                                if (this.via_ca1 != 0)
+                                {
+                                    this.via_ifr = this.via_ifr | 0x02;
+                                    //int_update(); // where the hack is this function????
+                                }
+                            }
+                            else // ((via_pcr & 0x01) == 0x00) // interrupt flag is set by transition high to low
+                            {
+                                if (this.via_ca1 == 0)
+                                {
+                                    this.via_ifr = this.via_ifr | 0x02;
+                                    //int_update();
+                                }
+                            }
+                            this.old_via_ca1 = this.via_ca1;// NEW, moved this line into if clause
+                        }
+
+
             }
 //
 // alg_sstep1 inline end
@@ -1898,6 +1932,19 @@ function VecX()
     this.fpsTimer = null;
 
     this.running = false;
+
+    // from Malban: Via6522
+    this.int_update = function()
+    {
+      if ( (((via_ifr & 0x7f) & (via_ier & 0x7f))) != 0   )
+      {
+        via_ifr |= 0x80;
+      }
+        else
+      {
+        via_ifr &= 0x7f;
+      }
+    }
 
     this.vecx_emuloop = function()
     {
@@ -2027,6 +2074,10 @@ function VecX()
       var buttonVal = Math.pow(2, button);
       buttonVal = buttonVal * Math.pow(2, controller*4);
       state ? vecx.shadow_snd_regs14 &= ~buttonVal : vecx.shadow_snd_regs14 |= buttonVal;
+      // set ca1 (lightpen)
+      if (controller === 1 && button === 3) {
+        this.via_ca1 = !state;
+      }
     };
 
     this.axis = function(controller, axis, val) {

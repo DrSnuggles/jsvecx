@@ -153,7 +153,34 @@ var romList=
 		"Star Hawk (Trackball)",
 		"Patriots (Trackball)",
 		"Patriots Remix (Trackball)",
-		"Patriots III (Trackball)"
+		"Patriots III (Trackball)",
+		"Mine Storm_II(Cocktail)",
+		"Solar Quest_(Cocktail)",
+		"Star Castle_(Cocktail1)",
+		"Star Castle_(Cocktail2)"
+	],
+	"Pouet":[
+		"EigenVectrex_(cmcc, 2019)",
+		"DEADLINE2019_(Rabenauge, 2019)",
+		"Raiding Party_(Rift, 2017)",
+		"Springs are going to the party_(Realm of Illusion, 2017)",
+		"vecZ_(La1n, 2016)",
+		"sinZ_(La1n, 2015)",
+		"T-Rex in the Vectrex_(Defame,Disaster Area, 2015)",
+		"Invitron_(Realm of Illusion, 2015)",
+		"Rainy_(Realm of Illusion, 2015)",
+		"Electric Force_(Realm of Illusion, 2015)",
+		"Heps Q Q_(Fit, 2014)",
+		"Very Vectight_(Pex Mahoney Tufvesson, 2014)",
+		"Random Access Vector_(Fit, 2013)",
+		"Lords of Code_(Nuance,Metalvotze, 2013)",
+		"Where Have All The Pixels Gone_(cmcc, 2012)",
+		"Epic Realtime_(Nuance, 2012)",
+		"Lineart_(Nuance,MetalVotze, 2010)",
+		"Twistex_(Orb, 2009)",
+		"Bresenham_(Metalvotze, 2008)",
+		"Pimmelsafari II_(Metalvotze, 2005)",
+		"0ldsk00l_(Pelikonepeijoonit, 2002)"
 	],
 	"Manu":[
 		"0ldsk00l Demo (2002)",
@@ -224,6 +251,7 @@ var romList=
 		"We Wish You a Merry Christmas (1986)"
 	],
 	"Homebrew":[
+		"OregonTrail_by Ralf Kornmann, 2020",
 		"4-D Rotating Cube Demo (19xx)",
 		"Abyss Demo (1999)",
 		"Alpha Demo (2001)",

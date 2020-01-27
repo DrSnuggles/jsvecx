@@ -311,8 +311,8 @@ function osint()
     */
     this.osint_render = function()
     {
-        var vector_erse_cnt = this.vecx.vector_erse_cnt;
-        var vectors_erse = this.vecx.vectors_erse;
+        //var vector_erse_cnt = this.vecx.vector_erse_cnt;
+        //var vectors_erse = this.vecx.vectors_erse;
         var vector_draw_cnt = this.vecx.vector_draw_cnt;
         var vectors_draw = this.vecx.vectors_draw;
         var v = 0;
@@ -360,24 +360,24 @@ function osint()
         // wanted generation in emu loop for later sending that data in compact way
         for( v = 0; v < vector_draw_cnt; v++ )
         {
-            draw = vectors_draw[v];
-            //this.osint_line(draw.x0, draw.y0, draw.x1, draw.y1, draw.color);
-            //console.log(draw.color);
-            ctx.beginPath();
-            ctx.strokeStyle = ctx.fillStyle = "rgba("+this.color_set[ draw.color ]+",1)";
-            //this.actImg.push(draw.color+","+draw.x0+","+draw.y0+","+draw.x1+","+draw.y1);
-            if (draw.x0 === draw.x1 && draw.y0 === draw.y1) {
-              // dot
-              ctx.fillRect(draw.x0/this.scl_factor,draw.y0/this.scl_factor,1,1);
-              this.actImg.push(draw.color+","+draw.x0+","+draw.y0);
-            } else {
-              // line
-              ctx.moveTo(draw.x0/this.scl_factor, draw.y0/this.scl_factor);
-              ctx.lineTo(draw.x1/this.scl_factor, draw.y1/this.scl_factor);
-              this.actImg.push(draw.color+","+draw.x0+","+draw.y0+","+draw.x1+","+draw.y1);
-            }
-            //console.log("line",draw.x0/this.scl_factor, draw.y0/this.scl_factor, draw.x1/this.scl_factor, draw.y1/this.scl_factor, draw.color);
-            ctx.stroke();
+          draw = vectors_draw[v];
+          //this.osint_line(draw.x0, draw.y0, draw.x1, draw.y1, draw.color);
+          //console.log(draw.color);
+          ctx.beginPath();
+          ctx.strokeStyle = ctx.fillStyle = "rgba("+this.color_set[ draw.color ]+",1)";
+          //this.actImg.push(draw.color+","+draw.x0+","+draw.y0+","+draw.x1+","+draw.y1);
+          if (draw.x0 === draw.x1 && draw.y0 === draw.y1) {
+            // dot
+            ctx.fillRect(draw.x0/this.scl_factor,draw.y0/this.scl_factor,1,1);
+            this.actImg.push(draw.color+","+draw.x0+","+draw.y0);
+          } else {
+            // line
+            ctx.moveTo(draw.x0/this.scl_factor, draw.y0/this.scl_factor);
+            ctx.lineTo(draw.x1/this.scl_factor, draw.y1/this.scl_factor);
+            this.actImg.push(draw.color+","+draw.x0+","+draw.y0+","+draw.x1+","+draw.y1);
+          }
+          //console.log("line",draw.x0/this.scl_factor, draw.y0/this.scl_factor, draw.x1/this.scl_factor, draw.y1/this.scl_factor, draw.color);
+          ctx.stroke();
         }
 
         //this.ctx.putImageData(this.imageData, 0, 0);

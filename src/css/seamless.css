@@ -1,5 +1,12 @@
+/* vars */
+:root {
+  --bgCol: #000;
+  --darkCol: #333;
+  --mainCol: #FFF;
+}
+
 body {
-  background-color: #000;
+  background-color: var(--bgCol);
   margin: 0;
   overflow: hidden;
   position: relative;
@@ -18,21 +25,29 @@ body {
 #vecscr {
   position: absolute;
 }
+  #vecscr.mirrored {
+    -webkit-transform: scaleY(-1);
+     transform: scaleY(-1);
+  }
+
 #overlay {
   position: absolute;
   pointer-events: none;
 }
+  #overlay.mirrored {
+    -webkit-transform: scaleY(-1);
+     transform: scaleY(-1);
+  }
 #menu {
   position: absolute;
   display: none;
-  background-color: #000;
+  background-color: var(--bgCol);
   opacity: 0.7;
   text-align: center;
   border-radius: 3vh;
 }
   #menu * {
-    color: #FFF;
-    margin: 5px;
+    color: var(--mainCol);
     font-size: 2.5vh;
   }
   @media (max-aspect-ratio: 330/410) {
@@ -41,22 +56,45 @@ body {
     }
   }
 #stat {
-  padding-top: 8px;
   text-align: center;
+  margin: 0.1vh;
 }
 #roms {
-  background-color: #000;
+  background-color: var(--bgCol);
   padding: 2px 2px 2px 5px;
   width: 80%;
   text-align-last: center;
 }
 button {
-  width: 25%;
+  /*
+  border-radius: 3vh;
+  padding: 0.5vh;
+  margin: 5px;
+  */
+  height: 5vh;
+  width: 10%;
+  border: 0;
   background-color: transparent;
 }
-  button.xxl {
-    width: 80%;
+  button.xl {
+    width: 20%;
   }
+  button img.img {
+    width: 3vh;
+  }
+  button:focus {
+    outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+  }
+
+  @media (max-aspect-ratio: 330/410) {
+    button {
+      height: 7.5vw;
+    }
+    button img.img {
+      width: 3vw;
+    }
+  }
+
 #credits {
   position: absolute;
   bottom: 0;
@@ -85,7 +123,163 @@ button {
     opacity: 0;
   }
 
-/* Slider */
-input[type="range"] {
-  width: 80%;
+/* Sliders */
+/* https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/ */
+/* Hide default style */
+input[type=range] {
+  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+  cursor: crosshair;
+  width: 98%; /* Specific width is required for Firefox. */
+  background: transparent; /* Otherwise white in Chrome */
+}
+input[type=range]::-webkit-slider-thumb {
+  margin-top: -0.7vh; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+  -webkit-appearance: none; /* Also needed for custom slider */
+}
+input[type=range]:focus {
+  outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+/*
+input[type=range]::-ms-track {
+  width: 100%;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+*/
+
+/* Style the thumb */
+/* Special styling for WebKit/Blink */
+input[type=range]::-webkit-slider-thumb {
+  height: 2vh;
+  width: 2vh;
+  border-radius: 50%;
+  background: -webkit-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 0%,rgba(0,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: radial-gradient(ellipse at center, rgba(255,255,255,1) 0%,rgba(0,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+/* All the same stuff for Firefox */
+input[type=range]::-moz-range-thumb {
+  height: 2vh;
+  width: 2vh;
+  border-radius: 50%;
+  background: -moz-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 0%, rgba(0,0,0,1) 100%); /* FF3.6-15 */
+}
+
+/* Style the track */
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 0.5vh;
+  background: var(--darkCol);
+  border-radius: 50%;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: var(--darkCol);
+}
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 0.5vh;
+  background: var(--darkCol);
+  border-radius: 50%;
+}
+
+/* rom table */
+#tblDiv {
+  height: 45vh; /* needs mediaquery */
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: 0 3px 0 3px;
+  scrollbar-color: var(--mainCol) var(--darkCol); /* FF */
+  scrollbar-width: thin; /* FF */
+}
+#tblDiv * {
+  font-size: 1.5vh;
+}
+.tbl th {
+  position: -webkit-sticky; /* Safari (Desktop & iOS) */
+  position: sticky; /* Chrome */
+  top: 0;
+  z-index: 5;
+  color: var(--mainCol);
+  background-color: var(--bgCol);
+  white-space: nowrap;
+  text-align: left;
+}
+.tbl td div {
+  color: var(--mainCol);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 14vh; /* needs mediaquery */
+  text-align: left;
+}
+.tbl input {
+  width: 70%;
+  color: var(--bgCol);
+  background-color: var(--bgCol);
+  border: 1px solid var(--mainCol);
+}
+.tbl input:focus {
+  outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+
+.tbl tr.hide {
+  display: none;
+}
+@media (max-aspect-ratio: 330/410) {
+  #tblDiv {
+    height: 50vw;
+  }
+  .tbl td div {
+    width: 18vw;
+  }
+}
+
+/* scrollbars */
+::-webkit-scrollbar{
+	width: 2vh;
+	background-color: transparent;
+  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+}
+/*
+::-webkit-scrollbar:horizontal{
+	height:12px;
+}
+*/
+::-webkit-scrollbar-track{
+	border-radius: 50%;
+}
+::-webkit-scrollbar-thumb{
+  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+  border-radius: 50%;
+  background: -webkit-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 0%,rgba(0,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: radial-gradient(ellipse at center, rgba(255,255,255,1) 0%,rgba(0,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+/* Memory Monitor */
+#memMon {
+  position: fixed;
+  top: 0;
+  right: 0;
+  line-height: 8px;
+  opacity: 0;
+}
+  #memMon.fadeIn {
+    opacity: 1;
+  }
+#memMon input.cel {
+  width: 1vw;
+  font-size: 8px;
+  background-color: #000;
+  color: #FFF;
+  border: 1px solid #FFF;
+  border-collapse: collapse;
+}
+#memMon input.red {
+  background-color: #F55;
+}
+#memMon input.green {
+  background-color: #5F5;
+}
+#memMon input.blue {
+  background-color: #55F;
 }

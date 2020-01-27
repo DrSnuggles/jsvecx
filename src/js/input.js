@@ -110,7 +110,7 @@ var input = (function() {
         }
 
         if( handled && e.preventDefault ) {
-          e.preventDefault();
+          //e.preventDefault();
         }
 
       } // vecx?
@@ -147,6 +147,8 @@ var input = (function() {
     };
     var loop = function() {
       raf = requestAnimationFrame(loop);
+      if (typeof vecx === "undefined") return;
+      
       var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
       var gp;
       var controller = my.switchGP ? [1,0] : [0,1];
@@ -216,6 +218,14 @@ var input = (function() {
             // fade in ctrl overlay
             touchctrl.classList.toggle("fadeIn");
             removeEventListener("touchstart", input.touch.onFirstTouch, false);
+
+            // better on single buttons?
+            touchctrl.addEventListener("touchstart", touchHandler, {passive:false});
+            touchctrl.addEventListener("touchend", touchHandler, {passive:false});
+            // DEBUG or forever ??
+            touchctrl.addEventListener("mousedown", touchHandler, {passive:false});
+            touchctrl.addEventListener("mouseup", touchHandler, {passive:false});
+
           },50);
         });
       });
@@ -284,12 +294,6 @@ var input = (function() {
       }
 
     };
-
-    addEventListener("touchstart", touchHandler, {passive:false});
-    addEventListener("touchend", touchHandler, {passive:false});
-    // DEBUG or forever ??
-    addEventListener("mousedown", touchHandler, {passive:false});
-    addEventListener("mouseup", touchHandler, {passive:false});
 
     // https://jsfiddle.net/aa0et7tr/5/
     function createJoystick(parent) {
@@ -366,6 +370,34 @@ var input = (function() {
     }
 
     return my;
+  })();
+
+  //
+  // mouse = lightpen
+  //
+  my.mouse = (function(){
+    var my = {
+      down : false,
+      x: 0,
+      y: 0,
+    };
+
+    function mouseHandler(e) {
+      if (e.target !== vecscr) return;
+      if (e.type === "mousedown") {
+        my.down = true;
+      } else if (e.type === "mouseup") {
+        my.down = false;
+      }
+      my.x = e.layerX / vecscr.clientWidth * Globals.ALG_MAX_X;
+      my.y = e.layerY / vecscr.clientHeight * Globals.ALG_MAX_Y;
+    }
+    addEventListener("mousedown", mouseHandler, {passive:false});
+    addEventListener("mouseup", mouseHandler, {passive:false});
+    addEventListener("mousemove", mouseHandler, {passive:false});
+
+    return my;
+
   })();
 
   return my;

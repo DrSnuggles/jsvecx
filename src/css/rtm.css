@@ -1,26 +1,27 @@
-#rtm8912 {
+#rtm8912,
+#rtm6809,
+#rtm6522,
+#rtmROMRAM
+{
+  pointer-events: none;
   position: fixed;
+  opacity: 0;
+}
+#rtm8912 {
   top: 0;
   right: 0;
-  opacity: 0;
 }
 #rtm6809 {
-  position: fixed;
   top: 0;
   left: 0;
-  opacity: 0;
 }
 #rtm6522 {
-  position: fixed;
   bottom: 0;
   right: 0;
-  opacity: 0;
 }
 #rtmROMRAM {
-  position: fixed;
   bottom: 0;
   left: 0;
-  opacity: 0;
 }
   #rtm8912.fadeIn,
   #rtm6809.fadeIn,

@@ -208,6 +208,12 @@ var myChipMon = (function() {
         (i < 4) ? document.getElementById('rtm_6522_pin_A'+i).classList.remove("set") : false;
       }
     }
+    // CA1
+    if (vecx.via_ca1) {
+      rtm_6522_pin_CA1.classList.add("set");
+    } else {
+      rtm_6522_pin_CA1.classList.remove("set");
+    }
   }
   function rtm4052() {
     // Analog Device 4052B

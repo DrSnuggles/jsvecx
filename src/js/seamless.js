@@ -5,6 +5,8 @@ Globals.romdata=atob('7Xf4UDDoTUlORYD4UADeU1RPUk2AAI7Ig2+AjMu7Jvm96ON8yCSGu7fIgI
 
 var overlayDir = "img/overlays_1080/";
 var overlayName = "";
+var lastCRC;
+var cocktailCRCs = ["f2160e6c","cbfafd6e","60b3cd6f","80738ec6"];
 
 function switchRom(rom) {
   vecx.stop();  // Stop the emulator
@@ -15,14 +17,17 @@ function switchRom(rom) {
   // Start the emulator
   if (typeof rom === "object") {
     // rom was dropped
-    console.info("dropped rom has CRC32", CRC32(Globals.cartdata).toString(16));
+    lastCRC = CRC32(Globals.cartdata).toString(16);
+    console.info("dropped rom has CRC32", lastCRC);
+    stat.innerText = "Loaded.";
+    // stat.innerText = "CRC32: "+ crc;
     // sorry no bank switching for dropped roms. could check dropped rom size
     overlay.src = transparentPixel;
     romName = "";
     vecx.reset();
   } else {
     // rom was chosen
-    if (rom.indexOf("Academy") > -1) {
+    if (rom.indexOf("Academy") > -1 || rom.indexOf("Pouet") > -1) {
       setOverlay( rom.substr(rom.lastIndexOf("roms/")+1).split("_")[0].replace(/ /g,"") );
     } else {
       setOverlay( rom.substr(rom.lastIndexOf("/")+1).split("_")[0].replace(/ /g,"") );
@@ -36,7 +41,8 @@ function switchRom(rom) {
 function loadRom(url) {
   loadBinary(url, function(e) {
     Globals.cartdata = e.target.response;
-    console.info("loaded rom", url, "has CRC32", CRC32(e.target.response).toString(16));
+    lastCRC = CRC32(e.target.response).toString(16);
+    console.info("loaded rom", url, "has CRC32", lastCRC);
     stat.innerText = "Loaded.";
     // for Malban
     vecx.doBankSwitching = (url.toLowerCase().indexOf("vectorblade") > -1) ? true : false;
@@ -79,6 +85,10 @@ function copyToClipboard(str){
 function doinit() {
   stat.innerText = "Starting up...";
 
+  // fill rom table
+  romTbl.init(myTbl, romList);
+
+  /*
   // fill select
   var html = [];
   html.push('<option value="">Select a cartridge...</option>');
@@ -99,7 +109,7 @@ function doinit() {
     }
     html.push('</optgroup>');
   }
-*/
+ *-/
   roms.innerHTML = html.join("");
   roms.onchange = function(e) {
     e = e.srcElement;
@@ -108,7 +118,7 @@ function doinit() {
     stat.innerText = "Loading " + e.text + " ...";
     switchRom( e.value ); // Get the newly selected rom
   }
-
+*/
   overlay.onload = function(e) {
     resizer();
   }
@@ -415,6 +425,41 @@ function makeSVG() {
   r.push('</svg>');
   return r.join('\r\n');
 }
+
+//
+// hexMon wrapper
+//
+//
+// still not happy
+//
+function toggleMemMon() {
+  memMon.classList.toggle("fadeIn");
+  hexMon.init(memMon, vecx.ram, 0xC880, (0xCC00-0xC880));
+
+  if (hexMon.timer === null){
+    hexMon.starter();
+  } else {
+    hexMon.stopper();
+  }
+}
+function poke(a, v){
+  hexMon.poke(a, v);
+}
+function peek(a){
+  hexMon.peek(a);
+}
+/*
+function setReg(r, v) {
+  // at the moment only PC is supported
+  switch (r) {
+    case 'PC':
+      vecx.e6809.reg_pc = v;
+      break;
+    default:
+      break;
+  }
+}
+*/
 /*
 function download(content, fileName, mimeType) {
   var a = document.createElement('a');
@@ -543,6 +588,37 @@ function resumeLastSaveState() {
   //
   // onload
   //
+
+  function checkCocktail() {
+    // anim frame is called very often, should only take care of changes
+    // seamless.js detects if checkCocktail is active
+    // next problem is that it gets missed, so i have to move this into vecx and set bit in osint which i read here
+    requestAnimationFrame(checkCocktail);
+    if (typeof vecx === "undefined") return;
+
+    //if (cocktailCRCs.indexOf(lastCRC) !== -1) {
+    if (cocktailCRCs.indexOf(lastCRC) !== -1) {
+      //C880-CBEA : is RAM that can be used by the programmer!
+      if (vecx.rtm.lastAdr >= 0xC880 && vecx.rtm.lastAdr <= 0xCBEA) {
+        // Mine Storm
+        if (lastCRC === "f2160e6c" && vecx.rtm.lastAdr === 0xC880+27) {
+          // 00 | 02
+          //vecx.osint.mirrored = (vecx.rtm.lastVal === 2) ? true : false;
+          //vecx.osint.ctx.translate(width, 0);
+          if (vecx.rtm.lastVal === 2) {
+            vecscr.classList.add("mirrored");
+            document.getElementById("overlay").classList.add("mirrored");
+          } else {
+            vecscr.classList.remove("mirrored");
+            document.getElementById("overlay").classList.remove("mirrored");
+          }
+          //vecx.osint.ctx.drawImage(image, 0, 0);
+        }
+      }
+
+    }
+  }
+  //requestAnimationFrame(checkCocktail);
 
   //
   // head work
@@ -779,7 +855,24 @@ function resumeLastSaveState() {
     }
   }
 
-  // load rom
+
+    // mobile vertical/all scroll
+    addEventListener("touchmove", function(e){
+      e.preventDefault();
+    }, {passive:false});
+
+    // sliders
+    vol_slider.addEventListener("input", function(e){
+      vecx.e8910.gain.gain.value = e.target.value*1;
+      stat.innerText = "Volume: "+ (e.target.value*1).toFixed(2);
+    }, false);
+    lum_slider.addEventListener("input", function(e){
+      vecx.osint.lum = 1 - e.target.value*1;
+      stat.innerText = "Luminescence: "+ (e.target.value*1).toFixed(2);
+    }, false);
+
+
+  // last to do is load rom
   // no IE11 var urlParams = new URLSearchParams(window.location.search);
   var rom = getUrlParameter('rom');//urlParams.get('rom');
   if (rom) {
@@ -810,18 +903,4 @@ function resumeLastSaveState() {
     setOverlay("MineStorm"); // no rom set
   }
 
-  // mobile vertical/all scroll
-  addEventListener("touchmove", function(e){
-    e.preventDefault();
-  }, {passive:false});
-
-  // sliders
-  vol_slider.addEventListener("input", function(e){
-    vecx.e8910.gain.gain.value = e.target.value*1;
-    stat.innerText = "Volume: "+ (e.target.value*1).toFixed(2);
-  });
-  lum_slider.addEventListener("input", function(e){
-    vecx.osint.lum = 1 - e.target.value*1;
-    stat.innerText = "Luminescence: "+ (e.target.value*1).toFixed(2);
-  });
 })();
