@@ -876,13 +876,19 @@ function resumeLastSaveState() {
   // no IE11 var urlParams = new URLSearchParams(window.location.search);
   var rom = getUrlParameter('rom');//urlParams.get('rom');
   if (rom) {
+    rom = location.search.substr(location.search.indexOf("rom=")+4);
     if (rom.indexOf("//") > -1) {
+      // set quicklink
+      quicklink.title = "https://DrSnuggles.github.io/jsvecx?rom="+ rom;
+      // insert proxy
+      rom = "https://proxy.drsnuggles.workers.dev?"+ encodeURI(rom);
       // load rom from URL
       loadRom(rom);
       // also try to load overlay with same name but .png extension
-      loadOverlay(rom.substr(0, rom.length-3) +"png");
-      // set quicklink
-      quicklink.title = "https://DrSnuggles.github.io/jsvecx?rom="+ rom;
+      rom = rom.replace(".bin",".png");
+      rom = rom.replace(".rom",".png");
+      rom = rom.replace(".vec",".png");
+      loadOverlay(rom);
     } else if (rom.indexOf("/") > -1) {
       // do not search we have a fixed path
       switchRom(rom);

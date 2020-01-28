@@ -112,6 +112,10 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 
 ## Change Log
 
+### 01/28/20 (0.4.3) (DrSnuggles)
+    - Bugfix for drag'n'drop caused by new interface
+    - Added proxy for loading roms via URL (bypass CORS and mixed content trouble)
+
 ### 01/27/20 (0.4.2) (DrSnuggles)
     - Rom selection: Table instead of DropDown (ToDo: step by step rename roms, gamepad input)
     - Cocktail: Flipped screen for MineStorm Cocktail rom
