@@ -31,7 +31,7 @@
         reader.onloadend = function() {
           stat.innerText = "Processing completed.";
           Globals.cartdata = reader.result;
-          roms.selectedIndex = 0;
+          //roms.selectedIndex = 0;
           switchRom([null, null, "none", "none"]);
         }
       } else {

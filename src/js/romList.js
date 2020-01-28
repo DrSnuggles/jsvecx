@@ -301,7 +301,7 @@ var romList=
 		"Vectrace (2000) (Ronen Habot)",
 		"Vectrex BIOS (1982)",
 		"Vectrex Pong (1998)",
-		"Vectrexians (1999)",
+		//"Vectrexians_(1999)",
 		"Verzerk by Alex Herbert (2002)",
 		"War of the Robots by George Pelonis (2003)",
 		"ZZAP - Scrolling Space Game Demo (1989)"
