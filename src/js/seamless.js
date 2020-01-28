@@ -688,6 +688,9 @@ function resumeLastSaveState() {
       bios = 'bios/'+ bios.toLowerCase() +'.bin';
     }
     // load bios
+    // insert proxy
+    bios = "https://proxy.drsnuggles.workers.dev?"+ bios;
+
     loadBinary(bios, function(e) {
       Globals.romdata = e.target.response;
       patchBIOS();
