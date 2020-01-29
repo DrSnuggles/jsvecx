@@ -112,6 +112,9 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 
 ## Change Log
 
+### 01/29/20 (0.4.4) (DrSnuggles)
+    - Added Del=Pause, Backspace=Reset
+
 ### 01/28/20 (0.4.3) (DrSnuggles)
     - Bugfix for drag'n'drop caused by new interface
     - Added proxy for loading roms via URL (bypass CORS and mixed content trouble)

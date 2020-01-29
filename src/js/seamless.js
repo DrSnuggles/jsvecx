@@ -843,15 +843,19 @@ function resumeLastSaveState() {
         printScreen();
         break;
       case 'Pause':
+      case 'Delete':
         togglePause();
         break;
       case 'Escape':
         toggleMenu();
         break;
-      case 'Enter':
+      case 'Backspace':
+        vecx.reset();
+        break;
+      case 'PageUp':
         //saveState();
         break;
-      case 'Backspace':
+      case 'PageDown':
         //resumeLastSaveState();
         break;
       default:
