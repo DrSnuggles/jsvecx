@@ -72,6 +72,11 @@ var romList=
 	],
 	"Malban":[
 		"Vectorblade_(2019)",
+		"Release_(2017)",
+		"Release_np (2017)",
+		"Karl Quappe_(2017)",
+		"Karl Quappe_np (2017)",
+		"Karl Quappe_64 (2017)",
 		"'NO' Sound (1998)",
 		"Arkanoid - Revenge of DOH Sound (1998)",
 		"Axel F - Beverly Hills Cop (1998) ",
@@ -127,6 +132,7 @@ var romList=
 		"Zombies from the Crypt Music (1998)"
 	],
 	"Binary Star":[
+		"SorryWhitney_(2020)",
 		"Jingle Bell Hero",
 		"Crossfire",
 		"Hex",

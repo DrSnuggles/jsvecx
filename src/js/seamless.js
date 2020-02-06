@@ -6,7 +6,6 @@ Globals.romdata=atob('7Xf4UDDoTUlORYD4UADeU1RPUk2AAI7Ig2+AjMu7Jvm96ON8yCSGu7fIgI
 var overlayDir = "img/overlays_1080/";
 var overlayName = "";
 var lastCRC;
-var cocktailCRCs = ["f2160e6c","cbfafd6e","60b3cd6f","80738ec6"];
 
 function switchRom(rom) {
   vecx.stop();  // Stop the emulator
@@ -460,6 +459,13 @@ function setReg(r, v) {
   }
 }
 */
+//
+//
+//
+function toggleCocktail(){
+  // later i want to load lib when needed, but it's not huge
+  cocktail.toggle();
+}
 /*
 function download(content, fileName, mimeType) {
   var a = document.createElement('a');
@@ -589,37 +595,6 @@ function resumeLastSaveState() {
   // onload
   //
 
-  function checkCocktail() {
-    // anim frame is called very often, should only take care of changes
-    // seamless.js detects if checkCocktail is active
-    // next problem is that it gets missed, so i have to move this into vecx and set bit in osint which i read here
-    requestAnimationFrame(checkCocktail);
-    if (typeof vecx === "undefined") return;
-
-    //if (cocktailCRCs.indexOf(lastCRC) !== -1) {
-    if (cocktailCRCs.indexOf(lastCRC) !== -1) {
-      //C880-CBEA : is RAM that can be used by the programmer!
-      if (vecx.rtm.lastAdr >= 0xC880 && vecx.rtm.lastAdr <= 0xCBEA) {
-        // Mine Storm
-        if (lastCRC === "f2160e6c" && vecx.rtm.lastAdr === 0xC880+27) {
-          // 00 | 02
-          //vecx.osint.mirrored = (vecx.rtm.lastVal === 2) ? true : false;
-          //vecx.osint.ctx.translate(width, 0);
-          if (vecx.rtm.lastVal === 2) {
-            vecscr.classList.add("mirrored");
-            document.getElementById("overlay").classList.add("mirrored");
-          } else {
-            vecscr.classList.remove("mirrored");
-            document.getElementById("overlay").classList.remove("mirrored");
-          }
-          //vecx.osint.ctx.drawImage(image, 0, 0);
-        }
-      }
-
-    }
-  }
-  //requestAnimationFrame(checkCocktail);
-
   //
   // head work
   //
@@ -716,6 +691,8 @@ function resumeLastSaveState() {
     }
     doinit();
   }
+
+  cocktail.toggle();
 
   // set sound on/off
   var sound = getUrlParameter('sound');
@@ -850,7 +827,7 @@ function resumeLastSaveState() {
         toggleMenu();
         break;
       case 'Backspace':
-        vecx.reset();
+        if (e.target.tagName !== 'INPUT') vecx.reset(); // only when no input field is focused
         break;
       case 'PageUp':
         //saveState();

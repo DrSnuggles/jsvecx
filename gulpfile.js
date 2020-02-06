@@ -98,6 +98,7 @@ gulp.task('js', () => {
     'src/js/dnd.js',
     'src/js/table.js',
     'src/js/hexMon.js',
+    'src/js/cocktail.js',
     'src/js/romList.js'
     //'src/js/rtm.js'
     //'src/js/vectrex.js'

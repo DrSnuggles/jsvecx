@@ -1,17 +1,15 @@
 <!--
-JSVecX : JavaScript port of the VecX emulator by raz0red.
-         Copyright (C) 2010-2019 raz0red http://www.twitchasylum.com/jsvecx/
-         Seamless Version by DrSnuggles https://drsnuggles.github.io/jsvecx/
-         Patches by Malban http://vectrex.malban.de/vecxWeb/
-         C version by Valavan Manohararajah http://valavan.net/vectrex.html
+JSVecX: Seamless Version by DrSnuggles https://drsnuggles.github.io/jsvecx/
+        Copyright (C) 2010-2019 raz0red http://www.twitchasylum.com/jsvecx/
+        Patches by Malban http://vectrex.malban.de/vecxWeb/
+        C version by Valavan Manohararajah http://valavan.net/vectrex.html
 
 Emulation of the AY-3-8910 / YM2149 sound chip based on various code snippets by
-  Ville Hallik
-  Michael Cuddy
-  Tatsuyuki Satoh
-  Fabrice Frances
-  Nicola Salmoria
+  Ville Hallik, Michael Cuddy, Tatsuyuki Satoh, Fabrice Frances, Nicola Salmoria
 
 1080 Overlays by THK-Hyperspin and Gigapig-Hyperspin
-Vectrex Academy Roms by http://eiti.fh-pforzheim.de/personen/johannsen/projektlabor/vectrex_2019/vectrex_academy_2019.htm
+Vectrex Academy Roms 2016-2019 by http://eiti.fh-pforzheim.de/personen/johannsen/projektlabor/vectrex_2019/vectrex_academy_2019.htm
+
+Thanks have to go to all Chris
+The Chris is strong in Vectrex
 -->

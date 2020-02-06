@@ -38,19 +38,21 @@ var hexMon = (function(){
     var cls;
     for (var i = 0; i < my.length; i++) {
       switch (i) {
+        /*
         case 89: // CURRENT SHIP COUNT FOR ACTIVE PLAYER
           cls = "cel green";
           break;
         case 121:
           cls = "cel red";
           break;
+        */
         default:
           cls = "cel";
       }
       if (my.peek(my.start+i) === "80") { // string end
         cls = "cel blue";
       }
-      h.push('<input class="'+ cls +'" value="'+ my.peek(my.start+i) +'" onchange="hexMon.poke('+ (my.start+i) +',this.value)" title="'+ i +'"/>');
+      h.push('<input class="'+ cls +'" value="'+ my.peek(my.start+i) +'" onchange="hexMon.poke('+ (my.start+i) +',this.value)" title="+0x'+ i.toString(16).toUpperCase() +'"/>');
       if (i % 0x20 === 0x1F) h.push('<br/>');
     }
     my.cont.innerHTML = h.join("");

@@ -92,25 +92,37 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
     Input:
       - analog touch stick has still problem while using buttons
     Usability:
-      - get rid of select instead use filterable table with additional info
       - save/load state
       - speed adjustment (no, not timing)
       - inform user about home screen installation
       - generate QR as link
+      - improve hex editor with ar like value search
+      - enhance parameter configuration for emulator keys (Menu for gamepad, screenshot, reset, pause)
+      - select rom via gamepad
     Emu:
       - emulate colors
       - emulate flash rom for Vectorblade
       - Vectrexer: LightPen (Info: http://vectrex.playntradeonline.com/technical.html)
+      - JoyPort output: used for VecLink Cable and LED control
+    Simulation:
+      - UV Overlays + LEDs
     Audio:
       - choose 11kHz,22kHz,33kHz,44kHz,48kHz
       - maybe switch to different AY-3-89xx emulation
-    Communication
+    Communication:
       - save highscores
       - multiplayer player (player1 = server) (WebRTC, WebSocket, STUN, TURN) (will try serverless first with a google STUN)
-        - vectrex audio, video, input
-        - voice chat
+      - vectrex audio, video, input
+      - voice chat
+      - vecLink cable
 
 ## Change Log
+
+### 02/06/20 (0.4.5) (DrSnuggles)
+    - Cocktail: default is now on, but only applied to BinaryStars Cocktail roms (MineStorm, StarCastle, SolarQuest)
+    - Moved Proxy to own repo
+    - MemMon now displays offset in hex and removed MineStorm specific cell colors
+    - Added roms
 
 ### 01/29/20 (0.4.4) (DrSnuggles)
     - Added Del=Pause, Backspace=Reset
@@ -123,10 +135,7 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
     - Rom selection: Table instead of DropDown (ToDo: step by step rename roms, gamepad input)
     - Cocktail: Flipped screen for MineStorm Cocktail rom
     - CA1 interrupt (LightPen still not really working)
-    - showMem
-    - Peek
-    - Poke
-    - setReg
+    - showMem, Peek, Poke, setReg
 
 ### 01/14/20 (0.4.1) (DrSnuggles)
     - volume slider (known issue with iPhone)
