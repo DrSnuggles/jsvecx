@@ -26,8 +26,8 @@ body {
   position: absolute;
 }
   #vecscr.mirrored {
-    -webkit-transform: scaleY(-1);
-     transform: scaleY(-1);
+    -webkit-transform: scale(-1,-1);
+    transform: scale(-1,-1);
   }
 
 #overlay {
@@ -35,8 +35,8 @@ body {
   pointer-events: none;
 }
   #overlay.mirrored {
-    -webkit-transform: scaleY(-1);
-     transform: scaleY(-1);
+    -webkit-transform: scale(-1,-1);
+    transform: scale(-1,-1);
   }
 #menu {
   position: absolute;

@@ -1,5 +1,27 @@
 var romList=
 {
+	/*
+	"Links":[
+		"https://docs.google.com/uc?export=download&id=1zBvCN6Ap9723LGDcXNonXFppOsaW2Mu4",	// Oregon Trail
+		"https://docs.google.com/uc?export=download&id=1uVfM4CCppAp_PiF4dl3YjVNYftgnJucB", // 23 Matches
+		"http://entropy.tmok.com/~gauze/vectrex/wip/spud_free.bin",
+		"http://entropy.tmok.com/~gauze/vectrex/wip/aa_beta0118.bin",
+		"http://entropy.tmok.com/~gauze/vectrex/wip/reactor.bin"
+	],
+	"Zipped Links":[
+		"http://www.clockworkrobot.com/wp-content/uploads/2018/12/ChimneyHunt.zip",
+		"http://www.herbs64.plus.com/files/py050712.zip"	// Protector + Y*A*S*I
+	],
+	*/
+	"Ralf Kornmann":[
+		"23Matches_2020",
+		"OregonTrail_2020"
+	],
+	"GauzeSoft":[
+		//"Alley Anexiety_beta0118",
+		"Spudster's Revenge_(GauzeSoft, Free Edition 2017)",
+		//"Spike's Slam Pit"
+	],
 	"Academy 2019":[
 		"Blox_by Whitehat",
 		"Castle Defender_by Jumpman",
@@ -71,6 +93,7 @@ var romList=
 		"The Snake_by Matthias Schneider"
 	],
 	"Malban":[
+		"OregonTrail_smallFonts(2020)",
 		"Vectorblade_(2019)",
 		"Release_(2017)",
 		"Release_np (2017)",
@@ -257,7 +280,6 @@ var romList=
 		"We Wish You a Merry Christmas (1986)"
 	],
 	"Homebrew":[
-		"OregonTrail_by Ralf Kornmann, 2020",
 		"4-D Rotating Cube Demo (19xx)",
 		"Abyss Demo (1999)",
 		"Alpha Demo (2001)",

@@ -53,7 +53,7 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
   - &pause=on | off : Opens in paused mode
   - &menu=on | off : Opens menu with instructions
   - &rtm= on | off : Opens chips view
-  - &aa=on |off : Toggles antialias
+  - &aa=on | off : Toggles antialias
   - &overlay=1 | 2 : Numeric, how often ToggleOverlay is pressed when opened
   - &keys1=Up,Down,Left,Right,Button1,Button2,Button3,Button4
   - &keys2=Up,Down,Left,Right,Button1,Button2,Button3,Button4
@@ -99,6 +99,8 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
       - improve hex editor with ar like value search
       - enhance parameter configuration for emulator keys (Menu for gamepad, screenshot, reset, pause)
       - select rom via gamepad
+      - client side ZIP if PK is found, auto pick rom/overlay / manual user select rom
+      - let user select overlay from selection/preview
     Emu:
       - emulate colors
       - emulate flash rom for Vectorblade
@@ -117,6 +119,9 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
       - vecLink cable
 
 ## Change Log
+
+### 02/10/20 (0.4.6) (DrSnuggles)
+    - added roms
 
 ### 02/06/20 (0.4.5) (DrSnuggles)
     - Cocktail: default is now on, but only applied to BinaryStars Cocktail roms (MineStorm, StarCastle, SolarQuest)

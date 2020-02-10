@@ -264,7 +264,7 @@ function setOverlay(name) {
   } else {
     // look in overlays or overlays_1080
     overlayDir = "img/overlays_1080/";
-    url = overlayDir + overlayName + ".png";
+    url = overlayDir + overlayName.replace(/%20/g,"") + ".png";
   }
   loadOverlay(url);
 }

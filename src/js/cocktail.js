@@ -9,8 +9,7 @@ var cocktail = (function(){
       // stop
       cancelAnimationFrame(my.raf);
       my.raf = null;
-      vecscr.classList.remove("mirrored");
-      document.getElementById("overlay").classList.remove("mirrored");
+      mirr(false);
       console.log("Cocktail check off");
     } else {
       // start
@@ -22,7 +21,10 @@ var cocktail = (function(){
   function check(){
     my.raf = requestAnimationFrame(check);
     if (typeof vecx === "undefined") return; // emu not ready
-    if (cocktailCRCs.indexOf(lastCRC) === -1) return; // not a known rom
+    if (cocktailCRCs.indexOf(lastCRC) === -1) {
+      mirr(false); // not a known rom
+      return;
+    }
 
     switch(lastCRC){
       case "f2160e6c": // MineStorm
@@ -36,6 +38,7 @@ var cocktail = (function(){
         mirr( (vecx.ram[0x80 + 0x5C] === 255) );
         break;
       default:
+        mirr(false);
     }
   }
 
