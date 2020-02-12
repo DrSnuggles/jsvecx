@@ -22,15 +22,17 @@ var romTbl = (function(){
     tbl.getElementsByTagName("tbody")[0].addEventListener("click", my.sel, false);
 
     // fill table
+    var thisYear = new Date();
+    thisYear = thisYear.getYear() + 1900;
     for (var i in dat) {
       for (var j in dat[i]) {
         var rom = romList[i][j];
         var year = rom.match(/\d+/);
         if (year != year *1) {
           // alt look in cat name
-          year = i.match(/\d+/)
+          year = i.match(/\d+/);
         }
-        if (year != year *1 || year.toString().length != 4) {
+        if (year != year *1 || year.toString().length != 4 || year > thisYear) {
           // if it's still not found set empty
           year = "";
         }
@@ -45,20 +47,20 @@ var romTbl = (function(){
         author = author.split(",")[0];
 
         my.data.push([name, author, i, year, rom]);
-
-        // initial sort date desc
-        // not for minify my.data.sort((a, b)=>{
-        my.data.sort(function(a, b){
-          if((a[3]+"").toLowerCase() < (b[3]+"").toLowerCase()){
-            return 1;
-          }
-          return -1;
-        });
-        // initial sort order symbol
-        tbl.getElementsByTagName("th")[3].getElementsByTagName("span")[0].innerText = my.dec;
-
       }
     }
+
+    console.log(my.data.length +" roms in list");
+    // initial sort date desc
+    // not for minify my.data.sort((a, b)=>{
+    my.data.sort(function(a, b){
+      if((a[3]+"").toLowerCase() < (b[3]+"").toLowerCase()){
+        return 1;
+      }
+      return -1;
+    });
+    // initial sort order symbol
+    tbl.getElementsByTagName("th")[3].getElementsByTagName("span")[0].innerText = my.dec;
 
     my.render();
   }
