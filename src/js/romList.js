@@ -4,18 +4,34 @@ var romList=
 	"Links":[
 		"https://docs.google.com/uc?export=download&id=1zBvCN6Ap9723LGDcXNonXFppOsaW2Mu4",	// Oregon Trail
 		"https://docs.google.com/uc?export=download&id=1uVfM4CCppAp_PiF4dl3YjVNYftgnJucB", // 23 Matches
+
+		// GauzeSoft = Brian
 		"http://entropy.tmok.com/~gauze/vectrex/wip/spud_free.bin",
 		"http://entropy.tmok.com/~gauze/vectrex/wip/aa_beta0118.bin",
-		"http://entropy.tmok.com/~gauze/vectrex/wip/reactor.bin"
+		"http://entropy.tmok.com/~gauze/vectrex/wip/reactor.bin",
 	],
 	"Zipped Links":[
 		"http://www.clockworkrobot.com/wp-content/uploads/2018/12/ChimneyHunt.zip",
 		"http://www.herbs64.plus.com/files/py050712.zip"	// Protector + Y*A*S*I
 	],
 	*/
+	"Fury Unlimited":[
+		"Warrior_(George Pelonis, 2012)",
+		"Zantis_(George Pelonis, 2011)",
+		"Sectis_(George Pelonis, 2010)",
+		"Continuum_(George Pelonis, 2010)",
+		"Royal 21_(George Pelonis, 2009)",
+		"Vector21_(George Pelonis, 2006)",
+		"Lord of the Robots_(George Pelonis, 2006)",
+		"War of the Robots_(George Pelonis, 2003)",
+		"Hexed_(George Pelonis)"
+	],
 	"Ralf Kornmann":[
 		"23Matches_2020",
 		"OregonTrail_2020"
+	],
+	"T.Sontowski":[
+		"2048_(2017)"
 	],
 	"GauzeSoft":[
 		//"Alley Anexiety_beta0118",
@@ -37,9 +53,6 @@ var romList=
 		"Space Defender_by KusoTech",
 		"Unknown_by M4K5",
 		"Vec Man_by Master Control",
-		"Vec Man_parajve_by Master Control",
-		"Vec Man_parajve_rc24_by Master Control",
-		"Vec Man_rc24_by Master Control",
 		"Vectroid_by NATE__66"
 	],
 	"Academy 2018":[
@@ -100,6 +113,7 @@ var romList=
 		"Karl Quappe_(2017)",
 		"Karl Quappe_np (2017)",
 		"Karl Quappe_64 (2017)",
+		"Vectrex Pong (1998)",
 		"'NO' Sound (1998)",
 		"Arkanoid - Revenge of DOH Sound (1998)",
 		"Axel F - Beverly Hills Cop (1998) ",
@@ -155,38 +169,38 @@ var romList=
 		"Zombies from the Crypt Music (1998)"
 	],
 	"Binary Star":[
-		"SorryWhitney_(2020)",
-		"Jingle Bell Hero",
-		"Crossfire",
-		"Hex",
-		"Space Race",
-		"Xmas Space Race",
-		"Super Simon",
-		"Whack-A-Mole",
-		"Xmas Cart 2015",
-		"Xmas Cart 2014",
-		"Vector Pong",
-		"Nagoya Attack Beta",
-		"YMusic1",
-		"AY38912 Sound Tool",
-		"Zodiac",
-		"Dots",
-		"Quick Shot",
-		"Vector Clock",
-		"Amen Break Live",
-		"Cantina Band",
-		"Doodle (Joystick)",
-		"Doodle (Lightpen)",
-		"VecDrum",
-		"V-Theremin",
-		"Star Hawk (Trackball)",
-		"Patriots (Trackball)",
-		"Patriots Remix (Trackball)",
-		"Patriots III (Trackball)",
-		"Mine Storm_II(Cocktail)",
-		"Solar Quest_(Cocktail)",
-		"Star Castle_(Cocktail1)",
-		"Star Castle_(Cocktail2)"
+		"Amen Break Live_2016",
+		"AY38912 Sound Tool_2017",
+		"Cantina Band_2016",
+		"Crossfire_2017",
+		"Doodle_Joystick 2015",
+		"Doodle_Lightpen 2016",
+		"Dots_2017",
+		"Hex_2017",
+		"Jingle Bell Hero_2018",
+		"Mine Storm_II Cocktail 2019",
+		"Nagoya Attack Beta_2013",
+		"Patriots III_Trackball 2018",
+		"Patriots Remix_Trackball 2018",
+		"Patriots_Trackball 2017",
+		"Quick Shot_2016",
+		"Solar Quest_Cocktail 2019",
+		"SorryWhitney_2020",
+		"Space Race_2016",
+		"Star Castle_Cocktail1 2019",
+		"Star Castle_Cocktail2 2019",
+		"Star Hawk_Trackball 2018",
+		"Super Simon_2016",
+		"V-Theremin_2014",
+		"VecDrum_2015",
+		"Vector Clock_2016",
+		"Vector Pong_2017",
+		"Whack-A-Mole_2016",
+		"Xmas Cart_2014",
+		"Xmas Cart_2015",
+		"Xmas Space Race_2016",
+		"YMusic1_2018",
+		"Zodiac_2017"
 	],
 	"Pouet":[
 		"EigenVectrex_(cmcc, 2019)",
@@ -199,6 +213,7 @@ var romList=
 		"Invitron_(Realm of Illusion, 2015)",
 		"Rainy_(Realm of Illusion, 2015)",
 		"Electric Force_(Realm of Illusion, 2015)",
+		"Veccy Bird_(Michael Simonds, 2014)",
 		"Heps Q Q_(Fit, 2014)",
 		"Very Vectight_(Pex Mahoney Tufvesson, 2014)",
 		"Random Access Vector_(Fit, 2013)",
@@ -208,10 +223,12 @@ var romList=
 		"Lineart_(Nuance,MetalVotze, 2010)",
 		"Twistex_(Orb, 2009)",
 		"Bresenham_(Metalvotze, 2008)",
-		"Pimmelsafari II_(Metalvotze, 2005)",
-		"0ldsk00l_(Pelikonepeijoonit, 2002)"
+		"Pimmelsafari II_(Metalvotze, 2005)"
 	],
 	"Manu":[
+		"Wheevec (2003)",
+		"Yoehl (2003)",
+		"Ztagger (2003)",
 		"0ldsk00l Demo (2002)",
 		"All Your Base Demo (2001)",
 		"Animation Demo (2002)",
@@ -245,10 +262,13 @@ var romList=
 		"Vimpula (2002)"
 	],
 	"John Dondzila":[
+		"Abyss Demo (1999)",
 		"All Good Things (1996)",
 		"Birds of Prey (1999)",
+		"DiscDuel Demo (1997)",
 		"Gravitrex (2002)",
 		"Mad Planetoids Demo (2001)",
+		"Paratroopers (2002)",
 		"Patriots III - BALListics Busters (1996)",
 		"Patriots III - BALListics Busters (2002)",
 		"Patriots Remix (1999)",
@@ -267,6 +287,8 @@ var romList=
 		"Vector Vaders Remix (1999)",
 		"Vector Vaders (1996)",
 		"Vector Vaders (1996) [a1]",
+		"Vecmania Part 1 (1999)",
+		"Vecmania Part 2 (1999)",
 		"Wormhole (2001)"
 	],
 	"Jeff Woolsey":[
@@ -280,6 +302,11 @@ var romList=
 		"We Wish You a Merry Christmas (1986)"
 	],
 	"Homebrew":[
+		"3D Vector Space Cab_Fell^DSS,RiFT,TRSi (2017)",
+		"Vectrexagon_(A.Gustafsson, 2016)",
+		"Sub Wars_(Mountain Goat, 2015)",
+		"Marine Fox_(Mountain Goat, 2015)",
+		"SquareZ_(La1n, 2015)",
 		"4-D Rotating Cube Demo (19xx)",
 		"Abyss Demo (1999)",
 		"Alpha Demo (2001)",
@@ -302,7 +329,7 @@ var romList=
 		"Moon Lander Demo by Clay Cowgill (1997) [a1]",
 		"Music Demo (2001)",
 		"Philly Classic 3 Demo (2002)",
-		"Pythagorian Theorem by Rob Mitchell (2002)",
+		"Pythagorian Theorem_by Rob Mitchell (2002)",
 		"Revector by Craig Aker (2004)",
 		"Rocket Sledge Demo (1985)",
 		"Ronen's Game Cart (2000) (Ronen Habot)",
@@ -327,11 +354,10 @@ var romList=
 		"Vectrace (2000) (Ronen Habot) [a1]",
 		"Vectrace (2000) (Ronen Habot) [a2]",
 		"Vectrace (2000) (Ronen Habot)",
-		"Vectrex BIOS (1982)",
-		"Vectrex Pong (1998)",
+		//"Vectrex BIOS (1982)",
 		//"Vectrexians_(1999)",
 		"Verzerk by Alex Herbert (2002)",
-		"War of the Robots by George Pelonis (2003)",
+		//"War of the Robots by George Pelonis (2003)",
 		"ZZAP - Scrolling Space Game Demo (1989)"
 	],
 	"Hacks":[

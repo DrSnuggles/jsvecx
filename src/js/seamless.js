@@ -31,7 +31,13 @@ function switchRom(rom) {
     } else {
       setOverlay( rom.substr(rom.lastIndexOf("/")+1).split("_")[0].replace(/ /g,"") );
     }
-    loadRom("roms/"+rom+".bin");
+    // url was chosen
+    if (rom.indexOf("_http") !== -1) {
+      loadRom("https://proxy.drsnuggles.workers.dev?"+ rom.substr(rom.indexOf("_http")+1));
+    } else {
+      // look local
+      loadRom("roms/"+rom+".bin");
+    }
   }
 
   // show quicklink

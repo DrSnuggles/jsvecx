@@ -27,26 +27,27 @@ var romTbl = (function(){
     for (var i in dat) {
       for (var j in dat[i]) {
         var rom = romList[i][j];
-        var year = rom.match(/\d+/);
-        if (year != year *1) {
-          // alt look in cat name
-          year = i.match(/\d+/);
-        }
+        var year = rom.match(/\d{4}/);
+        if (rom.indexOf("_") !== -1) year = rom.split("_")[1].match(/\d{4}/); // look behind _
+        if (i.match(/\d{4}/) && i.match(/\d{4}/).toString().length === 4) year = i.match(/\d{4}/); // use year from category
         if (year != year *1 || year.toString().length != 4 || year > thisYear) {
           // if it's still not found set empty
           year = "";
         }
         var name = rom.split("_")[0];
-        var author = rom.split("_")[1];
-        if (typeof author == "undefined") {
-          author = i;
+        var detail = rom.split("_")[1];
+        if (typeof detail == "undefined") {
+          detail = i;
         }
-        author = author.replace("by ","");
-        author = author.replace("(","");
-        author = author.replace(")","");
-        author = author.split(",")[0];
+        detail = detail.replace("by ","");
+        detail = detail.replace("(","");
+        detail = detail.replace(")","");
+        detail = detail.split(",")[0];
+        detail = detail.replace(year, "");
 
-        my.data.push([name, author, i, year, rom]);
+        var author = i.replace(year, "");
+
+        my.data.push([name, detail, author, year, rom]);
       }
     }
 
