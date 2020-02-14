@@ -45,7 +45,7 @@ var romTbl = (function(){
         detail = detail.split(",")[0];
         detail = detail.replace(year, "");
 
-        var author = i.replace(year, "");
+        var author = i;//.replace(year, "");
 
         my.data.push([name, detail, author, year, rom]);
       }
