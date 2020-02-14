@@ -24,7 +24,7 @@ var romList=
 		"Vector21_(George Pelonis, 2006)",
 		"Lord of the Robots_(George Pelonis, 2006)",
 		"War of the Robots_(George Pelonis, 2003)",
-		"Hexed_(George Pelonis)"
+		"Hexed_(George Pelonis, 2013)"
 	],
 	"Ralf Kornmann":[
 		"23Matches_2020",
@@ -277,7 +277,7 @@ var romList=
 		"Repulse (1999)",
 		"Rockaroids Remix - 3rd Rock (1996)",
 		"Rockaroids Remix - 3rd Rock (1996) [a1]",
-		"Space Frenzy",
+		"Space Frenzy (2006)",
 		"Spike Hoppin' (1998)",
 		"Spike's Water Balloons (Analog) (2001)",
 		"Star Fire Spirits (1999) [a1]",
@@ -343,7 +343,7 @@ var romList=
 		"Tank Demo 2 (2001)",
 		"Text Demo (2001)",
 		"This is Just a Non-Playable Demo (1999)",
-		"Thrust",
+		"Thrust_Ville Krumlinde 2004",
 		"Tono Demo by Marq & Antti (2000)",
 		"Vaboom! by Ronen Habot (2000) [a1]",
 		"Vaboom! by Ronen Habot (2000)",
@@ -382,46 +382,46 @@ var romList=
 		"Web Wars_[b1]"
 	],
 	"Unreleased":[
-		"Dark Tower",
-		"Mail Plane",
-		"Pitchers Duel",
-		"Test Rev. 4",
-		"Tour De France"
+		"Dark Tower_1983",
+		"Mail Plane_1983",
+		"Pitchers Duel_1983",
+		"Test Rev. 4_1982",
+		"Tour De France_1983"
 	],
 	"Lightpen":[
-		"AnimAction",
-		"Art Master",
-		"Melody Master"
+		"AnimAction_1983",
+		"Art Master_1983",
+		"Melody Master_1983"
 	],
 	"3DImager":[
-		"3-D Crazy Coaster",
-		"3-D Mine Storm",
-		"3-D Narrow Escape"
+		"3-D Crazy Coaster_1983",
+		"3-D Mine Storm_1983",
+		"3-D Narrow Escape_1983"
 	],
 	"Commercial":[
-		"Armor Attack",
-		"Bedlam",
-		"Berzerk",
-		"Blitz",
-		"Clean Sweep",
-		"Clean Sweep_(Mr Boston Version)",
-		"Cosmic Chasm",
-		"Fortress of Narzod",
-		"Heads Up",
-		"Hyperchase",
-		"Mine Storm",
-		"Mine Storm_II",
-		"Polar Rescue",
-		"Pole Position",
-		"Rip-Off",
-		"Scramble",
-		"Solar Quest",
-		"Space Wars",
-		"Spike",
-		"Spinball",
-		"Star Castle",
-		"Star Hawk",
-		"Star Trek",
-		"Web Wars"
+		"Armor Attack_1982",
+		"Bedlam_1982",
+		"Berzerk_1982",
+		"Blitz_1982",
+		"Clean Sweep_1982",
+		"Clean Sweep_Mr Boston 1983",
+		"Cosmic Chasm_1982",
+		"Fortress of Narzod_1982",
+		"Heads Up_1983",
+		"Hyperchase_1982",
+		"Mine Storm_1982",
+		"Mine Storm_II 1983",
+		"Polar Rescue_1983",
+		"Pole Position_1983",
+		"Rip-Off_1982",
+		"Scramble_1982",
+		"Solar Quest_1982",
+		"Space Wars_1982",
+		"Spike_1983",
+		"Spinball_1983",
+		"Star Castle_1983",
+		"Star Hawk_1982",
+		"Star Trek_1982",
+		"Web Wars_1983"
 	]
 }
