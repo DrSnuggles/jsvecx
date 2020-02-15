@@ -38,7 +38,9 @@ body {
     -webkit-transform: scale(-1,-1);
     transform: scale(-1,-1);
   }
-#menu {
+#menu,
+#notice
+{
   position: absolute;
   display: none;
   background-color: var(--bgCol);
@@ -46,12 +48,19 @@ body {
   text-align: center;
   border-radius: 3vh;
 }
+  #notice {
+    color: var(--mainCol);
+    font-size: 2.5vh;
+    text-align: left;
+    padding: 10px;
+  }
   #menu * {
     color: var(--mainCol);
     font-size: 2.5vh;
   }
   @media (max-aspect-ratio: 330/410) {
-    #menu * {
+    #menu *,
+    #notice {
       font-size: 3vw;
     }
   }

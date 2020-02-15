@@ -5,6 +5,8 @@ Globals.romdata=atob('7Xf4UDDoTUlORYD4UADeU1RPUk2AAI7Ig2+AjMu7Jvm96ON8yCSGu7fIgI
 
 var overlayDir = "img/overlays_1080/";
 var overlayName = "";
+var overlayErrCnt = 0;
+var lastURL = "";
 var lastCRC;
 
 function switchRom(rom) {
@@ -26,6 +28,7 @@ function switchRom(rom) {
     romName = "";
     vecx.reset();
   } else {
+    lastURL = "roms/"+ rom +".bin";
     // rom was chosen
     if (rom.indexOf("Academy") > -1 || rom.indexOf("Pouet") > -1) {
       setOverlay( rom.substr(rom.lastIndexOf("roms/")+1).split("_")[0].replace(/ /g,"") );
@@ -45,6 +48,7 @@ function switchRom(rom) {
   quicklink.title = "https://DrSnuggles.github.io/jsvecx?rom="+ rom;
 }
 function loadRom(url) {
+  lastURL = url;
   loadBinary(url, function(e) {
     doinit(); // very late
     Globals.cartdata = e.target.response;
@@ -54,9 +58,15 @@ function loadRom(url) {
     // for Malban
     vecx.doBankSwitching = (url.toLowerCase().indexOf("vectorblade") > -1) ? true : false;
     vecx.reset();
+    if (waitForNotice) {
+      setTimeout( function(){
+        vecx.stop(); // pause for reading
+      }, 300);
+    }
   });
 }
 function loadBinary(url, cb) {
+  lastURL = url;
   var xhr = new XMLHttpRequest();
   xhr.open("GET", url, true);
   xhr.overrideMimeType('text/plain; charset=x-user-defined');
@@ -129,11 +139,22 @@ function doinit() {
     switchRom( e.value ); // Get the newly selected rom
   }
 */
+
   overlay.onload = function(e) {
+    overlayErrCnt = 0;
     resizer();
   }
   overlay.onerror = function(e) {
-    overlay.src = transparentPixel;
+    overlayErrCnt++;
+    if (overlayErrCnt === 1) {
+      // try to find in local dir
+      var tst = lastURL.replace(".rom",".png");
+      tst = tst.replace(".vec",".png");
+      tst = tst.replace(".bin",".png");
+      overlay.src = tst;
+    } else {
+      overlay.src = transparentPixel;
+    }
   }
 
   //
@@ -155,10 +176,47 @@ function doinit() {
   }, 2000);
 
 };
+var waitForNotice = false;
+function loadNotice(){
+  var url = lastURL.replace(".bin",".txt");
+  url = url.replace(".rom",".txt");
+  url = url.replace(".vec",".txt");
+  console.log("Looking for notice at:", url)
+  if (url.length > 0){
+    waitForNotice = true;
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    //xhr.overrideMimeType('text/plain; charset=x-user-defined');
+    xhr.onload = function(e) {
+      if (e.target.status === 200) {
+        showNotice(e.target.responseText);
+      } else {
+        waitForNotice = false;
+      }
+    }
+    xhr.send();
+  } else {
+    waitForNotice = false;
+  }
+}
+function showNotice(txt){
+  vecx.stop(); // pause, but also need to wait in loadRom
+  menu.style.display = "none";
+  notice.innerText = txt;
+  notice.style.display = "block";
+}
 
 function toggleMenu(e) {
   if (e) e.preventDefault();
   //menu.classList.toggle("fadeIn");
+  if (waitForNotice) {
+    notice.style.display = "none";
+    waitForNotice = false;
+    setTimeout( function (){
+      vecx.start(); // unpause
+    }, 300);
+    return;
+  }
   if (menu.style.display == "block") {
     menu.style.display = "none";
     setTimeout( function (){
@@ -166,6 +224,7 @@ function toggleMenu(e) {
     }, 300);
   } else {
     vecx.stop(); // pause
+    notice.style.display = "none";
     menu.style.display = "block";
   }
 }
@@ -281,6 +340,8 @@ function setOverlay(name) {
 }
 function loadOverlay(url) {
   overlay.src = url;
+  // cascade to notice
+  loadNotice();
 }
 function toggleRTM() {
   // check if already loaded
@@ -325,11 +386,11 @@ function resizer() {
   wrapper.style.left = xdiff/2 +'px';
   wrapper.style.top = ydiff/2 +'px';
 
-  // size and center the menu
-  menu.style.width = overlay.clientWidth * 0.8 +'px';
-  menu.style.height = overlay.clientHeight * 0.8 +'px';
-  menu.style.left = overlay.clientWidth * 0.1 +'px';
-  menu.style.top = overlay.clientHeight * 0.1 +'px';
+  // size and center the menu / notice
+  menu.style.width = notice.style.width = overlay.clientWidth * 0.8 +'px';
+  menu.style.height = notice.style.height = overlay.clientHeight * 0.8 +'px';
+  menu.style.left = notice.style.left = overlay.clientWidth * 0.1 +'px';
+  menu.style.top = notice.style.top = overlay.clientHeight * 0.1 +'px';
 
   // auto toggle quality
   toggleQuality(vecscr.clientWidth,vecscr.clientHeight);

@@ -16,7 +16,8 @@ var romList=
 	],
 	*/
 	"Benoit Bender":[
-		"Moskwa_2020_http://www.futurevector.eu/Moskwa-download_files/Moskwa_demo.zip"
+		"Moskwa_2020_http://www.futurevector.eu/Moskwa-download_files/Moskwa_demo.zip",
+		"Moskwa_demo"
 	],
 	"Fury Unlimited":[
 		"Warrior_(George Pelonis, 2012)",

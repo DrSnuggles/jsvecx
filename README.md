@@ -120,6 +120,18 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 
 ## Change Log
 
+### 02/15/20 (0.5.0) (DrSnuggles)
+    - display local found .txt files
+
+### 02/15/20 (0.4.9) (DrSnuggles)
+    - look for overlay .png file in local dir
+
+### 02/15/20 (0.4.8) (DrSnuggles)
+    - fixed display of linked roms
+
+### 02/14/20 (0.4.7) (DrSnuggles)
+    - added and renamed roms
+
 ### 02/10/20 (0.4.6) (DrSnuggles)
     - added roms
 
