@@ -137,10 +137,10 @@ var romTbl = (function(){
     var html = [];
     for (var i = 0; i < my.data.length; i++) {
       html.push('<tr rom="'+ my.data[i][2] +'/'+ my.data[i][4] +'">');
-      html.push('<td><div>'+ my.data[i][0] +'</div></td>');
-      html.push('<td><div>'+ my.data[i][1] +'</div></td>');
-      html.push('<td><div>'+ my.data[i][2].replace(/\ /g, "&nbsp;") +'</div></td>');
-      html.push('<td><div>'+ my.data[i][3] +'</div></td>');
+      html.push('<td><div title="'+ my.data[i][0] +'">'+ my.data[i][0] +'</div></td>');
+      html.push('<td><div title="'+ my.data[i][1] +'">'+ my.data[i][1] +'</div></td>');
+      html.push('<td><div title="'+ my.data[i][2] +'">'+ my.data[i][2].replace(/\ /g, "&nbsp;") +'</div></td>');
+      html.push('<td><div title="'+ my.data[i][3] +'">'+ my.data[i][3] +'</div></td>');
       html.push('</tr>');
     }
     my.tbl.getElementsByTagName("tbody")[0].innerHTML = html.join("");

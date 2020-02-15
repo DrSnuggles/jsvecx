@@ -8,6 +8,7 @@ var overlayName = "";
 var lastCRC;
 
 function switchRom(rom) {
+  doinit(); // very late, but not late enough
   vecx.stop();  // Stop the emulator
   vecx.osint.osint_clearscreen(); // Clear the screen
   vecx.doBankSwitching = false;
@@ -45,6 +46,7 @@ function switchRom(rom) {
 }
 function loadRom(url) {
   loadBinary(url, function(e) {
+    doinit(); // very late
     Globals.cartdata = e.target.response;
     lastCRC = CRC32(e.target.response).toString(16);
     console.info("loaded rom", url, "has CRC32", lastCRC);
@@ -88,6 +90,9 @@ function copyToClipboard(str){
   }
 };
 function doinit() {
+  // catch me if we are here 2nd time, needed vor late init after loading URL
+  if (romTbl.tbl !== null) return;
+
   stat.innerText = "Starting up...";
 
   // fill rom table
@@ -662,6 +667,8 @@ function resumeLastSaveState() {
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
   };
 
+  var rom = getUrlParameter('rom');//urlParams.get('rom');
+
   // BIOS
   var bios = getUrlParameter('bios');
   if (bios) {
@@ -695,7 +702,7 @@ function resumeLastSaveState() {
         oriBIOS.substr(0x10B8, 0x10DD-0x10B8) + String.fromCharCode(0x12) + String.fromCharCode(0x12) + String.fromCharCode(0xBD) + String.fromCharCode(0xF2) + String.fromCharCode(0xA9) + String.fromCharCode(0x8E) + String.fromCharCode(0x00) + String.fromCharCode(0x7D) + String.fromCharCode(0x12) + String.fromCharCode(0x12) +
         oriBIOS.substr(0x10E7);
     }
-    doinit();
+    if (!(rom)) doinit(); // we do later if we need to load from URL
   }
 
   cocktail.toggle();
@@ -864,7 +871,7 @@ function resumeLastSaveState() {
 
   // last to do is load rom
   // no IE11 var urlParams = new URLSearchParams(window.location.search);
-  var rom = getUrlParameter('rom');//urlParams.get('rom');
+  // look above var rom = getUrlParameter('rom');//urlParams.get('rom');
   if (rom) {
     rom = location.search.substr(location.search.indexOf("rom=")+4);
     if (rom.indexOf("//") > -1) {

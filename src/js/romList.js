@@ -15,6 +15,9 @@ var romList=
 		"http://www.herbs64.plus.com/files/py050712.zip"	// Protector + Y*A*S*I
 	],
 	*/
+	"Benoit Bender":[
+		"Moskwa_2020_http://www.futurevector.eu/Moskwa-download_files/Moskwa_demo.zip"
+	],
 	"Fury Unlimited":[
 		"Warrior_(George Pelonis, 2012)",
 		"Zantis_(George Pelonis, 2011)",
