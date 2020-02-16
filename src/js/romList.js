@@ -31,8 +31,9 @@ var romList=
 		"Hexed_(George Pelonis, 2013)"
 	],
 	"Ralf Kornmann":[
-		"23Matches_2020",
-		"OregonTrail_2020"
+		"Acey Ducey_2020", // https://docs.google.com/uc?export=download&id=1jA1anDHPPej531NNtu3Ie_dWgMP93MFU
+		"23Matches_2020",	// https://docs.google.com/uc?export=download&id=1uVfM4CCppAp_PiF4dl3YjVNYftgnJucB
+		"OregonTrail_2020" // https://docs.google.com/uc?export=download&id=1zBvCN6Ap9723LGDcXNonXFppOsaW2Mu4
 	],
 	"T.Sontowski":[
 		"2048_(2017)"

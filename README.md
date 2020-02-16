@@ -64,6 +64,12 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
   - &vol=0.00...1.00 (default:0.3)
   - &lum=0.00...1.00 (default:0.5)
 
+## ZIP supported
+  - Roms can be named .rom, .vec or .bin
+  - Found .png is used as overlay
+  - Found .txt is displayed. Nice for game infos and copyright disclaimers
+  - MACOSX system dir is ignored
+
 ## Tested Browser Support +=working o=untested -=not working
     + Windows
       + Chrome
@@ -101,7 +107,7 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
       - select rom via gamepad
       - let user select overlay from selection/preview
     Emu:
-      - emulate colors
+      - emulate colors (Jason Kopp colortable)
       - emulate flash rom for Vectorblade
       - Vectrexer: LightPen (Info: http://vectrex.playntradeonline.com/technical.html)
       - JoyPort output: used for VecLink Cable and LED control
