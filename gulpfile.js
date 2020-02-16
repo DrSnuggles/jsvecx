@@ -166,7 +166,10 @@ gulp.task('bios', () => {
     .pipe(gulp.dest('deploy/bios'));
 });
 gulp.task('vendor', () => {
-  return gulp.src('src/js/jquery-min.js')
+  return gulp.src([
+    'src/js/jquery-min.js',
+    'src/js/jszip.min.js'
+  ])
   .pipe(gulp.dest('deploy/js'));
 });
 

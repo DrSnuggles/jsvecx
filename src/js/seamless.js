@@ -8,6 +8,7 @@ var overlayName = "";
 var overlayErrCnt = 0;
 var lastURL = "";
 var lastCRC;
+var proxyServer = "https://simpleproxy.drsnuggles.workers.dev?";
 
 function switchRom(rom) {
   doinit(); // very late, but not late enough
@@ -37,10 +38,14 @@ function switchRom(rom) {
     }
     // url was chosen
     if (rom.indexOf("_http") !== -1) {
-      loadRom("https://proxy.drsnuggles.workers.dev?"+ rom.substr(rom.indexOf("_http")+1));
+      loadRom(proxyServer + rom.substr(rom.indexOf("_http")+1));
     } else {
       // look local
-      loadRom("roms/"+rom+".bin");
+      if (rom.indexOf(".zip") === -1) {
+        loadRom("roms/"+rom+".bin");
+      } else {
+        loadRom("roms/"+rom); // just keep zip ending
+      }
     }
   }
 
@@ -51,19 +56,95 @@ function loadRom(url) {
   lastURL = url;
   loadBinary(url, function(e) {
     doinit(); // very late
-    Globals.cartdata = e.target.response;
-    lastCRC = CRC32(e.target.response).toString(16);
-    console.info("loaded rom", url, "has CRC32", lastCRC);
-    stat.innerText = "Loaded.";
-    // for Malban
-    vecx.doBankSwitching = (url.toLowerCase().indexOf("vectorblade") > -1) ? true : false;
-    vecx.reset();
-    if (waitForNotice) {
-      setTimeout( function(){
-        vecx.stop(); // pause for reading
-      }, 300);
+    var data = e.target.response;
+    // do we have a zip?
+    detectZIP(data, function(dat){
+      // non ZIP
+      Globals.cartdata = dat;
+      lastCRC = CRC32(dat).toString(16);
+      console.info("loaded rom", url, "has CRC32", lastCRC);
+      stat.innerText = "Loaded.";
+      // for Malban
+      vecx.doBankSwitching = (url.toLowerCase().indexOf("vectorblade") > -1) ? true : false;
+      vecx.reset();
+      if (waitForNotice) {
+        setTimeout( function(){
+          vecx.stop(); // pause for reading
+        }, 300);
+      }
+
+    });
+
+  });
+}
+function detectZIP(data, cb_neg) {
+  var zipped = false;
+  if (data[0] === "P" && data[1] === "K") {
+    zipped = true;
+  }
+
+  if (zipped) {
+    if (typeof JSZip === 'undefined') {
+      // need to load lib
+      loadHead("script", "js/jszip.min.js", function(){
+        // now loaded
+        console.log("JSZip loaded");
+        unZIP(data);
+      });
+    } else {
+      // already loaded lib
+      unZIP(data);
+    }
+  } else {
+    if (cb_neg) cb_neg(data);
+  } // zipped?
+
+}
+function unZIP(data) {
+  JSZip.loadAsync(data).then(function (d) {
+    var zBIN, zPNG, zTXT;
+    for (var i in d.files) {
+      if (i.toLowerCase().indexOf("__macosx") === -1) {
+        if (i.toLowerCase().indexOf(".bin") !== -1 || i.toLowerCase().indexOf(".vec") !== -1 || i.toLowerCase().indexOf(".rom") !== -1) zBIN = i;
+        if (i.toLowerCase().indexOf(".png") !== -1) zPNG = i;
+        if (i.toLowerCase().indexOf(".txt") !== -1) zTXT = i;
+      }
+    }
+    //console.log(zBIN, zPNG, zTXT);
+    if (zTXT) waitForNotice = true;
+    // unpack the identified files
+    if (zBIN) {
+      d.files[zBIN].async("binarystring").then(function (dat){
+        Globals.cartdata = dat;
+        lastCRC = CRC32(dat).toString(16);
+        console.info("unzipped rom has CRC32", lastCRC);
+        stat.innerText = "Loaded.";
+        // bankswitching for zipped roms??
+        vecx.doBankSwitching = false;//(url.toLowerCase().indexOf("vectorblade") > -1) ? true : false;
+        vecx.reset();
+        //console.log("waitForNotice:", waitForNotice);
+        if (waitForNotice) {
+          setTimeout( function(){
+            vecx.stop(); // pause for reading
+          }, 300);
+        }
+
+      });
+    }
+    if (zPNG) {
+      d.files[zPNG].async("binarystring").then(function (dat){
+        overlay.src = "data:image/png;base64,"+ btoa(dat);
+      });
+    } else {
+      overlay.src = transparentPixel;
+    }
+    if (zTXT) {
+      d.files[zTXT].async("string").then(function (txt){
+        showNotice(txt);
+      });
     }
   });
+
 }
 function loadBinary(url, cb) {
   lastURL = url;
@@ -178,17 +259,18 @@ function doinit() {
 };
 var waitForNotice = false;
 function loadNotice(){
+  if (lastURL.toLowerCase().indexOf(".zip") !== -1) return;
   var url = lastURL.replace(".bin",".txt");
   url = url.replace(".rom",".txt");
   url = url.replace(".vec",".txt");
-  console.log("Looking for notice at:", url)
+  //console.log("Looking for notice at:", url)
   if (url.length > 0){
-    waitForNotice = true;
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);
     //xhr.overrideMimeType('text/plain; charset=x-user-defined');
     xhr.onload = function(e) {
       if (e.target.status === 200) {
+        waitForNotice = true;
         showNotice(e.target.responseText);
       } else {
         waitForNotice = false;
@@ -738,7 +820,7 @@ function resumeLastSaveState() {
     }
     // load bios
     // insert proxy
-    bios = "https://proxy.drsnuggles.workers.dev?"+ bios;
+    bios = proxyServer + bios;
 
     loadBinary(bios, function(e) {
       Globals.romdata = e.target.response;
@@ -939,7 +1021,7 @@ function resumeLastSaveState() {
       // set quicklink
       quicklink.title = "https://DrSnuggles.github.io/jsvecx?rom="+ rom;
       // insert proxy
-      rom = "https://proxy.drsnuggles.workers.dev?"+ encodeURI(rom);
+      rom = proxyServer + encodeURI(rom);
       // load rom from URL
       loadRom(rom);
       // also try to load overlay with same name but .png extension

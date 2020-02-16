@@ -50,7 +50,7 @@ body {
 }
   #notice {
     color: var(--mainCol);
-    font-size: 2.5vh;
+    font-size: 2.0vh;
     text-align: left;
     padding: 10px;
   }
@@ -59,9 +59,11 @@ body {
     font-size: 2.5vh;
   }
   @media (max-aspect-ratio: 330/410) {
-    #menu *,
-    #notice {
+    #menu * {
       font-size: 3vw;
+    }
+    #notice {
+      font-size: 2.5vw;
     }
   }
 #stat {

@@ -24,18 +24,21 @@
     }
 
     if (file) {
-      if (file.size <= 100 * 1024) /* 100kb max */ {
+      if (file.size <= 10 * 1024 * 1024) /* 10MB max */ {
         var reader = new FileReader();
         reader.readAsBinaryString(file);
         stat.innerText = "Processing file...";
         reader.onloadend = function() {
           stat.innerText = "Processing completed.";
-          Globals.cartdata = reader.result;
-          //roms.selectedIndex = 0;
-          switchRom([null, null, "none", "none"]);
+          detectZIP(reader.result, function(dat){
+            //negative
+            Globals.cartdata = dat;
+            //roms.selectedIndex = 0;
+            switchRom([null, null, "none", "none"]);
+          });
         }
       } else {
-        stat.innerText = "File too large.";
+        stat.innerText = "File too large (>10MB).";
       }
     }
   }

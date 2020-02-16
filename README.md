@@ -99,7 +99,6 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
       - improve hex editor with ar like value search
       - enhance parameter configuration for emulator keys (Menu for gamepad, screenshot, reset, pause)
       - select rom via gamepad
-      - client side ZIP if PK is found, auto pick rom/overlay / manual user select rom
       - let user select overlay from selection/preview
     Emu:
       - emulate colors
@@ -119,6 +118,9 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
       - vecLink cable
 
 ## Change Log
+
+### 02/16/20 (0.5.1) (DrSnuggles)
+    - if ZIP file is found load lib and parse content
 
 ### 02/15/20 (0.5.0) (DrSnuggles)
     - display local found .txt files
