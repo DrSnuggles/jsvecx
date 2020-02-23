@@ -1,20 +1,20 @@
 var romList=
 {
 	/*
-	"Links":[
-		"https://docs.google.com/uc?export=download&id=1zBvCN6Ap9723LGDcXNonXFppOsaW2Mu4",	// Oregon Trail
-		"https://docs.google.com/uc?export=download&id=1uVfM4CCppAp_PiF4dl3YjVNYftgnJucB", // 23 Matches
-
-		// GauzeSoft = Brian
-		"http://entropy.tmok.com/~gauze/vectrex/wip/spud_free.bin",
-		"http://entropy.tmok.com/~gauze/vectrex/wip/aa_beta0118.bin",
-		"http://entropy.tmok.com/~gauze/vectrex/wip/reactor.bin",
-	],
-	"Zipped Links":[
 		"http://www.clockworkrobot.com/wp-content/uploads/2018/12/ChimneyHunt.zip",
-		"http://www.herbs64.plus.com/files/py050712.zip"	// Protector + Y*A*S*I
-	],
 	*/
+	"Garry Grierson":[
+		"Circus Vectrex_2015",
+		"Floppy Fish_2014",
+		"Monster House_1998",
+		"Spike and the Angry Vortex Bird_2012",
+		"Trapped_2015",
+		"Vec Wars Retro Devolved_2009"
+	],
+	"Alex Herbert":[
+		"Protector + Y*A*S*I_py050712.zip",// http://www.herbs64.plus.com/files/py050712.zip
+		"Protector + Y*A*S*I_http://www.herbs64.plus.com/files/py050712.zip"
+	],
 	"Benoit Bender":[
 		//"Moskwa_demo.zip",
 		"Moskwa_Demo 2020_http://www.futurevector.eu/Moskwa-download_files/Moskwa_demo.zip"
@@ -31,17 +31,18 @@ var romList=
 		"Hexed_(George Pelonis, 2013)"
 	],
 	"Ralf Kornmann":[
+		"The Dice_2020",
 		"Acey Ducey_2020", // https://docs.google.com/uc?export=download&id=1jA1anDHPPej531NNtu3Ie_dWgMP93MFU
 		"23Matches_2020",	// https://docs.google.com/uc?export=download&id=1uVfM4CCppAp_PiF4dl3YjVNYftgnJucB
 		"OregonTrail_2020" // https://docs.google.com/uc?export=download&id=1zBvCN6Ap9723LGDcXNonXFppOsaW2Mu4
 	],
 	"T.Sontowski":[
-		"2048_(2017)"
+		"2048_2017" // https://atariage.com/forums/applications/core/interface/file/attachment.php?id=531496"
 	],
 	"GauzeSoft":[
-		//"Alley Anexiety_beta0118",
-		"Spudster's Revenge_(GauzeSoft, Free Edition 2017)",
-		//"Spike's Slam Pit"
+		//"Alley Anexiety_beta0118", // http://entropy.tmok.com/~gauze/vectrex/wip/aa_beta0118.bin
+		"Spudster's Revenge_(GauzeSoft, Free Edition 2017)", // http://entropy.tmok.com/~gauze/vectrex/wip/spud_free.bin
+		//"Spike's Slam Pit" // http://entropy.tmok.com/~gauze/vectrex/wip/reactor.bin
 	],
 	"Academy 2019":[
 		"Blox_by Whitehat",
