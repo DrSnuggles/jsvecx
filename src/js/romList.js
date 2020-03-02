@@ -13,7 +13,7 @@ var romList=
 	],
 	"Alex Herbert":[
 		"Protector + Y*A*S*I_py050712.zip",// http://www.herbs64.plus.com/files/py050712.zip
-		"Protector + Y*A*S*I_http://www.herbs64.plus.com/files/py050712.zip"
+		//"Protector + Y*A*S*I_http://www.herbs64.plus.com/files/py050712.zip"
 	],
 	"Benoit Bender":[
 		//"Moskwa_demo.zip",
@@ -31,13 +31,15 @@ var romList=
 		"Hexed_(George Pelonis, 2013)"
 	],
 	"Ralf Kornmann":[
+		"Bagels_2020", // 4th https://docs.google.com/uc?export=download&id=1jKAK2R6WU7TI6y9mAioyQA6p2ihMM1Jg
+		"Awari_2020", // 3rd https://docs.google.com/uc?export=download&id=1I3LSKdEurU2VI7zBo58KpjrV6kiCexHL
 		"The Dice_2020",
-		"Acey Ducey_2020", // https://docs.google.com/uc?export=download&id=1jA1anDHPPej531NNtu3Ie_dWgMP93MFU
-		"23Matches_2020",	// https://docs.google.com/uc?export=download&id=1uVfM4CCppAp_PiF4dl3YjVNYftgnJucB
+		"Acey Ducey_2020", // 2nd https://docs.google.com/uc?export=download&id=1jA1anDHPPej531NNtu3Ie_dWgMP93MFU
+		"23Matches_2020",	// 1st https://docs.google.com/uc?export=download&id=1uVfM4CCppAp_PiF4dl3YjVNYftgnJucB
 		"OregonTrail_2020" // https://docs.google.com/uc?export=download&id=1zBvCN6Ap9723LGDcXNonXFppOsaW2Mu4
 	],
 	"T.Sontowski":[
-		"2048_2017" // https://atariage.com/forums/applications/core/interface/file/attachment.php?id=531496"
+		"https://atariage.com/forums/applications/core/interface/file/attachment.php?id=531496" // 2048_2017
 	],
 	"GauzeSoft":[
 		//"Alley Anexiety_beta0118", // http://entropy.tmok.com/~gauze/vectrex/wip/aa_beta0118.bin

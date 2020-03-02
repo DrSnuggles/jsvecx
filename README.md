@@ -95,6 +95,8 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
     - Don't know the button numbers for gamepad config? https://html5gamepad.com/
 
 ## ToDo
+    BUG:
+      - TXT display also displays file not found texts
     Input:
       - analog touch stick has still problem while using buttons
     Usability:
