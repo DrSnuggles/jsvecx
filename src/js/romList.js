@@ -30,7 +30,11 @@ var romList=
 		"War of the Robots_(George Pelonis, 2003)",
 		"Hexed_(George Pelonis, 2013)"
 	],
+	"Chris Parsons":[
+		"Snowball Fight_2020"
+	],
 	"Ralf Kornmann":[
+		"Top Gun_2020", // https://docs.google.com/uc?export=download&16bdru-vtnvKhyQH2Jo6jEZQxk1qoLSq8
 		"Tower_2020", // 5th https://drive.google.com/open?id=1OwD8i2PCGtYrK_8cfQ_jfNF8heQJm0ka
 		"Bagels_2020", // 4th https://docs.google.com/uc?export=download&id=1jKAK2R6WU7TI6y9mAioyQA6p2ihMM1Jg
 		"Awari_2020", // 3rd https://docs.google.com/uc?export=download&id=1I3LSKdEurU2VI7zBo58KpjrV6kiCexHL
@@ -203,6 +207,7 @@ var romList=
 		"Doodle_Joystick 2015",
 		"Doodle_Lightpen 2016",
 		"Dots_2017",
+		"Every Day Is Halloween_2018",
 		"Fortress of Narzod_InfiniteLivesHack 2019",
 		"FrogsNFlies_2019",
 		"Funky Drummer_2019",
