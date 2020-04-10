@@ -3,7 +3,9 @@
   "version": "0.5.1",
   "description": "JSVecX: JavaScript port of VecX",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "deploy": "git subtree push --prefix deploy origin gh-pages"
+  },
   "author": "DrSnuggles",
   "license": "GPL3",
   "devDependencies": {
