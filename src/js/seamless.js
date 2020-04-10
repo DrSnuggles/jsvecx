@@ -82,8 +82,10 @@ function detectZIP(data, cb_neg) {
   if (data[0] === "P" && data[1] === "K") {
     zipped = true;
   }
+  //console.log("ZIP detected: "+ zipped, data);
 
   if (zipped) {
+    /* old JSZIP version
     if (typeof JSZip === 'undefined') {
       // need to load lib
       loadHead("script", "js/jszip.min.js", function(){
@@ -95,11 +97,18 @@ function detectZIP(data, cb_neg) {
       // already loaded lib
       unZIP(data);
     }
+    */
+    // UZIP is always included, thanks to Regpack it's <10kB
+    // check anyway
+    if (typeof UZIP !== "undefined") {
+      unUZIP(data);
+    }
   } else {
     if (cb_neg) cb_neg(data);
   } // zipped?
 
 }
+/* old JSZIP function
 function unZIP(data) {
   JSZip.loadAsync(data).then(function (d) {
     var zBIN, zPNG, zTXT;
@@ -145,6 +154,64 @@ function unZIP(data) {
     }
   });
 
+}
+*/
+function rawStringToBuffer( str ) {
+  //https://stackoverflow.com/questions/6965107/converting-between-strings-and-arraybuffers
+  var idx, len = str.length, arr = new Array( len );
+  for ( idx = 0 ; idx < len ; ++idx ) {
+    arr[ idx ] = str.charCodeAt(idx) & 0xFF;
+  }
+  // You may create an ArrayBuffer from a standard array (of values) as follows:
+  return new Uint8Array( arr ).buffer;
+}
+function uint8ArrayToRawString( arr ) {
+  var ret = [];
+  for (var i = 0; i < arr.length; i++) {
+    ret.push( String.fromCharCode( arr[i] ) );
+  }
+  return ret.join("");
+}
+function unUZIP(data) {
+  // binarystring to uint8Array
+  //data = new TextEncoder("utf-8").encode(data);
+  data = rawStringToBuffer(data);
+  var myArchive = UZIP.parse(data);
+  //console.log(myArchive);
+  // find recognized files
+  var zBIN, zPNG, zTXT;
+  for (var i in myArchive) {
+    if (i.toLowerCase().indexOf("__macosx") === -1) {
+      if (i.toLowerCase().indexOf(".bin") !== -1 || i.toLowerCase().indexOf(".vec") !== -1 || i.toLowerCase().indexOf(".rom") !== -1) zBIN = i;
+      if (i.toLowerCase().indexOf(".png") !== -1) zPNG = i;
+      if (i.toLowerCase().indexOf(".txt") !== -1) zTXT = i;
+    }
+  }
+  if (zTXT) waitForNotice = true;
+  // unpack the identified files
+  if (zBIN) {
+    Globals.cartdata = uint8ArrayToRawString( myArchive[zBIN] );
+    lastCRC = CRC32(Globals.cartdata).toString(16);
+    console.info("unzipped rom has CRC32", lastCRC);
+    stat.innerText = "Loaded.";
+    // bankswitching for zipped roms??
+    vecx.doBankSwitching = false;//(url.toLowerCase().indexOf("vectorblade") > -1) ? true : false;
+    vecx.reset();
+    //console.log("waitForNotice:", waitForNotice);
+    if (waitForNotice) {
+      setTimeout( function(){
+        vecx.stop(); // pause for reading
+      }, 300);
+    }
+  }
+  if (zPNG) {
+    overlay.src = "data:image/png;base64,"+ btoa( uint8ArrayToRawString( myArchive[zPNG] ) );
+  } else {
+    overlay.src = transparentPixel;
+  }
+  if (zTXT) {
+    showNotice( uint8ArrayToRawString( myArchive[zTXT] ) );
+  }
 }
 function loadBinary(url, cb) {
   lastURL = url;

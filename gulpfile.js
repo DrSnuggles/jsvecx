@@ -99,7 +99,8 @@ gulp.task('js', () => {
     'src/js/table.js',
     'src/js/hexMon.js',
     'src/js/cocktail.js',
-    'src/js/romList.js'
+    'src/js/romList.js',
+    'src/js/UZIP.pack_20200308.js',
     //'src/js/rtm.js'
     //'src/js/vectrex.js'
       ])
@@ -216,5 +217,6 @@ gulp.task('watch', () => {
   gulp.watch('src/*.{txt,html}', { events: 'all', delay: 500 }, gulp.series('html','mono','copyright'));
 });
 
-gulp.task('assets', gulp.parallel('roms', 'bios', 'img', 'vendor'));
+//gulp.task('assets', gulp.parallel('roms', 'bios', 'img', 'vendor'));
+gulp.task('assets', gulp.parallel('roms', 'bios', 'img'));
 gulp.task('default', gulp.series('prec', 'assets', 'css', 'js', 'html', 'mono', 'copyright'));

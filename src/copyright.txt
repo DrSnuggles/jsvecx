@@ -10,6 +10,8 @@ Emulation of the AY-3-8910 / YM2149 sound chip based on various code snippets by
 1080 Overlays by THK-Hyperspin and Gigapig-Hyperspin
 Vectrex Academy Roms 2016-2019 by http://eiti.fh-pforzheim.de/personen/johannsen/projektlabor/vectrex_2019/vectrex_academy_2019.htm
 
+using UZIP by Photopea: https://github.com/photopea/UZIP.js
+
 Thanks have to go to all Chris
 The Chris is strong in Vectrex
 -->
