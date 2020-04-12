@@ -100,7 +100,7 @@ gulp.task('js', () => {
     'src/js/hexMon.js',
     'src/js/cocktail.js',
     'src/js/romList.js',
-    'src/js/UZIP.pack_20200308.js',
+    'src/js/UZIP.depacker_pack_20200308.js',
     //'src/js/rtm.js'
     //'src/js/vectrex.js'
       ])

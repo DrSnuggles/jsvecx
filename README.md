@@ -127,6 +127,9 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 
 ## Change Log
 
+### 02/16/20 (0.5.2) (DrSnuggles)
+    - switched ZIP lib to an stripped and RegPacked UZIP version (3,57kB)
+
 ### 02/16/20 (0.5.1) (DrSnuggles)
     - if ZIP file is found load lib and parse content
 
