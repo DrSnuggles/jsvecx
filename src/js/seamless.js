@@ -633,13 +633,16 @@ function makeSVG() {
   for (var i = 0; i < vecx.osint.actImg.length; i++) {
     l = vecx.osint.actImg[i];
     p = l.split(",");
-    c = vecx.osint.color_set[ p[0] ];
+    //c = vecx.osint.color_set[ p[0] ];
+    c = p[0]/127; // 0.0...1.0
+    // try sin function
+    c = Math.sin(c/2*Math.PI);
     if (p.length === 3) {
       // dot
-      r.push('<rect x="'+ p[1]/100 +'" y="'+ p[2]/100 +'" width="0.1" height="0.1" stroke="rgb('+ c +')" />');
+      r.push('<rect x="'+ p[1]/100 +'" y="'+ p[2]/100 +'" width="0.1" height="0.1" stroke="rgba(255, 255, 255, '+ c +')" />');
     } else {
       // line
-      r.push('<line x1="'+ p[1]/100 +'" y1="'+ p[2]/100 +'" x2="'+ p[3]/100 +'" y2="'+ p[4]/100 +'" stroke="rgb('+ c +')" />');
+      r.push('<line x1="'+ p[1]/100 +'" y1="'+ p[2]/100 +'" x2="'+ p[3]/100 +'" y2="'+ p[4]/100 +'" stroke="rgb(255, 255, 255, '+ c +')" />');
     }
   }
   r.push('</svg>');
