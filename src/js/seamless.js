@@ -635,7 +635,7 @@ function makeSVG() {
     p = l.split(",");
     //c = vecx.osint.color_set[ p[0] ];
     c = p[0]/127; // 0.0...1.0
-    c = Math.pow(c, 2.2); // apply gamma 2.2 = CRT
+    c = Math.pow(c, vecx.osint.gam); // apply gamma 2.2 = CRT
     if (p.length === 3) {
       // dot
       r.push('<rect x="'+ p[1]/100 +'" y="'+ p[2]/100 +'" width="0.1" height="0.1" stroke="rgba(255, 255, 255, '+ c +')" />');
