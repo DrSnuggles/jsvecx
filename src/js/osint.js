@@ -18,7 +18,7 @@ function osint()
     //static long scl_factor;
     this.scl_factor = 0;
     //static DWORD color_set[VECTREX_COLORS];
-    this.color_set = new Array(Globals.VECTREX_COLORS);
+    //this.color_set = new Array(Globals.VECTREX_COLORS);
 
     //this.bytes_per_pixel = 4;
     this.actImg = [];
@@ -47,7 +47,7 @@ function osint()
 
         return 0;
     }
-
+    /*
     this.osint_gencolors = function()
     {
         for( var c = 0; c < Globals.VECTREX_COLORS; c++ )
@@ -62,6 +62,7 @@ function osint()
             this.color_set[c][2] = bcomp;
         }
     }
+    */
 
     //static einline unsigned char *osint_pixelptr (long x, long y)
     /*
@@ -364,7 +365,14 @@ function osint()
           //this.osint_line(draw.x0, draw.y0, draw.x1, draw.y1, draw.color);
           //console.log(draw.color);
           ctx.beginPath();
-          ctx.strokeStyle = ctx.fillStyle = "rgba("+this.color_set[ draw.color ]+",1)";
+
+          // intsensity
+          var col = draw.color/127; // 0.0...1.0
+          // try sin function
+          col = Math.sin(col/2*Math.PI);
+          //ctx.strokeStyle = ctx.fillStyle = "rgba("+this.color_set[ draw.color ]+",1)";
+          ctx.strokeStyle = ctx.fillStyle = "rgba(255, 255, 255, "+ col +")";
+
           //this.actImg.push(draw.color+","+draw.x0+","+draw.y0+","+draw.x1+","+draw.y1);
           if (draw.x0 === draw.x1 && draw.y0 === draw.y1) {
             // dot
@@ -409,7 +417,7 @@ function osint()
         }
         */
         /* determine a set of colors to use based */
-        this.osint_gencolors();
+        //this.osint_gencolors();
         this.osint_clearscreen();
     }
 }

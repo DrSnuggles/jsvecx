@@ -182,6 +182,7 @@ var romList=
 		"Zombies from the Crypt Music (1998)"
 	],
 	"Binary Star":[
+		"CallMe_2020",
 		"3-D Crazy Coaster_InfiniteLivesHack 2019",
 		"3-D Minestorm_InfiniteLivesHack 2019",
 		"3D Starfield_2014",
