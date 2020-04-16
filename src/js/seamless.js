@@ -1025,6 +1025,11 @@ function resumeLastSaveState() {
     vecx.osint.lum = 1 - lum*1;
     lum_slider.value = lum*1;
   }
+  var gam = getUrlParameter('gam');
+  if (gam && gam == gam*1) {
+    vecx.osint.gam = 1 - gam*1;
+    gam_slider.value = gam*1;
+  }
 
   // autopause on visibility change
   document.addEventListener("visibilitychange", visChg, false);
@@ -1078,6 +1083,10 @@ function resumeLastSaveState() {
     lum_slider.addEventListener("input", function(e){
       vecx.osint.lum = 1 - e.target.value*1;
       stat.innerText = "Luminescence: "+ (e.target.value*1).toFixed(2);
+    }, false);
+    gam_slider.addEventListener("input", function(e){
+      vecx.osint.gam = e.target.value*1;
+      stat.innerText = "Gamma: "+ (e.target.value*1).toFixed(2);
     }, false);
 
 

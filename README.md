@@ -63,6 +63,7 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
   - &bopt=ori | fast (default) | skip
   - &vol=0.00...1.00 (default:0.3)
   - &lum=0.00...1.00 (default:0.5)
+  - &gam=0.00...8.00 (default:2.2)
 
 ## ZIP supported
   - Roms can be named .rom, .vec or .bin
@@ -127,8 +128,11 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 
 ## Change Log
 
+### 03/16/20 (0.5.4) (DrSnuggles)
+    - Gamma slider. New parameter &gam=2.2
+
 ### 03/16/20 (0.5.3) (DrSnuggles)
-    - different intensity: sin function (found but not yet used info: Brightness on a CRT display is proportional to RGBlin = RGB ^ gamma, so 50% gray on a CRT is quite dark: .5 ^ 2.2 = 22% of maximum brightness. LCD displays are more complex; furthermore, some graphics cards compensate for gamma.)
+    - apply gamma 2.2 for CRT
 
 ### 03/13/20 (0.5.2) (DrSnuggles)
     - switched ZIP lib to an stripped and RegPacked UZIP version (3,57kB)

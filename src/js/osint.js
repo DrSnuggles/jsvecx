@@ -23,6 +23,7 @@ function osint()
     //this.bytes_per_pixel = 4;
     this.actImg = [];
     this.lum = 0.5;
+    this.gam = 2.2;
 
     this.osint_updatescale = function()
     {
@@ -370,7 +371,7 @@ function osint()
           var col = draw.color/127; // 0.0...1.0
           // function
           //col = Math.sin(col/2*Math.PI);
-          col = Math.pow(col, 2.2);
+          col = Math.pow(col, this.gam);
           //ctx.strokeStyle = ctx.fillStyle = "rgba("+this.color_set[ draw.color ]+",1)";
           ctx.strokeStyle = ctx.fillStyle = "rgba(255, 255, 255, "+ col +")";
 
