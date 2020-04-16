@@ -3,7 +3,7 @@ JSVecX : Reworked more canvas and vector stylish version by DrSnuggles 2020
 JavaScript port of the VecX emulator by raz0red. Copyright (C) 2010-2019 raz0red
 The original C version was written by Valavan Manohararajah (http://valavan.net/vectrex.html)
 */
-
+mstest = [];
 function osint()
 {
     this.vecx = null;
@@ -366,10 +366,11 @@ function osint()
           //console.log(draw.color);
           ctx.beginPath();
 
-          // intsensity
+          // intensity
           var col = draw.color/127; // 0.0...1.0
-          // try sin function
-          col = Math.sin(col/2*Math.PI);
+          // function
+          //col = Math.sin(col/2*Math.PI);
+          col = Math.pow(col, 2.2);
           //ctx.strokeStyle = ctx.fillStyle = "rgba("+this.color_set[ draw.color ]+",1)";
           ctx.strokeStyle = ctx.fillStyle = "rgba(255, 255, 255, "+ col +")";
 
