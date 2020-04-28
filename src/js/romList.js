@@ -182,6 +182,7 @@ var romList=
 		"Zombies from the Crypt Music (1998)"
 	],
 	"Binary Star":[
+		"C19MusicBox_2020",
 		"CallMe_2020",
 		"3-D Crazy Coaster_InfiniteLivesHack 2019",
 		"3-D Minestorm_InfiniteLivesHack 2019",
@@ -381,7 +382,7 @@ var romList=
 		"We Wish You a Merry Christmas (1986)"
 	],
 	"Homebrew":[
-		"Hera Primera (2018) (Ulli Peisel)",
+		"Hera Primera (2018) (peiselulli)",
 		"3D Vector Space Cab_Fell^DSS,RiFT,TRSi (2017)",
 		"Vectrexagon_(A.Gustafsson, 2016)",
 		"Sub Wars_(Mountain Goat, 2015)",
