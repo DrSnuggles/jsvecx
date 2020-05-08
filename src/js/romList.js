@@ -19,6 +19,10 @@ var romList=
 		//"Moskwa_demo.zip",
 		"Moskwa_Demo 2020_http://www.futurevector.eu/Moskwa-download_files/Moskwa_demo.zip"
 	],
+	"Graham Toal":[
+		"UnBlockMe_2020",
+		"Wangle_2020",
+	],
 	"Fury Unlimited":[
 		"Warrior_(George Pelonis, 2012)",
 		"Zantis_(George Pelonis, 2011)",
@@ -119,6 +123,7 @@ var romList=
 		"The Snake_by Matthias Schneider"
 	],
 	"Malban":[
+		"Wangle_IRQ (2020)",
 		"OregonTrail_smallFonts(2020)",
 		"Vectorblade_(2019)",
 		"Release_(2017)",
