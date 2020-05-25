@@ -20,6 +20,7 @@ var romList=
 		"Moskwa_Demo 2020_http://www.futurevector.eu/Moskwa-download_files/Moskwa_demo.zip"
 	],
 	"Graham Toal":[
+		"Steven Doré_2020 rc1 v3",
 		"UnBlockMe_2020",
 		"Wangle_2020",
 	],
