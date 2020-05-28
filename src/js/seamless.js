@@ -16,7 +16,7 @@ function switchRom(rom) {
   vecx.osint.osint_clearscreen(); // Clear the screen
   vecx.doBankSwitching = false;
   vecx.currentBank = 0;
-
+console.log(rom);
   // Start the emulator
   if (typeof rom === "object") {
     // rom was dropped
@@ -44,7 +44,7 @@ function switchRom(rom) {
       if (rom.indexOf(".zip") === -1) {
         loadRom("roms/"+rom+".bin");
       } else {
-        loadRom("roms/"+rom); // just keep zip ending
+        loadRom("roms/"+rom.split("/")[0]+"/"+rom.split("_")[1]); // just keep zip ending
       }
     }
   }
