@@ -16,7 +16,7 @@ function switchRom(rom) {
   vecx.osint.osint_clearscreen(); // Clear the screen
   vecx.doBankSwitching = false;
   vecx.currentBank = 0;
-console.log(rom);
+
   // Start the emulator
   if (typeof rom === "object") {
     // rom was dropped
