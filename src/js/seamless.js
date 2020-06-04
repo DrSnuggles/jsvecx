@@ -66,6 +66,14 @@ function loadRom(url) {
       stat.innerText = "Loaded.";
       // for Malban
       vecx.doBankSwitching = (url.toLowerCase().indexOf("vectorblade") > -1) ? true : false;
+      // for Stevedore
+      if (url.indexOf("Stevedore") !== -1) {
+        vecx.RAMP_ON_DELAY = 9;
+        vecx.RAMP_OFF_DELAY = 5;
+      } else {
+        vecx.RAMP_ON_DELAY = 3;
+        vecx.RAMP_OFF_DELAY = 3;
+      }
       vecx.reset();
       if (waitForNotice) {
         setTimeout( function(){
