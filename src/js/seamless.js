@@ -897,7 +897,10 @@ function resumeLastSaveState() {
     }
     // load bios
     // insert proxy
-    bios = proxyServer + bios;
+    // only if not our own server
+    if (bios.indexOf("//") !== -1) {
+      bios = proxyServer + bios;
+    }
 
     loadBinary(bios, function(e) {
       Globals.romdata = e.target.response;
