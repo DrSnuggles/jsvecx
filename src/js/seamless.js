@@ -344,7 +344,7 @@ function loadNotice(){
     xhr.open("GET", url, true);
     //xhr.overrideMimeType('text/plain; charset=x-user-defined');
     xhr.onload = function(e) {
-      if (e.target.status === 200) {
+      if (e.target.status === 200 && e.target.responseText.indexOf("<!") !== 0) {
         waitForNotice = true;
         showNotice(e.target.responseText);
       } else {
@@ -496,7 +496,19 @@ function setOverlay(name) {
   loadOverlay(url);
 }
 function loadOverlay(url) {
-  overlay.src = url;
+  // need to pre check for foreign urls
+  if (url.indexOf("//") !== -1) {
+    xhr(url, function(txt) {
+      if (txt.indexOf("<?") !== 0) {
+        overlay.src = url;
+      } else {
+        // do not load, cause it will fail
+      }
+    });
+  } else {
+    overlay.src = url;
+  }
+
   // cascade to notice
   loadNotice();
 }
