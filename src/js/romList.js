@@ -389,6 +389,7 @@ var romList=
 		"We Wish You a Merry Christmas (1986)"
 	],
 	"Homebrew":[
+		"Electron Beam Playboys_(Onslaught, 2020)",
 		"Hera Primera (2018) (peiselulli)",
 		"3D Vector Space Cab_Fell^DSS,RiFT,TRSi (2017)",
 		"Vectrexagon_(A.Gustafsson, 2016)",
