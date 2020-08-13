@@ -57,6 +57,13 @@ var romList=
 		"Spudster's Revenge_(GauzeSoft, Free Edition 2017)", // http://entropy.tmok.com/~gauze/vectrex/wip/spud_free.bin
 		//"Spike's Slam Pit" // http://entropy.tmok.com/~gauze/vectrex/wip/reactor.bin
 	],
+	"Academy 2020":[
+		"Climb It_by Chris++",
+		"Crash Trexicoot_by LiKa",
+		"Maze Of Treasures_by Sgt. Pepper",
+		"Rush Defense_by Compile",
+		"Silver Surfer_by Hassel",
+	],
 	"Academy 2019":[
 		"Blox_by Whitehat",
 		"Castle Defender_by Jumpman",
