@@ -50,7 +50,7 @@ var romList=
 		"OregonTrail_2020" // https://docs.google.com/uc?export=download&id=1zBvCN6Ap9723LGDcXNonXFppOsaW2Mu4
 	],
 	"T.Sontowski":[
-		"https://atariage.com/forums/applications/core/interface/file/attachment.php?id=531496" // 2048_2017
+		"2048_2017_https://atariage.com/forums/applications/core/interface/file/attachment.php?id=531496" // 2048_2017
 	],
 	"GauzeSoft":[
 		//"Alley Anexiety_beta0118", // http://entropy.tmok.com/~gauze/vectrex/wip/aa_beta0118.bin
@@ -397,6 +397,7 @@ var romList=
 		"We Wish You a Merry Christmas (1986)"
 	],
 	"Homebrew":[
+		"P1X3l-Pushr_(ALeX Kazik, 2014)",
 		"Electron Beam Playboys_(Onslaught, 2020)",
 		"Hera Primera (2018) (peiselulli)",
 		"3D Vector Space Cab_Fell^DSS,RiFT,TRSi (2017)",
