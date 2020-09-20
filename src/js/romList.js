@@ -133,6 +133,7 @@ var romList=
 		"The Snake_by Matthias Schneider"
 	],
 	"Malban":[
+		"Vectorblade_v103 (2020)",
 		"Vectorblade_Gold 2 (2020)",
 		"Wangle_IRQ (2020)",
 		"OregonTrail_smallFonts(2020)",
