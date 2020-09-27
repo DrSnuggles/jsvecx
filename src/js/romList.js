@@ -58,6 +58,7 @@ var romList=
 		//"Spike's Slam Pit" // http://entropy.tmok.com/~gauze/vectrex/wip/reactor.bin
 	],
 	"Academy 2020":[
+		"Number Cruncher_by Peer Johannsen_Alpha 0.1",
 		"Rotor_by Peer Johannsen_Beta RC 1.1",
 		"Climb It_by Chris++",
 		"Crash Trexicoot_by LiKa",
