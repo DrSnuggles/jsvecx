@@ -307,7 +307,8 @@ function doinit() {
       var tst = lastURL.replace(".rom",".png");
       tst = tst.replace(".vec",".png");
       tst = tst.replace(".bin",".png");
-      overlay.src = tst;
+      if (tst.indexOf(".zip") == -1)
+        overlay.src = tst;
     } else {
       overlay.src = transparentPixel;
     }
@@ -500,7 +501,8 @@ function loadOverlay(url) {
   if (url.indexOf("//") !== -1) {
     xhr(url, function(txt) {
       if (txt.indexOf("<?") !== 0) {
-        overlay.src = url;
+        if (url.indexOf(".zip") == -1)
+          overlay.src = url;
       } else {
         // do not load, cause it will fail
       }

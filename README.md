@@ -128,6 +128,9 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 
 ## Change Log
 
+### 05/10/21 (0.5.5) (DrSnuggles)
+    - Overlay src set to .ZIP fixed
+
 ### 03/16/20 (0.5.4) (DrSnuggles)
     - Gamma slider. New parameter &gam=2.2
 
