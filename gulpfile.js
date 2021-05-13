@@ -50,7 +50,7 @@ gulp.task('css', () => {
 gulp.task('prec', () => {
   return gulp.src([
     'src/preprocess/e6809.js',
-    'src/preprocess/e8910.js',
+    //'src/preprocess/e8910.js',
     'src/preprocess/vecx.js'
       ])
       .pipe(preprocessor({
@@ -90,7 +90,8 @@ gulp.task('js', () => {
     'src/js/utils.js',
     'src/js/globals.js',
     'src/processed/e6809.js',
-    'src/processed/e8910.js',
+    //'src/processed/e8910.js',
+    'src/js/e8910.js',
     'src/js/osint.js',
     'src/js/vector_t.js',
     'src/processed/vecx.js',
