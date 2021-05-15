@@ -6,6 +6,10 @@ Ported by raz0red
 
 Touched by DrSnuggles
 
+## Audioworklet
+Never change a running system! But i have audio glitches since i use 120Hz and there is a deprecation warning in Chrome, i dislike both.
+And i also want to learn ;)
+
 ## Overview
 
 JSVecX is a JavaScript port of the VecX emulator. The emulator was ported from

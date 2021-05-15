@@ -1,123 +1,141 @@
-/***************************************************************************
-  ay8910.c
-  Emulation of the AY-3-8910 / YM2149 sound chip.
+/*
+DrSnuggles: Was think a lot about this change.
+Also if i use WebAssembly with original code which would break the vanilla concept.
 
-  Based on various code snippets by Ville Hallik, Michael Cuddy,
-  Tatsuyuki Satoh, Fabrice Frances, Nicola Salmoria.
+https://developers.google.com/web/updates/2017/12/audio-worklet
+https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Using_AudioWorklet
+*/
+// 'use strict'
+
+class VecxAudioProcessor extends AudioWorkletProcessor {
   
-  Rework by DrSnuggles:
-    - get rid of preC process
-
-***************************************************************************/
-
-function e8910() {
+  // #privateField
   
-  const SOUND_FREQ = 22050,
-  SOUND_SAMPLE = 512,
-  MAX_OUTPUT = 0x0fff,
-  STEP3 = 1,
-  // STEP2 = length,
-  STEP = 2,
-  
-  /* register id's */
-  AY_AFINE = 0,
-  AY_ACOARSE = 1,
-  AY_BFINE = 2,
-  AY_BCOARSE = 3,
-  AY_CFINE = 4,
-  AY_CCOARSE = 5,
-  AY_NOISEPER = 6,
-  AY_ENABLE = 7,
-  AY_AVOL = 8,
-  AY_BVOL = 9,
-  AY_CVOL = 10,
-  AY_EFINE = 11,
-  AY_ECOARSE = 12,
-  AY_ESHAPE = 13,
-  
-  AY_PORTA = 14,
-  AY_PORTB = 15;
-
-  this.psg = {
-    index: 0,
-    ready: 0,
-    lastEnable: 0,
-    PeriodA: 0,
-    PeriodB: 0,
-    PeriodC: 0,
-    PeriodN: 0,
-    PeriodE: 0,
-    CountA: 0,
-    CountB: 0,
-    CountC: 0,
-    CountN: 0,
-    CountE: 0,
-    VolA: 0,
-    VolB: 0,
-    VolC: 0,
-    VolE: 0,
-    EnvelopeA: 0,
-    EnvelopeB: 0,
-    EnvelopeC: 0,
-    OutputA: 0,
-    OutputB: 0,
-    OutputC: 0,
-    OutputN: 0,
-    CountEnv: 0,
-    Hold: 0,
-    Alternate: 0,
-    Attack: 0,
-    Holding: 0,
-    RNG: 0,
-    VolTable: new Array(32),
-    Regs: null,
-    AnaA: 0,  // for virtual chip PIN monitoring
-    AnaB: 0,
-    AnaC: 0,
-    lastReg: 0,
-    lastVal: 0,
-    BDir: 0,
-    BC1: 0,
-  };
-
-  this.ctx = null;
-  this.node = null;
-  this.enabled = true;
-
-  this.e8910_build_mixer_table = function()  {
-    var i;
-    var out;
-
-    /* calculate the volume->voltage conversion table */
-    /* The AY-3-8910 has 16 levels, in a logarithmic scale (3dB per STEP) */
-    /* The YM2149 still has 16 levels for the tone generators, but 32 for */
-    /* the envelope generator (1.5dB per STEP). */
-    out = MAX_OUTPUT;
-    for (i = 31;i > 0;i--) {
-      this.psg.VolTable[i] = (out + 0.5)>>>0;	/* round to nearest */
-      out /= 1.188502227;	/* = 10 ^ (1.5/20) = 1.5dB */
-    }
-    this.psg.VolTable[0] = 0;
+  // When constructor() undefined, the default constructor will be implicitly used.
+  constructor() {
+    super();
+    this.port.onmessage = this.handleMessage_.bind(this);
+    
+    this.psg = {
+      index: 0,
+      ready: 0, // instant on
+      lastEnable: 0,
+      PeriodA: 0,
+      PeriodB: 0,
+      PeriodC: 0,
+      PeriodN: 0,
+      PeriodE: 0,
+      CountA: 0,
+      CountB: 0,
+      CountC: 0,
+      CountN: 0,
+      CountE: 0,
+      VolA: 0,
+      VolB: 0,
+      VolC: 0,
+      VolE: 0,
+      EnvelopeA: 0,
+      EnvelopeB: 0,
+      EnvelopeC: 0,
+      OutputA: 0,
+      OutputB: 0,
+      OutputC: 0,
+      OutputN: 0,
+      CountEnv: 0,
+      Hold: 0,
+      Alternate: 0,
+      Attack: 0,
+      Holding: 0,
+      RNG: 0,
+      VolTable: [0, 23, 27, 33, 39, 46, 55, 65, 77, 92, 109, 129, 154, 183, 217, 258, 307, 365, 434, 516, 613, 728, 865, 1029, 1223, 1453, 1727, 2052, 2439, 2899, 3446, 4095],
+      Regs: new Array(16).fill(0),
+    };
+    this.enabled = true; // not muted
   }
 
-  this.e8910_write = function(r, v) {
+  //
+  // 8910 functions
+  //
+  /* i decided to use the pre calced array
+  e8910_build_mixer_table() {
+    var i;
+    var out;
+    const MAX_OUTPUT = 0x0fff;
+    // calculate the volume->voltage conversion table
+    // The AY-3-8910 has 16 levels, in a logarithmic scale (3dB per STEP)
+    // The YM2149 still has 16 levels for the tone generators, but 32 for
+    // the envelope generator (1.5dB per STEP).
+    out = MAX_OUTPUT;
+    for (i = 31;i > 0;i--) {
+      this.psg.VolTable[i] = (out + 0.5)>>>0;	// round to nearest
+      out /= 1.188502227;	// = 10 ^ (1.5/20) = 1.5dB
+    }
+    this.psg.VolTable[0] = 0
+    // [0, 23, 27, 33, 39, 46, 55, 65, 77, 92, 109, 129, 154, 183, 217, 258, 307, 365, 434, 516, 613, 728, 865, 1029, 1223, 1453, 1727, 2052, 2439, 2899, 3446, 4095]
+  }
+  */
+  init() {
+    //console.log('INIT')
+    this.psg.Regs = new Array(16).fill(0)
+    this.psg.RNG  = 1
+    this.psg.OutputA = 0
+    this.psg.OutputB = 0
+    this.psg.OutputC = 0
+    this.psg.OutputN = 0xff
+    this.psg.ready = 0
+  }
+  start() {
+    //console.log('START')
+    this.psg.ready = 1
+  }
+  stop() {
+    //console.log('STOP')
+    this.psg.ready = 0
+  }
+  toggleEnabled() {
+    //console.log('MUTE')
+    this.enabled = !this.enabled;
+    return this.enabled;
+  }
+  write(r, v) {
+    //console.log('WRITE', r, v)
     var old;
-
-    this.psg.lastReg = r; // DrSnuggles
-    this.psg.lastVal = v; // DrSnuggles
 
     this.psg.Regs[r] = v;
 
-    /* A note about the period of tones, noise and envelope: for speed reasons,*/
-    /* we count down from the period to 0, but careful studies of the chip     */
-    /* output prove that it instead counts up from 0 until the counter becomes */
-    /* greater or equal to the period. This is an important difference when the*/
-    /* program is rapidly changing the period to modulate the sound.           */
-    /* To compensate for the difference, when the period is changed we adjust  */
-    /* our internal counter.                                                   */
-    /* Also, note that period = 0 is the same as period = 1. This is mentioned */
-    /* in the YM2203 data sheets. However, this does NOT apply to the Envelope */
-    /* period. In that case, period = 0 is half as period = 1. */
+    /* A note about the period of tones, noise and envelope: for speed reasons,
+    we count down from the period to 0, but careful studies of the chip
+    output prove that it instead counts up from 0 until the counter becomes
+    greater or equal to the period. This is an important difference when the
+    program is rapidly changing the period to modulate the sound.
+    To compensate for the difference, when the period is changed we adjust
+    our internal counter.
+    Also, note that period = 0 is the same as period = 1. This is mentioned
+    in the YM2203 data sheets. However, this does NOT apply to the Envelope
+    period. In that case, period = 0 is half as period = 1.*/
+    
+    const MAX_OUTPUT = 0x0fff,
+    STEP3 = 1,
+    // STEP2 = length,
+    STEP = 2,
+    AY_AFINE = 0,
+    AY_ACOARSE = 1,
+    AY_BFINE = 2,
+    AY_BCOARSE = 3,
+    AY_CFINE = 4,
+    AY_CCOARSE = 5,
+    AY_NOISEPER = 6,
+    AY_ENABLE = 7,
+    AY_AVOL = 8,
+    AY_BVOL = 9,
+    AY_CVOL = 10,
+    AY_EFINE = 11,
+    AY_ECOARSE = 12,
+    AY_ESHAPE = 13,
+    
+    AY_PORTA = 14,
+    AY_PORTB = 15;
+    
     switch(r) {
       case AY_AFINE:
       case AY_ACOARSE:
@@ -232,17 +250,35 @@ function e8910() {
         break;
       }
   }
+  callback(stream, length) {
+    
+    const MAX_OUTPUT = 0x0fff,
+    STEP3 = 1,
+    // STEP2 = length,
+    STEP = 2,
+    AY_AFINE = 0,
+    AY_ACOARSE = 1,
+    AY_BFINE = 2,
+    AY_BCOARSE = 3,
+    AY_CFINE = 4,
+    AY_CCOARSE = 5,
+    AY_NOISEPER = 6,
+    AY_ENABLE = 7,
+    AY_AVOL = 8,
+    AY_BVOL = 9,
+    AY_CVOL = 10,
+    AY_EFINE = 11,
+    AY_ECOARSE = 12,
+    AY_ESHAPE = 13,
 
-  this.toggleEnabled = function() {
-    this.enabled = !this.enabled;
-    return this.enabled;
-  }
+    AY_PORTA = 14,
+    AY_PORTB = 15;
 
-  this.e8910_callback = function(stream, length) {
     var idx = 0;
     var outn = 0;
 
     /* hack to prevent us from hanging when starting filtered outputs */
+    /*
     if (!this.psg.ready || !this.enabled) {
       //memset(stream, 0, length * sizeof(*stream));
       for(var i = 0; i < length; i++) {
@@ -250,7 +286,7 @@ function e8910() {
       }
       return;
     }
-
+    */
     length = length << 1;
 
     /* The 8910 has three outputs, each output is the mix of one of the three */
@@ -470,46 +506,71 @@ function e8910() {
     }
   }
 
-  this.init = function(regs) {
-    this.psg.Regs = regs;
-    this.psg.RNG  = 1;
-    this.psg.OutputA = 0;
-    this.psg.OutputB = 0;
-    this.psg.OutputC = 0;
-    this.psg.OutputN = 0xff;
-    this.psg.ready = 0;
-  }
-
-  this.start = function() {
-    var self = this;
-    if (this.ctx == null && (window.AudioContext || window.webkitAudioContext)) {
-      self.e8910_build_mixer_table();
-      var ctx = window.AudioContext ?
-        new window.AudioContext({sampleRate: SOUND_FREQ}) :
-        new window.webkitAudioContext();
-      this.ctx = ctx;
-      this.node = this.ctx.createScriptProcessor(SOUND_SAMPLE, 0, 1);
-      this.node.onaudioprocess = function(e) {
-        self.e8910_callback(e.outputBuffer.getChannelData(0), SOUND_SAMPLE);
-      }
-
-      // rewire with gain node for volume control
-      this.gain = this.ctx.createGain();
-      this.node.connect(this.gain);
-      this.gain.connect(this.ctx.destination);
-      this.gain.gain.value = 0.3;
-
-      var resumeFunc =
-          function(){if (ctx.state !== 'running') ctx.resume();}
-      document.documentElement.addEventListener("keydown", resumeFunc);
-      document.documentElement.addEventListener("click", resumeFunc);
-      document.documentElement.addEventListener("touchstart", resumeFunc);
+  handleMessage_(event) {
+    // console.log('[Processor:Received] ' + event.data.msg + ' (' + event.data.r + '='+ event.data.v +')')
+    switch (event.data.msg) {
+      case 'init':
+        this.init()
+        break
+      case 'start':
+        this.start()
+        break
+      case 'stop':
+        this.stop()
+        break
+      case 'toggleMute':
+        return this.toggleEnabled()
+        break
+      case 'write':
+        this.write(event.data.r,event.data.v)
+        break
+      default:
+        
     }
-    if (this.ctx) this.psg.ready = 1;
   }
+  
+  process(inputList, outputList, parameters) {
+    //console.log(inputList, outputList, parameters);
+    /* using the inputs (or not, as needed), write the output
+       into each of the outputs
+       By specification, each block of audio your process() function receives contains 128 frames (that is, 128 samples for each channel), but it is planned that this value will change in the future, and may in fact vary depending on circumstances, so you should always check the array's length rather than assuming a particular size. It is, however, guaranteed that the inputs and outputs will have the same block length.
+       
+       inputList[inputNr][channelNr][byteNr]
+    */
+    
+    /* vecx specific:
+      22050 hz
+      no input channels, they are calced
+      two channel output, stereo ;)
+    */
 
-  this.stop = function() {
-    this.psg.ready = 0;
+    /*
+    for(let i=0; i<inputList.length; i++) {
+      for(let c=0; c<inputList[i].length; c++) {
+        for(let b=0; b<inputList[i][c].length; b++) {
+          // now we have a single byte
+          
+        }
+      }
+    }
+    */
+    
+    if (!this.firstRun) {
+      this.firstRun = true
+      console.log(`Outputs: ${outputList.length} Channels:${outputList[0].length} Bytes:${outputList[0][0].length}`)
+      // Float32Array(128)
+    }
+    
+    if (this.psg.ready)
+      this.callback(outputList[0][0], outputList[0][0].length)
+    /*
+    for(let i = 0; i < outputList[0][0].length; i++) {
+      outputList[0][0][i] = Math.random()
+    }
+    */
+
+    return true; // def. needed for Chrome
   }
 }
 
+registerProcessor('vecx-audio-processor', VecxAudioProcessor)
