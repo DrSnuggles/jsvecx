@@ -34,8 +34,9 @@ var myChipMon = (function() {
   //
   my.doLoop = function() {
     requestAnimationFrame(my.doLoop);
-    if (vecx.e8910.psg.AnaA == vecx.e8910.psg.AnaA*1) { // psg is maybe not best to check
+    if (vecx.e8910.psg.VolA == vecx.e8910.psg.VolA*1) {
       rtm6809(); // CPU
+      rtm8912(); // PSG
       rtm6522(); // VIA
       rtm2363(); // ROM
       rtm2114a(); // ROM1
@@ -43,7 +44,6 @@ var myChipMon = (function() {
       rtmCart(); // CART
       rtm1408(); // DA
       rtm4052(); // DualMultiplexer
-      rtm8912(); // PSG
     }
   }
 

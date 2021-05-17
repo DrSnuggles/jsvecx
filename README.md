@@ -6,10 +6,6 @@ Ported by raz0red
 
 Touched by DrSnuggles
 
-## Audioworklet
-Never change a running system! But i have audio glitches since i use 120Hz and there is a deprecation warning in Chrome, i dislike both.
-And i also want to learn ;)
-
 ## Overview
 
 JSVecX is a JavaScript port of the VecX emulator. The emulator was ported from
@@ -131,10 +127,6 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
       - vecLink cable
 
 ## Change Log
-
-### 05/17/21 (0.6.0) (DrSnuggles)
-    - Switched to AudioWorkletProcessor
-    - New deploy
 
 ### 05/10/21 (0.5.5) (DrSnuggles)
     - Overlay src set to .ZIP fixed

@@ -1,6 +1,6 @@
 {
   "name": "jsvecx",
-  "version": "0.6.0",
+  "version": "0.5.5",
   "description": "JSVecX: JavaScript port of VecX",
   "main": "index.js",
   "scripts": {
@@ -20,10 +20,7 @@
     "imagemin-giflossy": "^5.1.10",
     "imagemin-mozjpeg": "^8.0.0",
     "imagemin-pngquant": "^8.0.0",
-    "imagemin-zopfli": "^6.0.0",
-    "gulp-terser": "^2.0.1",
-    "regpack": "^5.0.1",
-    "through2": "^4.0.2"
+    "imagemin-zopfli": "^6.0.0"
   },
   "dependencies": {}
 }
