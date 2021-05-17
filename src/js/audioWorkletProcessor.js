@@ -82,7 +82,7 @@ class VecxAudioProcessor extends AudioWorkletProcessor {
     this.psg.OutputB = 0
     this.psg.OutputC = 0
     this.psg.OutputN = 0xff
-    this.psg.ready = 0
+    this.psg.ready = 1
   }
   start() {
     //console.log('START')
@@ -557,7 +557,7 @@ class VecxAudioProcessor extends AudioWorkletProcessor {
     
     if (!this.firstRun) {
       this.firstRun = true
-      console.log(`Outputs: ${outputList.length} Channels:${outputList[0].length} Bytes:${outputList[0][0].length}`)
+      //console.log('Outputs: '+ outputList.length +' Channels: '+ outputList[0].length +' Bytes: '+ outputList[0][0].length)
       // Float32Array(128)
     }
     

@@ -3,7 +3,10 @@ const gulp = require('gulp');
 //const sass = require('gulp-sass');
 const concat = require('gulp-concat');
 const cleanCSS = require('gulp-clean-css');
-const uglify = require('gulp-uglify');
+const uglify = require('gulp-uglify'); // todo: test uglify vs terser
+const terser = require('gulp-terser')
+const regpack = require('./gulp-regpack')
+
 const htmlmin = require('gulp-htmlmin');
 //const download = require('gulp-download');
 const preprocessor = require('gulp-c-preprocessor');
@@ -34,6 +37,110 @@ gulp.task('download', () => {
 //        .pipe(sass().on('error', sass.logError))
 //        .pipe(gulp.dest('dist-gulp/css'));
 //});
+
+// todo: adapt
+gulp.task('terser', () => {
+  return gulp.src('_src/js/**/*.js', '!_src/js/vendor/**')
+  .pipe(terser())
+  .pipe(gulp.dest('data/js'))
+})
+
+gulp.task('jsPack', () => {
+  const webgl = false
+  const options = {
+		withMath: false,
+		hash2DContext: false,
+		hashWebGLContext: webgl,
+		hashAudioContext: false,
+		contextVariableName: 'c',
+		contextType: webgl ? 1 : 0,
+		reassignVars: true,
+		varsNotReassigned: ['a', 'b', 'c', 'd', 'g'],
+		crushGainFactor: 1,
+		crushLengthFactor: 0,
+		crushCopiesFactor: 0,
+		crushTiebreakerFactor: 1,
+		wrapInSetInterval: false,
+		timeVariableName: ""
+	}
+
+  // crashed in a single step
+  return gulp.src([
+      'src/js/utils.js',
+      'src/js/globals.js',
+      'src/processed/e6809.js',
+      'src/js/audioWorkletWrapper.js',
+      'src/js/osint.js',
+      'src/js/vector_t.js',
+      'src/processed/vecx.js',
+      'src/js/input.js',
+      'src/js/dnd.js',
+      'src/js/table.js',
+      'src/js/hexMon.js',
+      'src/js/cocktail.js',
+      'src/js/romList.js',
+      'src/js/UZIP_depacker.js',
+  ])
+  .pipe(terser())
+  .pipe(regpack(options))
+  .pipe(concat('jsvecx.js'))
+  .pipe(gulp.dest('deploy/js'))
+
+  /*
+//  return gulp.src('_src/js/**.js', '!_src/js/vendor/**')
+  //return gulp.src(['_src/js/app.js', '_src/js/intern.js'])
+  return gulp.src([
+    'src/js/utils.js',
+    'src/js/globals.js',
+    'src/processed/e6809.js',
+    //'src/processed/e8910.js',
+    //'src/js/e8910.js',
+    'src/js/audioWorkletWrapper.js',
+    'src/js/osint.js',
+    'src/js/vector_t.js',
+    'src/processed/vecx.js',
+    'src/js/input.js',
+    'src/js/dnd.js',
+    'src/js/table.js',
+    'src/js/hexMon.js',
+    'src/js/cocktail.js',
+    'src/js/romList.js',
+    //'src/js/UZIP.depacker_pack_20200308.js'
+    'src/js/UZIP.depacker_pack_20200308.js',
+  ])
+  .pipe(terser())
+  .pipe(concat('jsvecx.js'))
+  //.pipe(regpack(options))
+  //.pipe(gulp.dest('deploy/js'))
+  .pipe(gulp.dest('deploy/js'))
+  */
+})
+
+// for minification of audioProcessor, manually inserted in wrapper :( or more concat is needed later...
+gulp.task('prePack', () => {
+  const webgl = false
+  const options = {
+		withMath: false,
+		hash2DContext: false,
+		hashWebGLContext: webgl,
+		hashAudioContext: false,
+		contextVariableName: 'c',
+		contextType: webgl ? 1 : 0,
+		reassignVars: true,
+		varsNotReassigned: ['a', 'b', 'c', 'd', 'g'],
+		crushGainFactor: 1,
+		crushLengthFactor: 0,
+		crushCopiesFactor: 0,
+		crushTiebreakerFactor: 1,
+		wrapInSetInterval: false,
+		timeVariableName: ""
+	}
+
+  return gulp.src('src/js/audioWorkletProcessor.js')
+    .pipe(terser())
+    //.pipe(regpack(options))
+    .pipe(gulp.dest('deploy/js'))
+})
 
 gulp.task('css', () => {
   return gulp.src([
@@ -91,7 +198,8 @@ gulp.task('js', () => {
     'src/js/globals.js',
     'src/processed/e6809.js',
     //'src/processed/e8910.js',
-    'src/js/e8910.js',
+    //'src/js/e8910.js',
+    'src/js/audioWorkletWrapper.js',
     'src/js/osint.js',
     'src/js/vector_t.js',
     'src/processed/vecx.js',
@@ -220,4 +328,5 @@ gulp.task('watch', () => {
 
 //gulp.task('assets', gulp.parallel('roms', 'bios', 'img', 'vendor'));
 gulp.task('assets', gulp.parallel('roms', 'bios', 'img'));
-gulp.task('default', gulp.series('prec', 'assets', 'css', 'js', 'html', 'mono', 'copyright'));
+// gulp.task('default', gulp.series('prec', 'assets', 'css', 'js', 'html', 'mono', 'copyright'));
+gulp.task('default', gulp.series('prec', 'assets', 'css', 'jsPack', 'html', 'mono', 'copyright'));

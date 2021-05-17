@@ -2037,15 +2037,6 @@ function VecX()
 
     this.main = function( canv )
     {
-        /*
-        console.log('looking for audio processor', this.e6810);
-        if (!this.e6810) {
-          setTimeout(() => {
-            this.main( canv );
-          }, 10000)
-          return;
-        }
-        */
         this.osint.init( this, canv );  // need to pass reference to canvas
         this.e6809.init( this );
 

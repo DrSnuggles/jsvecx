@@ -132,6 +132,10 @@ commercial Vectrex roms, they were made available for non-commercial use in the 
 
 ## Change Log
 
+### 05/17/21 (0.6.0) (DrSnuggles)
+    - Switched to AudioWorkletProcessor
+    - New deploy
+
 ### 05/10/21 (0.5.5) (DrSnuggles)
     - Overlay src set to .ZIP fixed
 
