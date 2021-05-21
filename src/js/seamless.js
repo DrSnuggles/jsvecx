@@ -670,6 +670,46 @@ function makeSVG() {
   return r.join('\r\n');
 }
 
+let recorder = null,
+audioTrack, videoTrack, stream
+function rec() {
+  // https://github.com/WebAudio/web-audio-api-v2/issues/118
+  // https://github.com/w3c/mediacapture-main/issues/694
+
+  if (recorder === null) {
+    startRecording()
+  } else {
+    if (recorder != null) {
+      recorder.stop()
+      stream.getVideoTracks()[0].stop()
+    }
+    recorder = null
+  }
+  async function startRecording() {
+		stream = await navigator.mediaDevices.getDisplayMedia({
+			video: { mediaSource: "screen", cursor: "never", displaySurface: "browser" },
+      audio: true
+		})
+    const options = {mimeType: 'video/webm; codecs=vp8,opus'} // VP9 produced larger videos and no safari
+		recorder = new MediaRecorder(stream, options)
+
+		var chunks = []
+		recorder.ondataavailable = e => chunks.push(e.data)
+		recorder.onstop = e => {
+			var blob = new Blob(chunks, { type: chunks[0].type })
+			var url = URL.createObjectURL(blob)
+      var a = document.createElement("a");
+      var d = new Date().toISOString();
+      a.setAttribute('download', 'JSVecX_'+d+'.webm');
+      a.setAttribute('href', url);
+      a.click();
+      console.log("Recording saved as: "+ 'JSVecX_'+d+'.webm');
+		}
+    
+    recorder.start()
+  }
+
+}
 //
 // hexMon wrapper
 //
@@ -1089,6 +1129,9 @@ function resumeLastSaveState() {
         break;
       case 'PageDown':
         //resumeLastSaveState();
+        break;
+      case 'F9':
+        rec();
         break;
       default:
     }

@@ -64,7 +64,16 @@ gulp.task('jsPack', () => {
 		timeVariableName: ""
 	}
 
-  // crashed in a single step
+  gulp.src('src/js/seamless.js')
+    .pipe(terser())
+    .pipe(regpack(options))
+    .pipe(gulp.dest('deploy/js'))
+
+  gulp.src('src/js/rtm.js')
+    .pipe(terser())
+    .pipe(regpack(options))
+    .pipe(gulp.dest('deploy/js'))
+
   return gulp.src([
       'src/js/utils.js',
       'src/js/globals.js',
