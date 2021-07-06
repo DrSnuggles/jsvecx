@@ -1,5 +1,10 @@
 var romList=
 {
+	"Academy 2021":[
+		"Frog Jump_by SpaceInvader7",
+		"Racetrex_by Chroma",
+		"Darts_Beta RC by Firewall"
+	],
 	/*
 		"http://www.clockworkrobot.com/wp-content/uploads/2018/12/ChimneyHunt.zip",
 	*/
@@ -59,7 +64,7 @@ var romList=
 	],
 	"Academy 2020":[
 		"Number Cruncher_by Peer Johannsen_Alpha 0.1",
-		"Rotor_by Peer Johannsen_Beta RC 1.1",
+		"Rotor_by Peer Johannsen_v1.2",
 		"Climb It_by Chris++",
 		"Crash Trexicoot_by LiKa",
 		"Maze Of Treasures_by Sgt. Pepper",
